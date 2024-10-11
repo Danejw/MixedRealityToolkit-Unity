@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ab2114bdc8544297b417dfefe9f1e410, type: 3}
-  m_Name: MRDL_StyleSheet
+  m_Name: MRDL_StyleSheet 1
   m_EditorClassIdentifier: 
   m_StyleList:
   - m_Name: Normal
