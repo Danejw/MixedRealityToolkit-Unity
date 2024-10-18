@@ -11,19 +11,31 @@ namespace ClearView
 {
     public class ModelDetailsPanel : MonoBehaviour
     {
-        public GameObject model;
+        private GameObject _model;
+        public GameObject Model
+        {
+            get {  return _model; }
+            private set
+            {
+                _model = value;
+                SetUp(_model.transform);           
+            }
+        }   
+
 
         public enum DetailsState
         {
             Close,
-            Open
+            Open,
+            Hidden
         }
 
         [Space(10)]
-        [SerializeField] private bool isOpen = false;
+        [SerializeField] private DetailsState state = DetailsState.Hidden;
 
         [Space(10)]
         public GameObject openButton;
+        public GameObject closeButton;
         public GameObject detailsParent;
 
         [Space(10)]
@@ -41,6 +53,8 @@ namespace ClearView
         {
             rotationSlider.OnValueUpdated.AddListener(OnRotationSliderChanged);
             transparencySlider.OnValueUpdated.AddListener(OnTransparencySliderChanged);
+
+            Close();
         }
 
         private void OnEnable()
@@ -58,51 +72,74 @@ namespace ClearView
             if (rotator) rotator.SetRotationSpeed((int)value.NewValue);
         }
 
-        public void Toggle(bool open)
+        public void Toggle(DetailsState state)
         {
-            switch (open)
+            switch (state)
             {
-                case true:
+                case DetailsState.Open:
                     Open();
                     break;
-                case false:
+                case DetailsState.Close:
                     Close();
+                    break;
+                case DetailsState.Hidden:
+                    Hide();
                     break;
             }
         }
 
-        public void ToggleDetailsMenu()
-        {
-            switch (isOpen)
-            {
-                case false:
-                    Open();
-                    break;
-                case true:
-                    Close();
-                    break;
-            }
-        }
 
-        private void Open()
+        public void Open()
         {
             openButton.SetActive(false);
+            closeButton.SetActive(true);
             detailsParent.SetActive(true);
 
-            isOpen = true;
+            state = DetailsState.Open;
         }
 
-        private void Close()
+        public void Close()
         {
             openButton.SetActive(true);
+            closeButton.SetActive(false);
             detailsParent.SetActive(false);
 
-            isOpen = false;
+            state = DetailsState.Close;
         }
 
-        public void PopulateToggles()
+        public void Hide()
         {
-            layerToggles.SetToggleCollection(model.transform);
+            openButton.SetActive(false);
+            detailsParent.SetActive(false);
+
+            state = DetailsState.Hidden;
+        }
+
+
+        public void SetUp(Transform model)
+        {
+            layerToggles.SetToggleCollection(Model.transform);
+            rotator.Setup(model);
+            transparencyEditor.Setup(model);
+        }
+
+        public void SetModel(GameObject model)
+        {
+            Model = model;
+        }
+
+        // Inspector Button Helper
+        public void ToggleDetailsMenu()
+        {
+            switch (state)
+            {
+                case DetailsState.Close:
+                    Open();
+                    break;
+                case DetailsState.Open:
+                    Close();
+                    break;
+            }
         }
     }
 }

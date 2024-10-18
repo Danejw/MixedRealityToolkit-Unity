@@ -2,8 +2,6 @@ using MixedReality.Toolkit;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.HID;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 
 namespace ClearView
@@ -11,11 +9,11 @@ namespace ClearView
     public class CustomToggleCollection : MonoBehaviour
     {
         public Transform verticalLayout;
-        public StatefulInteractable prefab;
+        public CustomToggle prefab;
 
         [SerializeField]
         [Tooltip("Array of StatefulInteractable toggles that will be managed by this controller.")]
-        public List<StatefulInteractable> toggles = new List<StatefulInteractable>();
+        public List<CustomToggle> toggles = new List<CustomToggle>();
 
         public void SetToggleCollection(Transform model)
         {
@@ -24,16 +22,19 @@ namespace ClearView
             // Create toggles
             for (int i = 0; i < model.childCount; i++)
             {
-                StatefulInteractable layerToggle = Instantiate(prefab, verticalLayout);
+                CustomToggle layerToggle = Instantiate(prefab, verticalLayout);
 
                 Transform child = model.GetChild(i); // Get the current child
 
+                // Set the toggle label to the child's name
+                layerToggle.label.text = child.name;
+
                 // Set the toggle initially based on the child's active state
-                layerToggle.ForceSetToggled(child.gameObject.activeSelf);
+                layerToggle.toggle.ForceSetToggled(child.gameObject.activeSelf);
 
                 // Add a listener to the toggle to set the child's active state when toggled
                 int childIndex = i; // Capture index in a local variable to avoid closure issues
-                layerToggle.OnClicked.AddListener(() => OnToggleValueChanged(childIndex, model));
+                layerToggle.toggle.OnClicked.AddListener(() => OnToggleValueChanged(childIndex, model));
 
                 toggles.Add(layerToggle);
             }
@@ -45,7 +46,7 @@ namespace ClearView
             Transform child = model.GetChild(childIndex);
 
             // Get the toggle state and set the child active or inactive based on that
-            StatefulInteractable toggle = toggles[childIndex];
+            StatefulInteractable toggle = toggles[childIndex].toggle;
             bool isToggled = toggle.IsToggled; // This assumes StatefulInteractable has an IsToggled property
 
             // Set the child's active state based on the toggle's state

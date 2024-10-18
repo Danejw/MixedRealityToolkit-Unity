@@ -7,17 +7,18 @@ namespace ClearView
 {
     public class TransparencyEditor : MonoBehaviour
     {
-        public GameObject parentObject; // The parent object containing the child objects to adjust
+        public Transform parentObject; // The parent object containing the child objects to adjust
 
         [Range(1, 100)]
         public float transparencyLevel = 100; // Transparency range from 1 (fully transparent) to 100 (fully opaque)
 
         [SerializeField] private List<Material> childMaterials;
 
-        void Start()
+        public void Setup(Transform model)
         {
+            parentObject = model;
             // Get all the child objects' materials
-            childMaterials = GetAllChildMaterials();
+            childMaterials = GetAllChildMaterials(parentObject);
 
             // Adjust transparency initially
             UpdateTransparency();
@@ -30,10 +31,10 @@ namespace ClearView
         }
 
         // Function to get the materials from all child objects
-        public List<Material> GetAllChildMaterials()
+        public List<Material> GetAllChildMaterials(Transform model)
         {
             // Get all child renderers of the object
-            Renderer[] childRenderers = parentObject.GetComponentsInChildren<Renderer>();
+            Renderer[] childRenderers = model.GetComponentsInChildren<Renderer>();
 
             // Collect materials from all child renderers
             childMaterials = new List<Material>();

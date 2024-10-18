@@ -15,8 +15,13 @@ namespace ClearView
         [Range(-100, 100)]
         public float currentSpeed = 0;  // Current speed at which the object is rotating
 
+        public void Setup(Transform model)
+        {
+            modelToRotate = model;
+            SetRotationSpeed(0);
+        }
 
-        void Update()
+        private void Update()
         {
             // Rotate the model around the specified axis, based on the current speed
             modelToRotate?.Rotate(rotationAxis * currentSpeed * Time.deltaTime);
