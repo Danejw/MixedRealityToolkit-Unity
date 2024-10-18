@@ -156,6 +156,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Experimental/VirtualizedScrollRectList.unity
     guid: 037c8f21459dffd409cda32f75faa783
   m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: cbfa90c3c5561934bb94447c35f44728, type: 2}
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 87467803e919cef4394e7f39c6521b51, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: e61946fb8f8ff5e418d6ebb56cca2034, type: 2}
     com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 4ce0884cff002f24f83e8b0ceef94646, type: 2}
