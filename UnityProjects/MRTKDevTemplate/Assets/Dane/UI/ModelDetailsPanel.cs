@@ -1,5 +1,6 @@
 using MixedReality.Toolkit;
 using MixedReality.Toolkit.UX;
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -49,8 +50,13 @@ namespace ClearView
         public Slider rotationSlider;
         public Slider transparencySlider;
 
+        private PhotonView photonView;
+
+
         private void Start()
         {
+            if (!photonView) photonView = GetComponent<PhotonView>();
+
             rotationSlider.OnValueUpdated.AddListener(OnRotationSliderChanged);
             transparencySlider.OnValueUpdated.AddListener(OnTransparencySliderChanged);
 
@@ -59,21 +65,29 @@ namespace ClearView
 
         private void OnEnable()
         {
+            if (!photonView) photonView = GetComponent<PhotonView>();
+
             Close();
         }
 
         private void OnTransparencySliderChanged(SliderEventData value)
         {
+            if (!photonView.IsMine) return;
+
             if (transparencyEditor) transparencyEditor.transparencyLevel = value.NewValue;
         }
 
         private void OnRotationSliderChanged(SliderEventData value)
         {
+            if (!photonView.IsMine) return;
+
             if (rotator) rotator.SetRotationSpeed((int)value.NewValue);
         }
 
         public void Toggle(DetailsState state)
         {
+            if (!photonView.IsMine) return;
+
             switch (state)
             {
                 case DetailsState.Open:
@@ -91,6 +105,8 @@ namespace ClearView
 
         public void Open()
         {
+            if (!photonView.IsMine) return;
+
             openButton.SetActive(false);
             closeButton.SetActive(true);
             detailsParent.SetActive(true);
@@ -100,6 +116,8 @@ namespace ClearView
 
         public void Close()
         {
+            if (!photonView.IsMine) return;
+
             openButton.SetActive(true);
             closeButton.SetActive(false);
             detailsParent.SetActive(false);
@@ -109,6 +127,8 @@ namespace ClearView
 
         public void Hide()
         {
+            if (!photonView.IsMine) return;
+
             openButton.SetActive(false);
             detailsParent.SetActive(false);
 
@@ -118,6 +138,8 @@ namespace ClearView
 
         public void SetUp(Transform model)
         {
+            if (!photonView.IsMine) return;
+
             layerToggles.SetToggleCollection(Model.transform);
             rotator.Setup(model);
             transparencyEditor.Setup(model);
@@ -131,6 +153,8 @@ namespace ClearView
         // Inspector Button Helper
         public void ToggleDetailsMenu()
         {
+            if (!photonView.IsMine) return;
+
             switch (state)
             {
                 case DetailsState.Close:
