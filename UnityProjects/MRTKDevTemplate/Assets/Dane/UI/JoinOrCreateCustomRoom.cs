@@ -18,7 +18,7 @@ namespace ClearView
                 return;
             }
 
-            NetworkManager.Instance.JoinOrCreateRoom(roomNameInput.text);
+            NetworkManager.Instance.JoinOrCreateRoom();//roomNameInput.text);
         }
     }
 }

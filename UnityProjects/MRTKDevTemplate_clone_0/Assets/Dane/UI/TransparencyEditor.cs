@@ -26,8 +26,11 @@ namespace ClearView
 
         void Update()
         {
-            // Adjust transparency in real-time (based on the inspector value or other runtime changes)
-            UpdateTransparency();
+            if (parentObject != null)
+            {
+                // Adjust transparency in real-time (based on the inspector value or other runtime changes)
+                UpdateTransparency();
+            }
         }
 
         // Function to get the materials from all child objects
@@ -41,7 +44,7 @@ namespace ClearView
 
             foreach (var renderer in childRenderers)
             {
-                var mat = renderer.material;
+                var mat = renderer.sharedMaterial;
                 childMaterials.Add(mat);
             }
 
@@ -52,6 +55,7 @@ namespace ClearView
         // Function to update transparency for all materials
         public void UpdateTransparency()
         {
+            /*
             // Convert transparencyLevel (1-100) to alpha value (0.01 to 1.0)
             float alphaValue = Mathf.Clamp(transparencyLevel / 100f, 0.01f, 1f);
 
@@ -65,6 +69,7 @@ namespace ClearView
                     mat.color = color;
                 }
             }
+            */
         }
 
         // Optionally call this method at runtime to set a new transparency level

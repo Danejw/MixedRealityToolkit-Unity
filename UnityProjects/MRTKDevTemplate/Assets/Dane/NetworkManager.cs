@@ -5,14 +5,14 @@ using Photon.Pun;
 
 namespace ClearView.Network
 {
-    public class RoomManager : MonoBehaviourPunCallbacks
+    public class NetworkManager : MonoBehaviourPunCallbacks
     {
         public GameObject playerPrefab;
         public GameObject hostUIPrefab;
         public GameObject guestUIPrefab;
 
         // Make this a ssingleton
-        public static RoomManager Instance;
+        public static NetworkManager Instance;
 
         public static bool isHost;
 
@@ -29,6 +29,9 @@ namespace ClearView.Network
 
         [Space]
         public List<Transform> spawnPoints;
+
+
+        public string roomName;
 
 
         // Start is called before the first frame update
@@ -89,7 +92,7 @@ namespace ClearView.Network
         }
 
         // Actions
-        public void JoinOrCreateRoom(string roomName)
+        public void JoinOrCreateRoom()//string roomName)
         {
             PhotonNetwork.JoinOrCreateRoom(roomName, null, null);
         }

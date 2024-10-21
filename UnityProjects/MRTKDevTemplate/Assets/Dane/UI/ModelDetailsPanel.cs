@@ -23,7 +23,6 @@ namespace ClearView
             }
         }   
 
-
         public enum DetailsState
         {
             Close,

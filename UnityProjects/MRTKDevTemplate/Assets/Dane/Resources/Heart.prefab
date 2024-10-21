@@ -14,8 +14,10 @@ GameObject:
   - component: {fileID: 1918563322157389578}
   - component: {fileID: 1918563322157389577}
   - component: {fileID: 1918563322157389576}
+  - component: {fileID: 919132148654149396}
+  - component: {fileID: 919132148654149397}
   m_Layer: 0
-  m_Name: Heart_valve
+  m_Name: Heart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,7 +30,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1612696571794025061}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
   m_ConstrainProportionsScale: 1
@@ -484,6 +486,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoConstraintSelection: 1
   selectedConstraints: []
+--- !u!114 &919132148654149396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1612696571794025061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 1
+  m_UseLocal: 1
+--- !u!114 &919132148654149397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1612696571794025061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: 0
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 919132148654149396}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1816359842044570230
 GameObject:
   m_ObjectHideFlags: 0
@@ -495,7 +536,7 @@ GameObject:
   - component: {fileID: 965966166610937949}
   - component: {fileID: 5896182737125214889}
   - component: {fileID: 6044681820047133752}
-  - component: {fileID: 1918563321933551054}
+  - component: {fileID: 5279095330841962839}
   m_Layer: 0
   m_Name: Heart
   m_TagString: Untagged
@@ -568,7 +609,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1918563321933551054
+--- !u!114 &5279095330841962839
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -593,7 +634,7 @@ GameObject:
   - component: {fileID: 8544937085056872526}
   - component: {fileID: 4730477075089397936}
   - component: {fileID: 6135105350842722113}
-  - component: {fileID: 1918563322559149927}
+  - component: {fileID: 5729808953546490414}
   m_Layer: 0
   m_Name: Left ventriculum
   m_TagString: Untagged
@@ -666,7 +707,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1918563322559149927
+--- !u!114 &5729808953546490414
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -691,7 +732,7 @@ GameObject:
   - component: {fileID: 1427326433201006864}
   - component: {fileID: 6997178096234341446}
   - component: {fileID: 5884933822503809552}
-  - component: {fileID: 1918563322820063381}
+  - component: {fileID: 5407529082372790143}
   m_Layer: 0
   m_Name: Left atrium
   m_TagString: Untagged
@@ -764,7 +805,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1918563322820063381
+--- !u!114 &5407529082372790143
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -789,7 +830,7 @@ GameObject:
   - component: {fileID: 2402761337761004383}
   - component: {fileID: 5289168289829247985}
   - component: {fileID: 5262211060714350616}
-  - component: {fileID: 1918563321907734395}
+  - component: {fileID: 6027850644313558391}
   m_Layer: 0
   m_Name: Mitral valve
   m_TagString: Untagged
@@ -862,7 +903,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1918563321907734395
+--- !u!114 &6027850644313558391
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -887,7 +928,7 @@ GameObject:
   - component: {fileID: 7112924457683818907}
   - component: {fileID: 2327750121595720676}
   - component: {fileID: 4778843322389856719}
-  - component: {fileID: 1918563323044478731}
+  - component: {fileID: 6409123113369494696}
   m_Layer: 0
   m_Name: Aorta
   m_TagString: Untagged
@@ -960,7 +1001,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1918563323044478731
+--- !u!114 &6409123113369494696
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -985,7 +1026,7 @@ GameObject:
   - component: {fileID: 3434436654538275098}
   - component: {fileID: 7001522068759605504}
   - component: {fileID: 5881139425756103181}
-  - component: {fileID: 1918563322474361977}
+  - component: {fileID: 5421799627237435242}
   m_Layer: 0
   m_Name: Spine
   m_TagString: Untagged
@@ -1058,7 +1099,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1918563322474361977
+--- !u!114 &5421799627237435242
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -23,8 +23,11 @@ namespace ClearView
 
         private void Update()
         {
-            // Rotate the model around the specified axis, based on the current speed
-            modelToRotate?.Rotate(rotationAxis * currentSpeed * Time.deltaTime);
+            if (modelToRotate != null)
+            {
+                // Rotate the model around the specified axis, based on the current speed
+                modelToRotate?.Rotate(rotationAxis * currentSpeed * Time.deltaTime);
+            }
         }
 
         // Function to dynamically set the rotation speed
