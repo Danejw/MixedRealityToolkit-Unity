@@ -5,21 +5,40 @@ using UnityEngine;
 
 namespace ClearView
 {
-    public class ModelManager : MonoBehaviour
+    public class ModelManager : MonoBehaviourPunCallbacks
     {
+        public bool isOnline = false;
+
         public ModelDetailsPanel modelDetailsPanel;
         public Transform roomCenter;
         public List<GameObject> availableModels;
         public List<GameObject> instantiatedModels;
 
+        public override void OnJoinedRoom()
+        {
+            base.OnJoinedRoom();
+
+            isOnline = true;
+        }
+
+        public override void OnLeftRoom()
+        {
+            base.OnLeftRoom();
+
+            isOnline = false;
+        }
+
         public void InstantiateModel(string name)
         {
-            // Ensure that only the host can instantiate models
-            if (!PhotonNetwork.IsMasterClient)
+            if (isOnline)
             {
-                Debug.LogWarning("Only the host (MasterClient) can instantiate models.");
-                return;
-            }
+                // Ensure that only the host can instantiate models
+                if (!PhotonNetwork.IsMasterClient)
+                {
+                    Debug.LogWarning("Only the host (MasterClient) can instantiate models.");
+                    return;
+                }
+            }    
 
             // Find the model with the specified name
             GameObject modelPrefab = availableModels.Find(m => m.name == name);
@@ -41,7 +60,16 @@ namespace ClearView
             RemoveModels();
 
             // Instantiate the model
-            GameObject instantiatedModel = PhotonNetwork.Instantiate(modelPrefab.name, roomCenter.position, Quaternion.identity);
+            GameObject instantiatedModel;
+            if (isOnline)
+            {
+                instantiatedModel = PhotonNetwork.Instantiate(modelPrefab.name, roomCenter.position, Quaternion.identity);
+            }
+            else
+            {
+                instantiatedModel = Instantiate(modelPrefab, roomCenter.position, Quaternion.identity);
+            }
+
             instantiatedModel.transform.parent = transform; // Set the parent to keep the hierarchy organized
             instantiatedModels.Add(instantiatedModel);
 
@@ -51,27 +79,38 @@ namespace ClearView
 
         public void RemoveModels()
         {
-            // Ensure that only the host can remove models
-            if (!PhotonNetwork.IsMasterClient)
+            if (isOnline)
             {
-                Debug.LogWarning("Only the host (MasterClient) can remove models.");
-                return;
-            }
-
-            // Destroy all instantiated models
-            foreach (var model in instantiatedModels)
-            {
-                // Get the PhotonView component to verify ownership
-                PhotonView photonView = model.GetComponent<PhotonView>();
-
-                // Only the owner or MasterClient can destroy the model
-                if (photonView != null && (photonView.IsMine || PhotonNetwork.IsMasterClient))
+                // Ensure that only the host can remove models
+                if (!PhotonNetwork.IsMasterClient)
                 {
-                    PhotonNetwork.Destroy(model);
+                    Debug.LogWarning("Only the host (MasterClient) can remove models.");
+                    return;
                 }
-                else
+
+                // Destroy all instantiated models
+                foreach (var model in instantiatedModels)
                 {
-                    Debug.LogWarning($"Failed to destroy model '{model.name}'. Only the owner or MasterClient can destroy networked objects.");
+                    // Get the PhotonView component to verify ownership
+                    PhotonView photonView = model.GetComponent<PhotonView>();
+
+                    // Only the owner or MasterClient can destroy the model
+                    if (photonView != null && (photonView.IsMine || PhotonNetwork.IsMasterClient))
+                    {
+                        PhotonNetwork.Destroy(model);
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Failed to destroy model '{model.name}'. Only the owner or MasterClient can destroy networked objects.");
+                    }
+                }
+            }
+            else
+            {
+                // Destroy all instantiated models
+                foreach (var model in instantiatedModels)
+                {
+                    Destroy(model);
                 }
             }
 
