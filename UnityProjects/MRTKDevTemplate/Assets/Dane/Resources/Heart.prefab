@@ -536,7 +536,6 @@ GameObject:
   - component: {fileID: 965966166610937949}
   - component: {fileID: 5896182737125214889}
   - component: {fileID: 6044681820047133752}
-  - component: {fileID: 5279095330841962839}
   m_Layer: 0
   m_Name: Heart
   m_TagString: Untagged
@@ -587,7 +586,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 1818d73b715849146adfaad261501e6a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -609,20 +608,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5279095330841962839
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1816359842044570230}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c53e2b0613597e849870c4a691d25e0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultMaterials:
-  - {fileID: 2100000, guid: 1818d73b715849146adfaad261501e6a, type: 2}
 --- !u!1 &3485490093957243867
 GameObject:
   m_ObjectHideFlags: 0
@@ -634,7 +619,6 @@ GameObject:
   - component: {fileID: 8544937085056872526}
   - component: {fileID: 4730477075089397936}
   - component: {fileID: 6135105350842722113}
-  - component: {fileID: 5729808953546490414}
   m_Layer: 0
   m_Name: Left ventriculum
   m_TagString: Untagged
@@ -685,7 +669,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 7a836505f5fbf3c48895150083104231, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -707,20 +691,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5729808953546490414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3485490093957243867}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c53e2b0613597e849870c4a691d25e0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultMaterials:
-  - {fileID: 2100000, guid: 7a836505f5fbf3c48895150083104231, type: 2}
 --- !u!1 &4132240091080201894
 GameObject:
   m_ObjectHideFlags: 0
@@ -732,7 +702,6 @@ GameObject:
   - component: {fileID: 1427326433201006864}
   - component: {fileID: 6997178096234341446}
   - component: {fileID: 5884933822503809552}
-  - component: {fileID: 5407529082372790143}
   m_Layer: 0
   m_Name: Left atrium
   m_TagString: Untagged
@@ -783,7 +752,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: dc389bb0dd550284a806cd26a09b92b9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -805,20 +774,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5407529082372790143
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4132240091080201894}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c53e2b0613597e849870c4a691d25e0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultMaterials:
-  - {fileID: 2100000, guid: dc389bb0dd550284a806cd26a09b92b9, type: 2}
 --- !u!1 &7573822696298166928
 GameObject:
   m_ObjectHideFlags: 0
@@ -830,7 +785,6 @@ GameObject:
   - component: {fileID: 2402761337761004383}
   - component: {fileID: 5289168289829247985}
   - component: {fileID: 5262211060714350616}
-  - component: {fileID: 6027850644313558391}
   m_Layer: 0
   m_Name: Mitral valve
   m_TagString: Untagged
@@ -881,7 +835,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: bd7aabf3f815da84682edfb3ed15f10a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -903,20 +857,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6027850644313558391
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7573822696298166928}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c53e2b0613597e849870c4a691d25e0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultMaterials:
-  - {fileID: 2100000, guid: bd7aabf3f815da84682edfb3ed15f10a, type: 2}
 --- !u!1 &7941362180704717806
 GameObject:
   m_ObjectHideFlags: 0
@@ -928,7 +868,6 @@ GameObject:
   - component: {fileID: 7112924457683818907}
   - component: {fileID: 2327750121595720676}
   - component: {fileID: 4778843322389856719}
-  - component: {fileID: 6409123113369494696}
   m_Layer: 0
   m_Name: Aorta
   m_TagString: Untagged
@@ -979,7 +918,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 4e84a227f6acd1f45b2d76fd07b3c9fa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1001,20 +940,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6409123113369494696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7941362180704717806}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c53e2b0613597e849870c4a691d25e0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultMaterials:
-  - {fileID: 2100000, guid: 4e84a227f6acd1f45b2d76fd07b3c9fa, type: 2}
 --- !u!1 &8301282354811891825
 GameObject:
   m_ObjectHideFlags: 0
@@ -1026,7 +951,6 @@ GameObject:
   - component: {fileID: 3434436654538275098}
   - component: {fileID: 7001522068759605504}
   - component: {fileID: 5881139425756103181}
-  - component: {fileID: 5421799627237435242}
   m_Layer: 0
   m_Name: Spine
   m_TagString: Untagged
@@ -1077,7 +1001,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: edb3e541c0474da40be819da629fc1d9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1099,17 +1023,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5421799627237435242
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8301282354811891825}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c53e2b0613597e849870c4a691d25e0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultMaterials:
-  - {fileID: 2100000, guid: edb3e541c0474da40be819da629fc1d9, type: 2}

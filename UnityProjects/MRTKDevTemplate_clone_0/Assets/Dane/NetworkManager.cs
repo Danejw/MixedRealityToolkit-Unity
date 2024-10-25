@@ -34,8 +34,7 @@ namespace ClearView.Network
         public string roomName;
 
 
-        // Start is called before the first frame update
-        private void Start()
+        private void ConnetToMaster()
         {
             Debug.Log("Connecting...");
             PhotonNetwork.ConnectUsingSettings();
