@@ -4,8 +4,7 @@ using Microsoft.Identity.Client;
 using System.Threading.Tasks;
 using System;
 using dotenv.net;
-using UnityEditor.PackageManager;
-
+using Azure.Core;
 
 
 namespace ClearView
@@ -17,10 +16,18 @@ namespace ClearView
         public event Action OnSignOut;
 
         [SerializeField] private bool autoSignIn = true;
+        private string token;
 
         private string clientId; // store this securely
         private const string Authority = "https://login.microsoftonline.com/common";
 
+        public enum State
+        {
+            NotAuthenticated,
+            Authenticated,
+        }
+
+        public State currentState = State.NotAuthenticated;
 
         private IPublicClientApplication app;
 
@@ -33,7 +40,8 @@ namespace ClearView
             private set
             {
                 accessToken = value;
-                OnAuthenticated?.Invoke(value);
+                OnAuthenticated?.Invoke(accessToken);
+                currentState = State.Authenticated;
             }
         }
 
@@ -88,6 +96,10 @@ namespace ClearView
             }
         }
 
+        public async void DoSignIn()
+        {
+            await SignIn();
+        }
 
         public async Task SignIn()
         {
@@ -135,11 +147,12 @@ namespace ClearView
                     {
                         Debug.Log($"User Name: {account.Username}");
                         Debug.Log($"User ID: {account.HomeAccountId}");
+
+
                     }
                 }
             }
         }
-
 
         public async Task SignOut()
         {
@@ -153,6 +166,8 @@ namespace ClearView
 
                     // Clear access token from player prefs
                     PlayerPrefs.DeleteKey("AccessToken");
+
+                    currentState = State.NotAuthenticated;
 
                     OnSignOut?.Invoke();
                 }

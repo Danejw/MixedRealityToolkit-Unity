@@ -22,7 +22,7 @@ namespace ClearView.UI
 
         private void OnEnable()
         {
-            modelManager.InitOneDrive();
+            modelManager?.InitOneDrive();
         }
 
         private void UpdateOnlineModels(Dictionary<string, string> dictionary)

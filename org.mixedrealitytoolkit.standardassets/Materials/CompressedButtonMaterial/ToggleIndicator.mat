@@ -23,12 +23,17 @@ Material:
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 3000
   stringTagMap:
+    DisableBatching: true
     RenderType: Fade
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
     - _ChannelMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissiveMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -71,6 +76,7 @@ Material:
     - _Cutoff: 0.5
     - _DirectionalLight: 0
     - _DstBlend: 10
+    - _DstBlendAlpha: 1
     - _EdgeSmoothingMode: 1
     - _EdgeSmoothingValue: 0.1
     - _EnableChannelMap: 0
@@ -113,6 +119,7 @@ Material:
     - _MipmapBias: -2
     - _Mode: 2
     - _Motion_: 0
+    - _NPR: 0
     - _NearLightFade: 0
     - _NearPlaneFade: 0
     - _NormalMapScale: 1
@@ -137,6 +144,7 @@ Material:
     - _SpecularHighlights: 1
     - _SphericalHarmonics: 0
     - _SrcBlend: 5
+    - _SrcBlendAlpha: 1
     - _Stencil: 0
     - _StencilComp: 0
     - _StencilComparison: 0
@@ -149,6 +157,7 @@ Material:
     - _UseWorldScale: 0
     - _VertexColors: 1
     - _VertexExtrusion: 0
+    - _VertexExtrusionConstantWidth: 0
     - _VertexExtrusionSmoothNormals: 0
     - _VertexExtrusionValue: 0
     - _ZOffsetFactor: 0
@@ -168,11 +177,11 @@ Material:
     - _EnvironmentColorY: {r: 0, g: 1, b: 0, a: 1}
     - _EnvironmentColorZ: {r: 0, g: 0, b: 1, a: 1}
     - _GradientAlpha: {r: 1, g: 1, b: 1, a: 1}
-    - _GradientAlphaTime: {r: 0, g: 0, b: 0, a: 0}
-    - _GradientColor0: {r: 0.7411765, g: 0.6392157, b: 0.9607844, a: 0}
-    - _GradientColor1: {r: 0.40000004, g: 0.39607847, b: 0.85098046, a: 1}
-    - _GradientColor2: {r: 0.40000004, g: 0.39607847, b: 0.85098046, a: 1}
-    - _GradientColor3: {r: 0.40000004, g: 0.39607847, b: 0.85098046, a: 1}
+    - _GradientAlphaTime: {r: 0, g: 1, b: 1, a: 1}
+    - _GradientColor0: {r: 0.3537736, g: 0.72140783, b: 1, a: 0}
+    - _GradientColor1: {r: 0.3960784, g: 0.62388104, b: 0.8509804, a: 1}
+    - _GradientColor2: {r: 0.3960784, g: 0.62388104, b: 0.8509804, a: 1}
+    - _GradientColor3: {r: 0.3960784, g: 0.62388104, b: 0.8509804, a: 1}
     - _GradientColor4: {r: 1, g: 1, b: 1, a: 1}
     - _HoverColorOverride: {r: 1, g: 1, b: 1, a: 1}
     - _InnerGlowColor: {r: 1, g: 1, b: 1, a: 0.75}

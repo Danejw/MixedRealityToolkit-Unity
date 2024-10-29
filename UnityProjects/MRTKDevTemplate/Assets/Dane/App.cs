@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
-
 
 namespace ClearView
 {
@@ -12,6 +8,8 @@ namespace ClearView
         // Singleton
         public static App Instance { get; private set; }
 
+        public GameObject SignInFlow;
+        public GameObject MainAppUI;
 
         private void Awake()
         {
@@ -30,6 +28,29 @@ namespace ClearView
             ModelManager = GetComponentInChildren<ModelManager>();
             MicrosoftAuth = GetComponentInChildren<MicrosoftAuth>();
             OneDriveManager = GetComponentInChildren<OneDriveManager>();
+        }
+
+        private void Start()
+        {
+            SetAuthState(false);
+
+            MicrosoftAuth.OnAuthenticated += (string token) => { SetAuthState(true); };
+            MicrosoftAuth.OnSignOut += () => { SetAuthState(false); };
+        }
+
+        private void SetAuthState(bool state)
+        {
+            switch (state)
+            {
+                case false:
+                    SignInFlow.SetActive(true);
+                    MainAppUI.SetActive(false);
+                    break;
+                case true:
+                    SignInFlow.SetActive(false);
+                    MainAppUI.SetActive(true);
+                    break;
+            }
         }
 
         public ModelManager ModelManager { get; private set; }
