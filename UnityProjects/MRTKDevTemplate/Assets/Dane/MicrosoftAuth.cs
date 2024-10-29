@@ -10,11 +10,13 @@ using UnityEditor.PackageManager;
 
 namespace ClearView
 {
+    // This is what we will use to authenticate with Microsoft Graph
     public class MicrosoftAuth : MonoBehaviour
     {
-        public static event Action<string> OnAuthenticated;
-        public static event Action OnSignOut;
+        public event Action<string> OnAuthenticated;
+        public event Action OnSignOut;
 
+        [SerializeField] private bool autoSignIn = true;
 
         private string clientId; // store this securely
         private const string Authority = "https://login.microsoftonline.com/common";
@@ -36,7 +38,7 @@ namespace ClearView
         }
 
 
-        private void Start()
+        private async void Start()
         {
             // Load .env variables
             LoadEnvironmentVariable();
@@ -45,6 +47,22 @@ namespace ClearView
                 .WithAuthority(Authority)
                 .WithRedirectUri("http://localhost") // Change this to your redirect URI
                 .Build();
+
+
+            if (autoSignIn)
+            {
+                // Check if access token is stored in player prefs
+                if (PlayerPrefs.HasKey("AccessToken"))
+                {
+                    // Load access token from player prefs
+                    AccessToken = PlayerPrefs.GetString("AccessToken");
+                }
+                else
+                {
+                    // Sign in
+                    await SignIn();
+                }
+            }
         }
 
         public void LoadEnvironmentVariable()
@@ -109,6 +127,9 @@ namespace ClearView
 
                     Debug.Log($"Access Token: {result.AccessToken}");
 
+                    // Store access token in player prefs
+                    PlayerPrefs.SetString("AccessToken", result.AccessToken);
+
                     // Display user info
                     if (account != null)
                     {
@@ -129,6 +150,9 @@ namespace ClearView
                     // Remove the account from the token cache
                     await app.RemoveAsync(account);
                     Debug.Log("User signed out successfully.");
+
+                    // Clear access token from player prefs
+                    PlayerPrefs.DeleteKey("AccessToken");
 
                     OnSignOut?.Invoke();
                 }

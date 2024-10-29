@@ -1,19 +1,56 @@
+using GLTFast;
+using GLTFast.Schema;
 using Photon.Pun;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 
 namespace ClearView
 {
+    // This is where we will manage the all of the mdodels available to the player at any given moment
     public class ModelManager : MonoBehaviourPunCallbacks
     {
+        // State
         public bool isOnline = false;
 
+
+        // UI
         public ModelDetailsPanel modelDetailsPanel;
         public Transform roomCenter;
+
+        // Models Storage
         public List<GameObject> availableModels;
         public List<GameObject> instantiatedModels;
 
+
+        public event Action<Dictionary<string, string>> OnlineModelsUpdated; // Tells UI to update
+        private Dictionary<string, string> onlineModels; // Filename, File id
+        public Dictionary<string, string> OnlineModels
+        {
+            get { return onlineModels; }
+            private set
+            {
+                onlineModels = value;
+                OnlineModelsUpdated?.Invoke(onlineModels);
+            }
+        }   
+
+        // Helper
+        public string NameOfMdelToInstantiate;
+
+
+        private void Awake()
+        {
+            availableModels = new List<GameObject>();
+            instantiatedModels = new List<GameObject>();
+            onlineModels = new Dictionary<string, string>();
+        }
+
+        
+
+
+        // Network Events
         public override void OnJoinedRoom()
         {
             base.OnJoinedRoom();
@@ -28,6 +65,8 @@ namespace ClearView
             isOnline = false;
         }
 
+
+        // Functionality
         public void InstantiateModel(string name)
         {
             if (isOnline)
@@ -117,14 +156,78 @@ namespace ClearView
             instantiatedModels.Clear(); // Clear the list of instantiated models
         }
 
+        public void AddModel(GameObject go)
+        {
+            availableModels.Add(go);
+        }
+
+
+        // Test
+        public void InstantiateModel()
+        {
+            if (string.IsNullOrEmpty(NameOfMdelToInstantiate))
+            {
+                Debug.LogError("Name of model to instantiate is missing.");
+                return;
+            }
+
+            InstantiateModel(NameOfMdelToInstantiate);
+        }
+
+        // Test
         public void InstantiateBrain()
         {
             InstantiateModel("Brain");
         }
 
+        // Test
         public void InstantiateHeart()
         {
             InstantiateModel("Heart");
+        }
+
+
+
+        // Import from OneDrive and managed by the ModelManager
+        App app;
+
+        private void Start()
+        {
+            app = App.Instance;
+            app.OneDriveManager.OnImportComplete += OnImportComplete;
+            app.OneDriveManager.OnInitialize += InitOneDrive;
+        }
+
+
+        // Load all model info from OneDrive
+        public async void InitOneDrive()
+        {
+            OnlineModels = await app.OneDriveManager.ListAllFilesInOneDrive();
+
+            // foreach (var model in onlineModels) Debug.Log($"Model: {model.Key}, ID: {model.Value}");
+        }
+
+        public async void ImportModel(string filename)
+        {
+           if (!OnlineModels.ContainsKey(filename)) return;
+
+            await app.OneDriveManager.DownloadAndLoadGLTF(filename, OnlineModels[filename]);
+        }
+
+        private void OnImportComplete(GltfImport import, GameObject go)
+        {
+            import.InstantiateMainScene(go.transform);
+
+            go.transform.parent = transform; // Set the parent to keep the hierarchy organized
+            Vector3.Lerp(transform.position, roomCenter.position, 1 * Time.deltaTime); // Set the position to the center of the room
+            go.transform.position = transform.position; // Set the position to the center of the room
+            go.transform.rotation = Quaternion.identity;
+            instantiatedModels.Add(go);
+
+            // Update the UI panel with model details
+            modelDetailsPanel?.SetModel(go);
+
+            AddModel(go);
         }
     }
 }

@@ -5,6 +5,7 @@ using Photon.Pun;
 
 namespace ClearView.Network
 {
+    // THis is where we will handle all of the basic network logic
     public class NetworkManager : MonoBehaviourPunCallbacks
     {
         public GameObject playerPrefab;
