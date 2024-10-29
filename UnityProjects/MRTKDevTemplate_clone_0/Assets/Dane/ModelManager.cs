@@ -1,5 +1,4 @@
 using GLTFast;
-using GLTFast.Schema;
 using Photon.Pun;
 using System;
 using System.Collections.Generic;
@@ -20,12 +19,12 @@ namespace ClearView
         public Transform roomCenter;
 
         // Models Storage
-        public List<GameObject> availableModels;
-        public List<GameObject> instantiatedModels;
+        [SerializeField] private List<GameObject> availableModels = new List<GameObject>();
+        [SerializeField] private List<GameObject> instantiatedModels = new List<GameObject>();
 
 
         public event Action<Dictionary<string, string>> OnlineModelsUpdated; // Tells UI to update
-        private Dictionary<string, string> onlineModels; // Filename, File id
+        private Dictionary<string, string> onlineModels = new Dictionary<string, string>(); // Filename, File id
         public Dictionary<string, string> OnlineModels
         {
             get { return onlineModels; }
@@ -37,17 +36,17 @@ namespace ClearView
         }   
 
         // Helper
-        public string NameOfMdelToInstantiate;
+        public string nameOfModelToInstantiate;
 
+        // Import from OneDrive and managed by the ModelManager
+        private App app;
 
-        private void Awake()
+        private void Start()
         {
-            availableModels = new List<GameObject>();
-            instantiatedModels = new List<GameObject>();
-            onlineModels = new Dictionary<string, string>();
+            app = App.Instance;
+            app.OneDriveManager.OnImportComplete += OnImportComplete;
+            app.OneDriveManager.OnInitialize += InitOneDrive;
         }
-
-        
 
 
         // Network Events
@@ -165,13 +164,13 @@ namespace ClearView
         // Test
         public void InstantiateModel()
         {
-            if (string.IsNullOrEmpty(NameOfMdelToInstantiate))
+            if (string.IsNullOrEmpty(nameOfModelToInstantiate))
             {
                 Debug.LogError("Name of model to instantiate is missing.");
                 return;
             }
 
-            InstantiateModel(NameOfMdelToInstantiate);
+            InstantiateModel(nameOfModelToInstantiate);
         }
 
         // Test
@@ -188,17 +187,6 @@ namespace ClearView
 
 
 
-        // Import from OneDrive and managed by the ModelManager
-        App app;
-
-        private void Start()
-        {
-            app = App.Instance;
-            app.OneDriveManager.OnImportComplete += OnImportComplete;
-            app.OneDriveManager.OnInitialize += InitOneDrive;
-        }
-
-
         // Load all model info from OneDrive
         public async void InitOneDrive()
         {
@@ -212,10 +200,14 @@ namespace ClearView
            if (!OnlineModels.ContainsKey(filename)) return;
 
             await app.OneDriveManager.DownloadAndLoadGLTF(filename, OnlineModels[filename]);
+
+            Debug.Log($"Importing {filename}");
         }
 
         private void OnImportComplete(GltfImport import, GameObject go)
         {
+            RemoveModels(); // Destroy other models before instantiating a new one
+
             import.InstantiateMainScene(go.transform);
 
             go.transform.parent = transform; // Set the parent to keep the hierarchy organized
@@ -228,6 +220,8 @@ namespace ClearView
             modelDetailsPanel?.SetModel(go);
 
             AddModel(go);
+
+            Debug.Log($"Imported {go.name}");
         }
     }
 }

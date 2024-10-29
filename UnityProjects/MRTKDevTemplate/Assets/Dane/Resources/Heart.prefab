@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 1918563322157389576}
   - component: {fileID: 919132148654149396}
   - component: {fileID: 919132148654149397}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Heart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -536,7 +536,7 @@ GameObject:
   - component: {fileID: 965966166610937949}
   - component: {fileID: 5896182737125214889}
   - component: {fileID: 6044681820047133752}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Heart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -619,7 +619,7 @@ GameObject:
   - component: {fileID: 8544937085056872526}
   - component: {fileID: 4730477075089397936}
   - component: {fileID: 6135105350842722113}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Left ventriculum
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -702,7 +702,7 @@ GameObject:
   - component: {fileID: 1427326433201006864}
   - component: {fileID: 6997178096234341446}
   - component: {fileID: 5884933822503809552}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Left atrium
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -785,7 +785,7 @@ GameObject:
   - component: {fileID: 2402761337761004383}
   - component: {fileID: 5289168289829247985}
   - component: {fileID: 5262211060714350616}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mitral valve
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -868,7 +868,7 @@ GameObject:
   - component: {fileID: 7112924457683818907}
   - component: {fileID: 2327750121595720676}
   - component: {fileID: 4778843322389856719}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Aorta
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -951,7 +951,7 @@ GameObject:
   - component: {fileID: 3434436654538275098}
   - component: {fileID: 7001522068759605504}
   - component: {fileID: 5881139425756103181}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spine
   m_TagString: Untagged
   m_Icon: {fileID: 0}

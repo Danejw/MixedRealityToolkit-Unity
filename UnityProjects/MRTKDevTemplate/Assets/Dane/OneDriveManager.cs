@@ -1,5 +1,5 @@
 using GLTFast;
-using GLTFast.Editor;
+using GLTFast.Materials;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -248,7 +248,7 @@ namespace ClearView
                     Debug.Log($"GLTF/GLB file downloaded to: {filePath}");
 
                     // Load the GLTF model at runtime
-                    LoadGLTFAtRuntime(filePath);
+                    await LoadGLTFAtRuntime(filePath);
 
                     // Extract and print metadata from the GLB file
                     //PrintGLBMetadata(filePath);
@@ -270,10 +270,21 @@ namespace ClearView
             }
         }
 
+
         private async Task<(GltfImport, GameObject)> LoadGLTFAtRuntime(string filePath)
         {
+            // Set up the material generator manually
+            IMaterialGenerator materialGenerator;
+#if USING_URP
+                materialGenerator = new UrpMaterialGenerator();
+#elif USING_HDRP
+                materialGenerator = new HdrpMaterialGenerator();
+#else
+            materialGenerator = new RuntimeMaterialGenerator(); // Built-In or fallback
+            #endif// For Built-In RP. If you’re using URP or HDRP, replace BuiltInMaterialGenerator() with UrpMaterialGenerator() or HdrpMaterialGenerator() respectively
+
             // Create a new GLTFast importer instance
-            var gltfImport = new GltfImport();
+            var gltfImport = new GltfImport(null, null, materialGenerator, null);
 
             // Load the GLTF file from the file path
             bool success = await gltfImport.Load(filePath);
@@ -438,5 +449,27 @@ namespace ClearView
             AddMetadataToGLBAsset(filePath, filePath, metadata);
         }
     }
+
+    public class RuntimeMaterialGenerator : IMaterialGenerator
+    {
+        // Return a default material if needed
+        public Material GetDefaultMaterial()
+        {
+            return new Material(Shader.Find("Standard"));
+        }
+
+        // Generate a basic material from GLTF schema
+        public Material GenerateMaterial(GLTFast.Schema.Material gltfMaterial, IGltfReadable gltf)
+        {
+            // For simplicity, return a basic material for all cases
+            return new Material(Shader.Find("Standard"));
+        }
+
+        public void SetLogger(ICodeLogger logger)
+        {
+            //throw new NotImplementedException();
+        }
+    }
+
 }
 

@@ -3341,6 +3341,7 @@ MonoBehaviour:
   hostTransform: {fileID: 1947783662}
   allowedManipulations: 7
   allowedInteractionTypes: -2147483641
+  rigidbodyMovementType: 0
   applyTorque: 1
   springForceSoftness: 0.1
   springTorqueSoftness: 0.1
@@ -3363,8 +3364,7 @@ MonoBehaviour:
     moveLogicType:
       reference: MixedReality.Toolkit.SpatialManipulation.MoveLogic, MixedReality.Toolkit.SpatialManipulation
     rotateLogicType:
-      reference: MixedReality.Toolkit.SpatialManipulation.RotateLogic,
-        MixedReality.Toolkit.SpatialManipulation
+      reference: MixedReality.Toolkit.SpatialManipulation.RotateLogic, MixedReality.Toolkit.SpatialManipulation
     scaleLogicType:
       reference: MixedReality.Toolkit.SpatialManipulation.ScaleLogic, MixedReality.Toolkit.SpatialManipulation
 --- !u!4 &1297402049 stripped

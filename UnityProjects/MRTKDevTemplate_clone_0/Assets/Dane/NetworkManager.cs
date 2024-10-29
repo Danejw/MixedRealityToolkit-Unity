@@ -35,7 +35,12 @@ namespace ClearView.Network
         public string roomName;
 
 
-        private void ConnetToMaster()
+        private void Start()
+        {
+            ConnectToMaster();
+        }
+
+        private void ConnectToMaster()
         {
             Debug.Log("Connecting...");
             PhotonNetwork.ConnectUsingSettings();
@@ -92,7 +97,12 @@ namespace ClearView.Network
         }
 
         // Actions
-        public void JoinOrCreateRoom()//string roomName)
+        public void JoinOrCreateRoom(string roomName)
+        {
+            PhotonNetwork.JoinOrCreateRoom(roomName, null, null);
+        }
+
+        public void JoinOrCreateRoom()
         {
             PhotonNetwork.JoinOrCreateRoom(roomName, null, null);
         }

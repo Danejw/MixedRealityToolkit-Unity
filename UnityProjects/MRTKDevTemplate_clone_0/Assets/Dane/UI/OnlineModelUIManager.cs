@@ -22,6 +22,8 @@ namespace ClearView.UI
 
         private void OnEnable()
         {
+            if (App.Instance.MicrosoftAuth.currentState != MicrosoftAuth.State.Authenticated) return;
+
             modelManager?.InitOneDrive();
         }
 

@@ -1,5 +1,6 @@
 using MixedReality.Toolkit;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -18,6 +19,10 @@ namespace ClearView
         {
             RemoveCurrentToggles(); // Clear existing toggles before creating new ones
 
+
+            AddTogglesRecursively(model);
+
+            /* Add toggles for the first level of children only
             // Create toggles
             for (int i = 0; i < model.childCount; i++)
             {
@@ -37,19 +42,51 @@ namespace ClearView
 
                 toggles.Add(layerToggle);
             }
+            */
+        }
+
+        private void AddTogglesRecursively(Transform parent)
+        {
+            // Loop through each child of the current parent
+            for (int i = 0; i < parent.childCount; i++)
+            {
+                Transform child = parent.GetChild(i);
+
+                // Create a new toggle for the child
+                CustomToggle layerToggle = Instantiate(prefab, verticalLayout);
+
+                // Set the toggle label to the child's name
+                layerToggle.label.text = child.name;
+
+                // Set the toggle initially based on the child's active state
+                layerToggle.toggle.ForceSetToggled(child.gameObject.activeSelf);
+
+                // Add a listener to the toggle to set the child's active state when toggled
+                layerToggle.toggle.OnClicked.AddListener(() => OnToggleValueChanged(child));
+
+                // Add the new toggle to the list of toggles
+                toggles.Add(layerToggle);
+
+                // Recursively call this method for any nested children
+                AddTogglesRecursively(child);
+            }
         }
 
         // Listener function to handle the toggling of a child
-        private void OnToggleValueChanged(int childIndex, Transform model)
+        private void OnToggleValueChanged(Transform child)
         {
-            Transform child = model.GetChild(childIndex);
+            // Find the toggle associated with this child
+            CustomToggle correspondingToggle = toggles.FirstOrDefault(t => t.label.text == child.name);
 
-            // Get the toggle state and set the child active or inactive based on that
-            StatefulInteractable toggle = toggles[childIndex].toggle;
-            bool isToggled = toggle.IsToggled; // This assumes StatefulInteractable has an IsToggled property
+            // Check if the toggle was found and if it has a valid IsToggled property
+            if (correspondingToggle != null && correspondingToggle.toggle != null)
+            {
+                // Get the toggle state and set the child active or inactive based on that
+                bool isToggled = correspondingToggle.toggle.IsToggled; // This assumes StatefulInteractable has an IsToggled property
 
-            // Set the child's active state based on the toggle's state
-            child.gameObject.SetActive(isToggled);
+                // Set the child's active state based on the toggle's state
+                child.gameObject.SetActive(isToggled);
+            }
         }
 
         public void RemoveCurrentToggles()

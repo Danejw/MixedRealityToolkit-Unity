@@ -8,15 +8,20 @@ namespace ClearView
         // Singleton
         public static App Instance { get; private set; }
 
-        public GameObject SignInFlow;
-        public GameObject MainAppUI;
+        // Resources
+        public ModelManager ModelManager { get; private set; }
+        public MicrosoftAuth MicrosoftAuth { get; private set; }
+        public OneDriveManager OneDriveManager { get; private set; }
+        public UIManager UIManager { get; private set; }
+
 
         private void Awake()
         {
-            // Singleton
+            // Make Singleton
             if (Instance == null)
             {
                 Instance = this;
+                DontDestroyOnLoad(gameObject);
             }
             else
             {
@@ -25,36 +30,11 @@ namespace ClearView
             }
 
             // Initialize
+            // TODO: find in children recursively
             ModelManager = GetComponentInChildren<ModelManager>();
             MicrosoftAuth = GetComponentInChildren<MicrosoftAuth>();
             OneDriveManager = GetComponentInChildren<OneDriveManager>();
+            UIManager = GetComponentInChildren<UIManager>();
         }
-
-        private void Start()
-        {
-            SetAuthState(false);
-
-            MicrosoftAuth.OnAuthenticated += (string token) => { SetAuthState(true); };
-            MicrosoftAuth.OnSignOut += () => { SetAuthState(false); };
-        }
-
-        private void SetAuthState(bool state)
-        {
-            switch (state)
-            {
-                case false:
-                    SignInFlow.SetActive(true);
-                    MainAppUI.SetActive(false);
-                    break;
-                case true:
-                    SignInFlow.SetActive(false);
-                    MainAppUI.SetActive(true);
-                    break;
-            }
-        }
-
-        public ModelManager ModelManager { get; private set; }
-        public MicrosoftAuth MicrosoftAuth { get; private set; }
-        public OneDriveManager OneDriveManager { get; private set; }
     }
 }

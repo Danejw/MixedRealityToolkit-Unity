@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7073337273270578422}
   - component: {fileID: 7886390946420753094}
   - component: {fileID: 4672945994701872003}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Skin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 5567916704862525377}
   - component: {fileID: 8004521941901315944}
   - component: {fileID: 134405359091068006}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Grey matter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 1544448186844972175}
   - component: {fileID: 2852795274264850081}
   - component: {fileID: 5242985892859998740}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cerebellum
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 5420223246170705389}
   - component: {fileID: 7323500359784067679}
   - component: {fileID: 3802709643065566421}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Dense matter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -343,7 +343,7 @@ GameObject:
   - component: {fileID: 7676892264142513508}
   - component: {fileID: 7857985919725452682}
   - component: {fileID: 3122950590718922019}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: White matter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -431,7 +431,7 @@ GameObject:
   - component: {fileID: 2345531450214930831}
   - component: {fileID: 919132148988664794}
   - component: {fileID: 919132148988664795}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Brain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -880,7 +880,7 @@ GameObject:
   - component: {fileID: 8277661717212263415}
   - component: {fileID: 1189261872591277008}
   - component: {fileID: 8630427160205668882}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Brainstem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -963,7 +963,7 @@ GameObject:
   - component: {fileID: 7650209565071047663}
   - component: {fileID: 5523694602389124157}
   - component: {fileID: 813353051854087692}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Vasculature
   m_TagString: Untagged
   m_Icon: {fileID: 0}
