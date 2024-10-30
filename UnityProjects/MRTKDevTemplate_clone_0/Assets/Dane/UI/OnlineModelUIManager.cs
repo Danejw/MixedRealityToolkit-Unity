@@ -6,25 +6,29 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 namespace ClearView.UI
 {
+    // This is the portion of the UI that will manage/display UI elements representing the models available from a user's OneDrive
     public class OnlineModelUIManager : MonoBehaviour
     {
-        public ModelManager modelManager;
-
         public GameObject itemPrefab;
-
-
         public List<GameObject> items = new List<GameObject>();
 
         private void Start()
         {
             modelManager.OnlineModelsUpdated += UpdateOnlineModels;
+            App.Instance.OneDriveManager.OnInitialize += OnOneDriveInit;
         }
 
         private void OnEnable()
         {
             if (App.Instance.MicrosoftAuth.currentState != MicrosoftAuth.State.Authenticated) return;
 
-            modelManager?.InitOneDrive();
+            App.Instance.ModelManager?.GetOneDriveFiles();
+        }
+
+        // Event
+        private void OnOneDriveInit()
+        {
+            App.Instance.ModelManager?.GetOneDriveFiles();
         }
 
         private void UpdateOnlineModels(Dictionary<string, string> dictionary)
@@ -45,7 +49,7 @@ namespace ClearView.UI
 
         private void AddItems()
         {
-            foreach (var item in modelManager.OnlineModels)
+            foreach (var item in App.Instance.ModelManager.OnlineModels)
             {
                 var go = Instantiate(itemPrefab, transform);
                 go.name = item.Key;
@@ -57,7 +61,7 @@ namespace ClearView.UI
 
                 pb?.selectEntered.AddListener((SelectEnterEventArgs args) =>
                 {
-                    modelManager?.ImportModel(item.Key);
+                    App.Instance.ModelManager?.ImportModel(item.Key);
                 });
 
 

@@ -9,6 +9,8 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.Rendering;
 
 namespace ClearView
 {
@@ -126,9 +128,33 @@ namespace ClearView
         }
 
 
+        public async Task DownloadFromOneDrive(string fileName, string fileId)
+        {
+            // Get the file extension in lowercase
+            string extension = Path.GetExtension(fileName).ToLower();
+
+            // Switch based on file extension
+            switch (extension)
+            {
+                case ".fbx":
+                    await DownloadFBXFile(fileName, fileId);
+                        break;
+                case ".glb":
+                case ".gltf":
+                    await DownloadAndLoadGLTF(fileName, fileId);
+                    break;
+
+                default:
+                    Debug.LogWarning($"File '{fileName}' is not a supported 3D model format.");
+                    // Handle unsupported file formats here
+                    break;
+            }
+        }
+
+
         // FBX
 
-        public async Task DownloadFBXFile(string fileName, string fileId)
+        private async Task DownloadFBXFile(string fileName, string fileId)
         {
             try
             {
@@ -179,25 +205,6 @@ namespace ClearView
             }
         }
 
-        /*
-        // TODO: Import UnityFBXImporter or similar library
-        private void LoadFBXAtRuntime(string filePath)
-        {
-            // Load the FBX file at runtime using UnityFBXImporter or a similar library
-            var fbxObject = FBXImporter.Load(filePath);
-
-            if (fbxObject != null)
-            {
-                Instantiate(fbxObject);
-                Debug.Log("FBX file loaded and instantiated at runtime.");
-            }
-            else
-            {
-                Debug.LogError("Failed to load FBX at runtime.");
-            }
-        }
-        */
-
         private void ImportFBX(string filePath)
         {
             // Load the FBX file into Unity (Editor-only)
@@ -216,7 +223,7 @@ namespace ClearView
 
         // GLTF / GLB
 
-        public async Task DownloadAndLoadGLTF(string fileName, string fileId)
+        private async Task DownloadAndLoadGLTF(string fileName, string fileId)
         {
             try
             {
@@ -270,18 +277,14 @@ namespace ClearView
             }
         }
 
-
         private async Task<(GltfImport, GameObject)> LoadGLTFAtRuntime(string filePath)
         {
+            // URP specific material setup
+            UniversalRenderPipelineAsset urpAsset = GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset;
+
             // Set up the material generator manually
-            IMaterialGenerator materialGenerator;
-#if USING_URP
-                materialGenerator = new UrpMaterialGenerator();
-#elif USING_HDRP
-                materialGenerator = new HdrpMaterialGenerator();
-#else
-            materialGenerator = new RuntimeMaterialGenerator(); // Built-In or fallback
-            #endif// For Built-In RP. If you’re using URP or HDRP, replace BuiltInMaterialGenerator() with UrpMaterialGenerator() or HdrpMaterialGenerator() respectively
+            IMaterialGenerator materialGenerator = new UniversalRPMaterialGenerator(urpAsset);
+            
 
             // Create a new GLTFast importer instance
             var gltfImport = new GltfImport(null, null, materialGenerator, null);
@@ -435,7 +438,7 @@ namespace ClearView
             }
         }
 
-        public void AddMetadataToGLBAsset()
+        private void AddMetadataToGLBAsset()
         {
             // Create metadata object
             var metadata = new GLBMetadata(
@@ -449,27 +452,5 @@ namespace ClearView
             AddMetadataToGLBAsset(filePath, filePath, metadata);
         }
     }
-
-    public class RuntimeMaterialGenerator : IMaterialGenerator
-    {
-        // Return a default material if needed
-        public Material GetDefaultMaterial()
-        {
-            return new Material(Shader.Find("Standard"));
-        }
-
-        // Generate a basic material from GLTF schema
-        public Material GenerateMaterial(GLTFast.Schema.Material gltfMaterial, IGltfReadable gltf)
-        {
-            // For simplicity, return a basic material for all cases
-            return new Material(Shader.Find("Standard"));
-        }
-
-        public void SetLogger(ICodeLogger logger)
-        {
-            //throw new NotImplementedException();
-        }
-    }
-
 }
 

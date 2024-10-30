@@ -181,5 +181,11 @@ namespace ClearView
                 Debug.LogError($"Sign-out failed: {ex.Message}");
             }
         }
+
+        public string GetUsername()
+        {
+            if (currentState == State.NotAuthenticated) return "";
+            return account.Username;
+        }
     }
 }

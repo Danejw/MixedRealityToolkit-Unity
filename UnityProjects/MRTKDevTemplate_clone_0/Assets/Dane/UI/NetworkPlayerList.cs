@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace ClearView.UI
 {
+    // This is where we will manage the UI for the list of players a the room
     public class NetworkPlayerList : MonoBehaviourPunCallbacks
     {
         public Transform parent;
@@ -18,10 +19,7 @@ namespace ClearView.UI
             if (parent == null) parent = transform;
 
             // Initialize the player list when the local player joins the room
-            if (PhotonNetwork.InRoom)
-            {
-                UpdatePlayerList();
-            }
+            if (PhotonNetwork.InRoom) UpdatePlayerList();
         }
 
         // Update the player list when a player joins

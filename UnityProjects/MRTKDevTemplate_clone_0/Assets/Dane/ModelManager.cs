@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace ClearView
 {
-    // This is where we will manage the all of the mdodels available to the player at any given moment
+    // This is where we will manage the all of the models available to the player at any given moment
     public class ModelManager : MonoBehaviourPunCallbacks
     {
         // State
@@ -35,17 +35,14 @@ namespace ClearView
             }
         }   
 
-        // Helper
+        // Helper for testing
         public string nameOfModelToInstantiate;
 
-        // Import from OneDrive and managed by the ModelManager
-        private App app;
 
         private void Start()
         {
-            app = App.Instance;
-            app.OneDriveManager.OnImportComplete += OnImportComplete;
-            app.OneDriveManager.OnInitialize += InitOneDrive;
+            App.Instance.OneDriveManager.OnImportComplete += OnImportComplete;
+            App.Instance.OneDriveManager.OnInitialize += GetOneDriveFiles;
         }
 
 
@@ -188,9 +185,9 @@ namespace ClearView
 
 
         // Load all model info from OneDrive
-        public async void InitOneDrive()
+        public async void GetOneDriveFiles()
         {
-            OnlineModels = await app.OneDriveManager.ListAllFilesInOneDrive();
+            OnlineModels = await App.Instance.OneDriveManager.ListAllFilesInOneDrive();
 
             // foreach (var model in onlineModels) Debug.Log($"Model: {model.Key}, ID: {model.Value}");
         }
@@ -199,7 +196,7 @@ namespace ClearView
         {
            if (!OnlineModels.ContainsKey(filename)) return;
 
-            await app.OneDriveManager.DownloadAndLoadGLTF(filename, OnlineModels[filename]);
+            await App.Instance.OneDriveManager.DownloadFromOneDrive(filename, OnlineModels[filename]);
 
             Debug.Log($"Importing {filename}");
         }

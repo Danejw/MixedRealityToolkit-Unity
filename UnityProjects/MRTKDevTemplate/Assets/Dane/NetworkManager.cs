@@ -1,7 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
+
 
 namespace ClearView.Network
 {
@@ -12,9 +13,10 @@ namespace ClearView.Network
         public GameObject hostUIPrefab;
         public GameObject guestUIPrefab;
 
-        // Make this a ssingleton
+        // Make this a singleton
         public static NetworkManager Instance;
 
+        public Player player;
         public static bool isHost;
 
         private void Awake()
@@ -51,7 +53,10 @@ namespace ClearView.Network
         {
             base.OnConnectedToMaster();
 
-            Debug.Log("Connected to Master");          
+            Debug.Log("Connected to Master");
+
+            player = PhotonNetwork.LocalPlayer;
+            player.NickName = App.Instance.MicrosoftAuth.GetUsername();
         }
 
         public override void OnJoinedLobby()
@@ -95,6 +100,7 @@ namespace ClearView.Network
             base.OnLeftLobby();
             Debug.Log("Left Lobby");
         }
+
 
         // Actions
         public void JoinOrCreateRoom(string roomName)

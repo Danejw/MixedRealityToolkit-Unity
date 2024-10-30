@@ -9,9 +9,9 @@ namespace ClearView
         public static App Instance { get; private set; }
 
         // Resources
-        public ModelManager ModelManager { get; private set; }
         public MicrosoftAuth MicrosoftAuth { get; private set; }
         public OneDriveManager OneDriveManager { get; private set; }
+        public ModelManager ModelManager { get; private set; }
         public UIManager UIManager { get; private set; }
 
 
