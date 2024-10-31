@@ -154,6 +154,11 @@ namespace ClearView
             }
         }
 
+        public async void DoSignOut()
+        {
+            await SignOut();
+        }
+
         public async Task SignOut()
         {
             try

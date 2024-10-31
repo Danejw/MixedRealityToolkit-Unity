@@ -22,6 +22,7 @@ namespace ClearView.UI
             if (PhotonNetwork.InRoom) UpdatePlayerList();
         }
 
+
         // Update the player list when a player joins
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
@@ -49,6 +50,7 @@ namespace ClearView.UI
             Debug.Log("Left room. Clearing player list.");
             ClearPlayerList();
         }
+
 
         // Updates the player list UI
         private void UpdatePlayerList()

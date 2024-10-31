@@ -14,7 +14,7 @@ namespace ClearView.UI
 
         private void Start()
         {
-            modelManager.OnlineModelsUpdated += UpdateOnlineModels;
+            App.Instance.ModelManager.OnlineModelsUpdated += UpdateOnlineModels;
             App.Instance.OneDriveManager.OnInitialize += OnOneDriveInit;
         }
 

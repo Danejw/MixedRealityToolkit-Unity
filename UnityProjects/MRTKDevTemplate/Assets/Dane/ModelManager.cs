@@ -211,6 +211,32 @@ namespace ClearView
             Vector3.Lerp(transform.position, roomCenter.position, 1 * Time.deltaTime); // Set the position to the center of the room
             go.transform.position = transform.position; // Set the position to the center of the room
             go.transform.rotation = Quaternion.identity;
+
+
+            // Check for network components or add
+            if (isOnline)
+            {
+                // Setup Photon View
+                go.TryGetComponent<PhotonView>(out var view);
+                if (view == null) view = go.AddComponent<PhotonView>();
+
+                // Setup Photon Transform View
+                go.TryGetComponent<PhotonTransformView>(out var tview);
+                if (tview == null)
+                {
+                    tview = go.AddComponent<PhotonTransformView>();
+                    tview.m_SynchronizeScale = true;
+                    tview.m_SynchronizePosition = true;
+                    tview.m_SynchronizeRotation = true;
+                }
+                else
+                {
+                    tview.m_SynchronizeScale = true;
+                    tview.m_SynchronizePosition = true;
+                    tview.m_SynchronizeRotation = true;
+                }
+            }
+
             instantiatedModels.Add(go);
 
             // Update the UI panel with model details

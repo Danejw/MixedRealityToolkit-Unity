@@ -11,9 +11,9 @@ namespace ClearView
         // Resources
         public MicrosoftAuth MicrosoftAuth { get; private set; }
         public OneDriveManager OneDriveManager { get; private set; }
-        public ModelManager ModelManager { get; private set; }
         public UIManager UIManager { get; private set; }
 
+        public ModelManager ModelManager;
 
         private void Awake()
         {
@@ -31,7 +31,7 @@ namespace ClearView
 
             // Initialize
             // TODO: find in children recursively
-            ModelManager = GetComponentInChildren<ModelManager>();
+            // ModelManager = GetComponentInChildren<ModelManager>();
             MicrosoftAuth = GetComponentInChildren<MicrosoftAuth>();
             OneDriveManager = GetComponentInChildren<OneDriveManager>();
             UIManager = GetComponentInChildren<UIManager>();

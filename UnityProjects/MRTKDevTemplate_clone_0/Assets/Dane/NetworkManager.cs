@@ -2,16 +2,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using dotenv.net;
+using System;
 
 
 namespace ClearView.Network
 {
-    // THis is where we will handle all of the basic network logic
+    // This is where we will handle all of the basic network logic
     public class NetworkManager : MonoBehaviourPunCallbacks
     {
+        public bool loadFromEnvironmentVariable = true;
+
+
         public GameObject playerPrefab;
-        public GameObject hostUIPrefab;
-        public GameObject guestUIPrefab;
+
+        [Space]
+        public List<Transform> spawnPoints;
+
+
+        public string roomName;
+
 
         // Make this a singleton
         public static NetworkManager Instance;
@@ -28,18 +38,104 @@ namespace ClearView.Network
             }
             DontDestroyOnLoad(gameObject);
             Instance = this;
+
+
+            // Check if the PUN APP ID is in the env folder
+            if (loadFromEnvironmentVariable) LoadEnvVariable();
         }
 
-        [Space]
-        public List<Transform> spawnPoints;
+        public void LoadEnvVariable()
+        {
+            ServerSettings settings = null;
+            // Get the photon server settings
+            try
+            {
+                settings = Resources.Load<ServerSettings>("PhotonServerSettings");
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+
+            // Load env file
+            try
+            {
+                // Load .env file in the Unity project directory
+                DotEnv.Load();
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e);
+            }
+
+            // Set up PUN APP ID from env variable
+            try
+            {
+                var id = Environment.GetEnvironmentVariable("PHOTON_PUN_APP_ID");
+
+                if (string.IsNullOrEmpty(id))
+                {
+                    Debug.LogError("PUN ID is missing. Please set PHOTON_PUN_APP_ID in your .env file.");
+                }
+                else
+                {
+                    if (settings) settings.AppSettings.AppIdRealtime = id;
+                    Debug.Log($"PUN ID loaded");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Failed to load .env file: {ex.Message}");
+            }
+
+            // Set up VOICE APP ID from env variable
+            try
+            {
+                var id = Environment.GetEnvironmentVariable("PHOTON_VOICE_APP_ID");
+
+                if (string.IsNullOrEmpty(id))
+                {
+                    Debug.LogError("VOICE ID is missing. Please set PHOTON_VOICE_APP_ID in your .env file.");
+                }
+                else
+                {
+                    if (settings) settings.AppSettings.AppIdVoice = id;
+                    Debug.Log($"VOICE ID loaded");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Failed to load .env file: {ex.Message}");
+            }
+
+            // Set up FUSION APP ID from env variable
+            try
+            {
+                var id = Environment.GetEnvironmentVariable("PHOTON_FUSION_APP_ID");
+
+                if (string.IsNullOrEmpty(id))
+                {
+                    Debug.LogError("FUSION ID is missing. Please set PHOTON_FUSION_APP_ID in your .env file.");
+                }
+                else
+                {
+                    if (settings) settings.AppSettings.AppIdFusion = id;
+                    Debug.Log($"FUSION ID loaded");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Failed to load .env file: {ex.Message}");
+            }
 
 
-        public string roomName;
+            // TODO: Set up CHAT from an env variable
+        }
 
 
         private void Start()
         {
-            ConnectToMaster();
+            //ConnectToMaster();
         }
 
         private void ConnectToMaster()
@@ -47,6 +143,7 @@ namespace ClearView.Network
             Debug.Log("Connecting...");
             PhotonNetwork.ConnectUsingSettings();
         }
+
 
         // Callbacks
         public override void OnConnectedToMaster()
@@ -85,7 +182,7 @@ namespace ClearView.Network
 
             Debug.Log("Joined Room");
 
-            GameObject _player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoints[Random.Range(0, spawnPoints.Count)].position, Quaternion.identity);
+            GameObject _player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Count)].position, Quaternion.identity);
             //_player.GetComponent<PlayerSetup>().IsLocalPlayer();
         }
 
@@ -105,12 +202,25 @@ namespace ClearView.Network
         // Actions
         public void JoinOrCreateRoom(string roomName)
         {
+            if (!PhotonNetwork.IsConnectedAndReady)
+            {
+                // If not connected, connect to Photon
+                ConnectToMaster();
+            }
+
             PhotonNetwork.JoinOrCreateRoom(roomName, null, null);
         }
 
         public void JoinOrCreateRoom()
         {
-            PhotonNetwork.JoinOrCreateRoom(roomName, null, null);
+            if (!PhotonNetwork.IsConnectedAndReady)
+            {
+                // If not connected, connect to Photon
+                ConnectToMaster();
+            }
+
+            // If connected, join or create the room
+            PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions { MaxPlayers = 4 }, TypedLobby.Default);
         }
 
         public void JoinLobby()
