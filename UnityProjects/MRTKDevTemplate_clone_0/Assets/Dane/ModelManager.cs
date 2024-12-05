@@ -33,7 +33,7 @@ namespace ClearView
                 onlineModels = value;
                 OnlineModelsUpdated?.Invoke(onlineModels);
             }
-        }   
+        }
 
         // Helper for testing
         public string nameOfModelToInstantiate;
@@ -70,24 +70,24 @@ namespace ClearView
                 // Ensure that only the host can instantiate models
                 if (!PhotonNetwork.IsMasterClient)
                 {
-                    Debug.LogWarning("Only the host (MasterClient) can instantiate models.");
+                    Logger.Log(Logger.Category.Warning, "Only the host (MasterClient) can instantiate models.");
                     return;
                 }
-            }    
+            }
 
             // Find the model with the specified name
             GameObject modelPrefab = availableModels.Find(m => m.name == name);
 
             if (modelPrefab == null)
             {
-                Debug.LogError($"Model with name '{name}' not found in available models.");
+                Logger.Log(Logger.Category.Error, $"Model with name '{name}' not found in available models.");
                 return;
             }
 
             // Check if the model is already instantiated
             if (instantiatedModels.Contains(modelPrefab))
             {
-                Debug.LogWarning($"Model '{name}' is already instantiated.");
+                Logger.Log(Logger.Category.Warning, $"Model '{name}' is already instantiated.");
                 return;
             }
 
@@ -119,7 +119,7 @@ namespace ClearView
                 // Ensure that only the host can remove models
                 if (!PhotonNetwork.IsMasterClient)
                 {
-                    Debug.LogWarning("Only the host (MasterClient) can remove models.");
+                    Logger.Log(Logger.Category.Warning, "Only the host (MasterClient) can remove models.");
                     return;
                 }
 
@@ -136,7 +136,7 @@ namespace ClearView
                     }
                     else
                     {
-                        Debug.LogWarning($"Failed to destroy model '{model.name}'. Only the owner or MasterClient can destroy networked objects.");
+                        Logger.Log(Logger.Category.Warning, $"Failed to destroy model '{model.name}'. Only the owner or MasterClient can destroy networked objects.");
                     }
                 }
             }
@@ -163,7 +163,7 @@ namespace ClearView
         {
             if (string.IsNullOrEmpty(nameOfModelToInstantiate))
             {
-                Debug.LogError("Name of model to instantiate is missing.");
+                Logger.Log(Logger.Category.Error, "Name of model to instantiate is missing.");
                 return;
             }
 
@@ -194,11 +194,11 @@ namespace ClearView
 
         public async void ImportModel(string filename)
         {
-           if (!OnlineModels.ContainsKey(filename)) return;
+            if (!OnlineModels.ContainsKey(filename)) return;
 
             await App.Instance.OneDriveManager.DownloadFromOneDrive(filename, OnlineModels[filename]);
 
-            Debug.Log($"Importing {filename}");
+            Logger.Log(Logger.Category.Info, $"Importing {filename}");
         }
 
         private void OnImportComplete(GltfImport import, GameObject go)
@@ -244,7 +244,7 @@ namespace ClearView
 
             AddModel(go);
 
-            Debug.Log($"Imported {go.name}");
+            Logger.Log(Logger.Category.Info, $"Imported {go.name}");
         }
     }
 }

@@ -65,7 +65,7 @@ namespace ClearView.Network
             }
             catch (Exception e)
             {
-                Debug.Log(e);
+                Logger.Log(Logger.Category.Error, e.ToString());
             }
 
             // Set up PUN APP ID from env variable
@@ -75,17 +75,17 @@ namespace ClearView.Network
 
                 if (string.IsNullOrEmpty(id))
                 {
-                    Debug.LogError("PUN ID is missing. Please set PHOTON_PUN_APP_ID in your .env file.");
+                    Logger.Log(Logger.Category.Error, "PUN ID is missing. Please set PHOTON_PUN_APP_ID in your .env file.");
                 }
                 else
                 {
                     if (settings) settings.AppSettings.AppIdRealtime = id;
-                    Debug.Log($"PUN ID loaded");
+                    Logger.Log(Logger.Category.Info, "PUN ID loaded");
                 }
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Failed to load .env file: {ex.Message}");
+                Logger.Log(Logger.Category.Error, $"Failed to load .env file: {ex.Message}");
             }
 
             // Set up VOICE APP ID from env variable
@@ -95,17 +95,17 @@ namespace ClearView.Network
 
                 if (string.IsNullOrEmpty(id))
                 {
-                    Debug.LogError("VOICE ID is missing. Please set PHOTON_VOICE_APP_ID in your .env file.");
+                    Logger.Log(Logger.Category.Error, "VOICE ID is missing. Please set PHOTON_VOICE_APP_ID in your .env file.");
                 }
                 else
                 {
                     if (settings) settings.AppSettings.AppIdVoice = id;
-                    Debug.Log($"VOICE ID loaded");
+                    Logger.Log(Logger.Category.Info, "VOICE ID loaded");
                 }
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Failed to load .env file: {ex.Message}");
+                Logger.Log(Logger.Category.Error, $"Failed to load .env file: {ex.Message}");
             }
 
             // Set up FUSION APP ID from env variable
@@ -115,17 +115,17 @@ namespace ClearView.Network
 
                 if (string.IsNullOrEmpty(id))
                 {
-                    Debug.LogError("FUSION ID is missing. Please set PHOTON_FUSION_APP_ID in your .env file.");
+                    Logger.Log(Logger.Category.Error, "FUSION ID is missing. Please set PHOTON_FUSION_APP_ID in your .env file.");
                 }
                 else
                 {
                     if (settings) settings.AppSettings.AppIdFusion = id;
-                    Debug.Log($"FUSION ID loaded");
+                    Logger.Log(Logger.Category.Info, "FUSION ID loaded");
                 }
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Failed to load .env file: {ex.Message}");
+                Logger.Log(Logger.Category.Error, $"Failed to load .env file: {ex.Message}");
             }
 
 
@@ -140,7 +140,7 @@ namespace ClearView.Network
 
         private void ConnectToMaster()
         {
-            Debug.Log("Connecting...");
+            Logger.Log(Logger.Category.Info, "Connecting...");
             PhotonNetwork.ConnectUsingSettings();
         }
 
@@ -150,7 +150,7 @@ namespace ClearView.Network
         {
             base.OnConnectedToMaster();
 
-            Debug.Log("Connected to Master");
+            Logger.Log(Logger.Category.Info, "Connected to Master");
 
             player = PhotonNetwork.LocalPlayer;
             player.NickName = App.Instance.MicrosoftAuth.GetUsername();
@@ -160,7 +160,7 @@ namespace ClearView.Network
         {
             base.OnJoinedLobby();
 
-            Debug.Log("Joined Lobby");
+            Logger.Log(Logger.Category.Info, "Joined Lobby");
         }
 
         public override void OnJoinedRoom()
@@ -180,7 +180,7 @@ namespace ClearView.Network
                 //Instantiate(guestUIPrefab);
             }
 
-            Debug.Log("Joined Room");
+            Logger.Log(Logger.Category.Info, "Joined Room");
 
             GameObject _player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Count)].position, Quaternion.identity);
             //_player.GetComponent<PlayerSetup>().IsLocalPlayer();
@@ -189,13 +189,13 @@ namespace ClearView.Network
         public override void OnLeftRoom()
         {
             base.OnLeftRoom();
-            Debug.Log("Left Room");
+            Logger.Log(Logger.Category.Info, "Left Room");
         }
 
         public override void OnLeftLobby()
         {
             base.OnLeftLobby();
-            Debug.Log("Left Lobby");
+            Logger.Log(Logger.Category.Info, "Left Lobby");
         }
 
 

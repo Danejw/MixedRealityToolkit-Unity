@@ -83,16 +83,16 @@ namespace ClearView
 
                 if (string.IsNullOrEmpty(clientId))
                 {
-                    Debug.LogError("Client ID is missing. Please set AZURE_APP_CLIENT_ID in your .env file.");
+                    Logger.Log(Logger.Category.Error, "Client ID is missing. Please set AZURE_APP_CLIENT_ID in your .env file.");
                 }
                 else
                 {
-                    Debug.Log($"Client ID loaded");
+                    Logger.Log(Logger.Category.Info, "Client ID loaded");
                 }
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Failed to load .env file: {ex.Message}");
+                Logger.Log(Logger.Category.Error, $"Failed to load .env file: {ex.Message}");
             }
         }
 
@@ -109,7 +109,7 @@ namespace ClearView
             AuthenticationResult result = null;
             try
             {
-                Debug.Log($"Attempting to signin silently...");
+                Logger.Log(Logger.Category.Info, "Attempting to sign in silently...");
 
                 var accounts = await app.GetAccountsAsync();
                 var firstAccount = accounts.FirstOrDefault();
@@ -119,9 +119,9 @@ namespace ClearView
             {
                 try
                 {
-                    Debug.Log($"Attempting to signin interactively...");
+                    Logger.Log(Logger.Category.Warning, "Attempting to sign in interactively...");
 
-                    result = await app.AcquireTokenInteractive(scopes).ExecuteAsync();
+                    Logger.Log(Logger.Category.Error, $"Sign-In Failed: {ex.Message}");
                 }
                 catch (MsalUiRequiredException x)
                 {
@@ -130,14 +130,14 @@ namespace ClearView
             }
             finally
             {
-                Debug.Log($"Sign-In Complete.");
+                Logger.Log(Logger.Category.Info, "Sign-In Complete.");
 
                 if (result != null)
                 {
                     AccessToken = result.AccessToken;
                     account = result.Account;
 
-                    Debug.Log($"Access Token: {result.AccessToken}");
+                    Logger.Log(Logger.Category.Info, $"Access Token: {result.AccessToken}");
 
                     // Store access token in player prefs
                     PlayerPrefs.SetString("AccessToken", result.AccessToken);
@@ -145,10 +145,8 @@ namespace ClearView
                     // Display user info
                     if (account != null)
                     {
-                        Debug.Log($"User Name: {account.Username}");
-                        Debug.Log($"User ID: {account.HomeAccountId}");
-
-
+                        Logger.Log(Logger.Category.Info, $"User Name: {account.Username}");
+                        Logger.Log(Logger.Category.Info, $"User ID: {account.HomeAccountId}");
                     }
                 }
             }
@@ -167,7 +165,7 @@ namespace ClearView
                 {
                     // Remove the account from the token cache
                     await app.RemoveAsync(account);
-                    Debug.Log("User signed out successfully.");
+                    Logger.Log(Logger.Category.Info, "User signed out successfully.");
 
                     // Clear access token from player prefs
                     PlayerPrefs.DeleteKey("AccessToken");
@@ -178,12 +176,12 @@ namespace ClearView
                 }
                 else
                 {
-                    Debug.Log("No user is currently signed in.");
+                    Logger.Log(Logger.Category.Warning, "No user is currently signed in.");
                 }
             }
             catch (MsalException ex)
             {
-                Debug.LogError($"Sign-out failed: {ex.Message}");
+                Logger.Log(Logger.Category.Error, $"Sign-out failed: {ex.Message}");
             }
         }
 

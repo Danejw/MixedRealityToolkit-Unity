@@ -51,7 +51,7 @@ namespace ClearView
     {
         private HttpClient httpClient;
 
-       //public string fileName;
+        //public string fileName;
         //public string fileId;
 
         public string filePath;
@@ -73,7 +73,7 @@ namespace ClearView
             httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-            Debug.Log("OneDrive client initialized.");
+            Logger.Log(Logger.Category.Info, "OneDrive client initialized.");
             OnInitialize?.Invoke();
         }
 
@@ -92,7 +92,7 @@ namespace ClearView
                     string jsonResult = await response.Content.ReadAsStringAsync();
                     JObject filesData = JObject.Parse(jsonResult);
 
-                   
+
 
                     // Parse and list file details
                     if (filesData["value"] != null)
@@ -107,22 +107,21 @@ namespace ClearView
                     }
                     else
                     {
-                        Debug.Log("No files found in OneDrive.");
+                        Logger.Log(Logger.Category.Info, "No files found in OneDrive.");
 
                         return files;
                     }
                 }
                 else
                 {
-                    Debug.LogError($"Failed to list files: {response.ReasonPhrase}");
+                    Logger.Log(Logger.Category.Error, $"Failed to list files: {response.ReasonPhrase}");
 
                     return files;
                 }
             }
             catch (HttpRequestException ex)
             {
-                Debug.LogError($"HTTP Request error: {ex.Message}");
-
+                Logger.Log(Logger.Category.Error, $"HTTP Request error: {ex.Message}");
                 return files;
             }
         }
@@ -138,7 +137,7 @@ namespace ClearView
             {
                 case ".fbx":
                     await DownloadFBXFile(fileName, fileId);
-                        break;
+                    break;
                 case ".glb":
                 case ".gltf":
                     await DownloadAndLoadGLTF(fileName, fileId);
@@ -161,7 +160,7 @@ namespace ClearView
                 // TODO: Validate the file extension before downloading
                 if (!fileName.EndsWith(".fbx"))
                 {
-                    Debug.LogError("Invalid file extension. Please select an FBX file.");
+                    Logger.Log(Logger.Category.Error, "Invalid file extension. Please select an FBX file.");
                     return;
                 }
 
@@ -175,7 +174,7 @@ namespace ClearView
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.Log("Downloading FBX file...");
+                    Logger.Log(Logger.Category.Info, "Downloading FBX file...");
 
                     // Save the file to the persistent data path
                     byte[] fileBytes = await response.Content.ReadAsByteArrayAsync();
@@ -183,7 +182,7 @@ namespace ClearView
 
                     File.WriteAllBytes(filePath, fileBytes);
 
-                    Debug.Log($"FBX file downloaded to: {filePath}");
+                    Logger.Log(Logger.Category.Info, $"FBX file downloaded to: {filePath}");
 
                     // Import the FBX model
                     ImportFBX(filePath);
@@ -192,14 +191,14 @@ namespace ClearView
                 }
                 else
                 {
-                    Debug.LogError($"Failed to download FBX file: {response.ReasonPhrase}");
+                    Logger.Log(Logger.Category.Error, $"Failed to download FBX file: {response.ReasonPhrase}");
 
                     importTime = Time.realtimeSinceStartup - startTime;
                 }
             }
             catch (HttpRequestException ex)
             {
-                Debug.LogError($"HTTP Request error: {ex.Message}");
+                Logger.Log(Logger.Category.Error, $"HTTP Request error: {ex.Message}");
 
                 importTime = Time.realtimeSinceStartup - startTime;
             }
@@ -230,7 +229,7 @@ namespace ClearView
                 // Ensure the file is a GLTF or GLB file
                 if (!fileName.EndsWith(".gltf") && !fileName.EndsWith(".glb"))
                 {
-                    Debug.LogError("The specified file is not a GLTF or GLTF/GLB file.");
+                    Logger.Log(Logger.Category.Error, "The specified file is not a GLTF or GLB file.");
                     return;
                 }
 
@@ -244,7 +243,7 @@ namespace ClearView
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.Log("Downloading GLTF/GLB file...");
+                    Logger.Log(Logger.Category.Info, "Downloading GLTF/GLB file...");
 
                     // Save the file to the persistent data path
                     byte[] fileBytes = await response.Content.ReadAsByteArrayAsync();
@@ -252,7 +251,7 @@ namespace ClearView
 
                     File.WriteAllBytes(filePath, fileBytes);
 
-                    Debug.Log($"GLTF/GLB file downloaded to: {filePath}");
+                    Logger.Log(Logger.Category.Info, $"GLTF/GLB file downloaded to: {filePath}");
 
                     // Load the GLTF model at runtime
                     await LoadGLTFAtRuntime(filePath);
@@ -264,14 +263,14 @@ namespace ClearView
                 }
                 else
                 {
-                    Debug.LogError($"Failed to download GLTF/GLB file: {response.ReasonPhrase}");
+                    Logger.Log(Logger.Category.Error, $"Failed to download GLTF/GLB file: {response.ReasonPhrase}");
 
                     importTime = Time.realtimeSinceStartup - startTime;
                 }
             }
             catch (HttpRequestException ex)
             {
-                Debug.LogError($"HTTP Request error: {ex.Message}");
+                Logger.Log(Logger.Category.Error, $"HTTP Request error: {ex.Message}");
 
                 importTime = Time.realtimeSinceStartup - startTime;
             }
@@ -284,7 +283,7 @@ namespace ClearView
 
             // Set up the material generator manually
             IMaterialGenerator materialGenerator = new UniversalRPMaterialGenerator(urpAsset);
-            
+
 
             // Create a new GLTFast importer instance
             var gltfImport = new GltfImport(null, null, materialGenerator, null);
@@ -297,7 +296,7 @@ namespace ClearView
                 // Instantiate the loaded GLTF model in the scene
                 GameObject gltfObject = new GameObject(Path.GetFileName(filePath));
                 //gltfImport.InstantiateMainScene(gltfObject.transform);
-                Debug.Log("GLTF/GLB file loaded and instantiated at runtime.");
+                Logger.Log(Logger.Category.Info, "GLTF/GLB file loaded and instantiated at runtime.");
 
                 OnImportComplete?.Invoke(gltfImport, gltfObject);
 
@@ -305,7 +304,7 @@ namespace ClearView
             }
             else
             {
-                Debug.LogError("Failed to load GLTF/GLB at runtime.");
+                Logger.Log(Logger.Category.Error, "Failed to load GLTF/GLB at runtime.");
                 return default;
             }
         }
@@ -320,7 +319,7 @@ namespace ClearView
                 // Check if the file is long enough to be a GLB file
                 if (fileBytes.Length < 20)
                 {
-                    Debug.LogError("The file is too small to be a valid GLB file.");
+                    Logger.Log(Logger.Category.Error, "The file is too small to be a valid GLB file.");
                     return;
                 }
 
@@ -331,7 +330,7 @@ namespace ClearView
                 string chunkType = Encoding.ASCII.GetString(fileBytes, 16, 4);
                 if (chunkType != "JSON")
                 {
-                    Debug.LogError("The first chunk is not of type 'JSON'.");
+                    Logger.Log(Logger.Category.Error, "The first chunk is not of type 'JSON'.");
                     return;
                 }
 
@@ -339,11 +338,11 @@ namespace ClearView
                 string jsonContent = Encoding.UTF8.GetString(fileBytes, 20, jsonLength);
 
                 // Print the extracted JSON content
-                Debug.Log($"GLB JSON Content: {jsonContent}");
+                Logger.Log(Logger.Category.Info, $"GLB JSON Content: {jsonContent}");
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Failed to extract JSON from GLB: {ex.Message}");
+                Logger.Log(Logger.Category.Error, $"Failed to extract JSON from GLB: {ex.Message}");
             }
         }
 
@@ -361,7 +360,7 @@ namespace ClearView
                 string chunkType = Encoding.ASCII.GetString(fileBytes, 16, 4);
                 if (chunkType != "JSON")
                 {
-                    Debug.LogError("The first chunk is not of type 'JSON'.");
+                    Logger.Log(Logger.Category.Error, "The first chunk is not of type 'JSON'.");
                     return;
                 }
 
@@ -430,11 +429,11 @@ namespace ClearView
                     }
                 }
 
-                Debug.Log($"Metadata added and GLB recreated. Saved as: {outputPath}");
+                Logger.Log(Logger.Category.Info, $"Metadata added and GLB recreated. Saved as: {outputPath}");
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Failed to add metadata to GLB: {ex.Message}");
+                Logger.Log(Logger.Category.Error, $"Failed to add metadata to GLB: {ex.Message}");
             }
         }
 
