@@ -12,8 +12,8 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: Your Indie LLC
-  productName: MRTK
+  companyName: ClearView
+  productName: MedAR
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.078431375, g: 0.078431375, b: 0.078431375, a: 1}
@@ -141,6 +141,11 @@ PlayerSettings:
   bundleVersion: 3.0.0
   preloadedAssets:
   - {fileID: 0}
+  - {fileID: 11400000, guid: e61946fb8f8ff5e418d6ebb56cca2034, type: 2}
+  - {fileID: 11400000, guid: 4ce0884cff002f24f83e8b0ceef94646, type: 2}
+  - {fileID: 11400000, guid: eee44e6517f9c4041bec811b8632d67b, type: 2}
+  - {fileID: -2147212641239569361, guid: 90a3b98e6a849104285d1183acd66c0b, type: 2}
+  - {fileID: -4619825313993190921, guid: a03b04948b0cbde4498320e6e1bd5cd6, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -854,7 +859,7 @@ PlayerSettings:
   allowUnsafeCode: 0
   useDeterministicCompilation: 1
   enableRoslynAnalyzers: 1
-  selectedPlatform: 0
+  selectedPlatform: 5
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 1
   gcIncremental: 1
@@ -863,14 +868,14 @@ PlayerSettings:
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: MRTK3Sample
+  metroPackageName: ClearView
   metroPackageVersion: 3.0.0.0
   metroCertificatePath: Assets/WSATestCertificate.pfx
   metroCertificatePassword: 
   metroCertificateSubject: Microsoft
   metroCertificateIssuer: Microsoft
   metroCertificateNotAfter: 803769c0d5dfda01
-  metroApplicationDescription: MRTK3 Sample
+  metroApplicationDescription: AR Medical
   wsaImages: {}
   metroTileShortName: MRTK3
   metroTileShowName: 0
@@ -892,7 +897,9 @@ PlayerSettings:
       InternetClient: True
       WebCam: True
       Microphone: True
-  metroTargetDeviceFamilies: {}
+  metroTargetDeviceFamilies:
+    Holographic: True
+    Team: False
   metroFTAName: 
   metroFTAFileTypes: []
   metroProtocolName: 
