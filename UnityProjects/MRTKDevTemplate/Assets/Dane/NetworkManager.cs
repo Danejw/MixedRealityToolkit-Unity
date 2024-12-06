@@ -14,13 +14,22 @@ namespace ClearView.Network
         public bool loadFromEnvironmentVariable = true;
 
 
-        public GameObject playerPrefab;
+        public GameObject networkPrefab;
+
+        public GameObject realPlayer;
+        private GameObject networkedPlayer;
+
+
+
+        public List<GameObject> networkPrefabs;
 
         [Space]
         public List<Transform> spawnPoints;
 
 
         public string roomName;
+
+        public bool isBusy = false;
 
 
         // Make this a singleton
@@ -142,6 +151,8 @@ namespace ClearView.Network
         {
             Logger.Log(Logger.Category.Info, "Connecting...");
             PhotonNetwork.ConnectUsingSettings();
+
+            isBusy = true;
         }
 
 
@@ -154,6 +165,13 @@ namespace ClearView.Network
 
             player = PhotonNetwork.LocalPlayer;
             player.NickName = App.Instance.MicrosoftAuth.GetUsername();
+
+            isBusy = false;
+        }
+
+        public override void OnMasterClientSwitched(Player newMasterClient)
+        {
+            Logger.Log(Logger.Category.Info, $"New Master Client: {newMasterClient.NickName}");
         }
 
         public override void OnJoinedLobby()
@@ -161,41 +179,67 @@ namespace ClearView.Network
             base.OnJoinedLobby();
 
             Logger.Log(Logger.Category.Info, "Joined Lobby");
+
+            isBusy = false;
         }
 
         public override void OnJoinedRoom()
         {
             base.OnJoinedRoom();
 
-            isHost = PhotonNetwork.IsMasterClient;
+            var masterClient = PhotonNetwork.MasterClient;
 
-            if (isHost)
+            if (player.ActorNumber == masterClient.ActorNumber)
             {
                 // Spawn the UI for the host
                 //Instantiate(hostUIPrefab);
+                isHost = true;
             }
             else
             {
+                isHost = false;
                 // Spawn the UI for the guest
                 //Instantiate(guestUIPrefab);
             }
 
+            // create and set the networked player to the real player
+            networkedPlayer = PhotonNetwork.Instantiate(networkPrefab.name, realPlayer.transform.position, realPlayer.transform.rotation);
+
+            // move the player local to a random spawn point
+            realPlayer.transform.position = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Count)].position;
+
+            // make the player face the center of the map only on the x and z axis
+            var here = new Vector3(0, realPlayer.transform.position.y, 0);
+            realPlayer.transform.LookAt(here);
+
             Logger.Log(Logger.Category.Info, "Joined Room");
 
-            GameObject _player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Count)].position, Quaternion.identity);
-            //_player.GetComponent<PlayerSetup>().IsLocalPlayer();
+            networkPrefabs.Add(networkedPlayer);
+
+            isBusy = false;
         }
 
         public override void OnLeftRoom()
         {
             base.OnLeftRoom();
+
+            if (player != null)
+            {
+                PhotonNetwork.Destroy(networkedPlayer);
+                networkPrefabs.Remove(networkedPlayer);
+            }
+
             Logger.Log(Logger.Category.Info, "Left Room");
+
+            isBusy = false;
         }
 
         public override void OnLeftLobby()
         {
             base.OnLeftLobby();
             Logger.Log(Logger.Category.Info, "Left Lobby");
+
+            isBusy = false;
         }
 
 
@@ -209,6 +253,10 @@ namespace ClearView.Network
             }
 
             PhotonNetwork.JoinOrCreateRoom(roomName, null, null);
+
+            Logger.Log(Logger.Category.Info, $"Connecting to {roomName}...");
+
+            isBusy = true;
         }
 
         public void JoinOrCreateRoom()
@@ -221,16 +269,28 @@ namespace ClearView.Network
 
             // If connected, join or create the room
             PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions { MaxPlayers = 4 }, TypedLobby.Default);
+
+            Logger.Log(Logger.Category.Info, $"Connecting to {roomName}...");
+
+            isBusy = true;
         }
 
         public void JoinLobby()
         {
             PhotonNetwork.JoinLobby();
+
+            Logger.Log(Logger.Category.Info, $"Connecting to lobby...");
+
+            isBusy = true;
         }
 
         public void LeaveRoom()
         {
             PhotonNetwork.LeaveRoom();
+
+            Logger.Log(Logger.Category.Info, $"Leaving room...");
+
+            isBusy = true;
         }
     }
 }
