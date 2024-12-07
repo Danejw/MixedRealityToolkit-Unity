@@ -1,6 +1,5 @@
 using UnityEngine;
 
-
 namespace ClearView
 {
     // This is where we will manage the high level UI state

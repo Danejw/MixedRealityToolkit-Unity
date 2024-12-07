@@ -70,7 +70,7 @@ namespace ClearView
                 // Ensure that only the host can instantiate models
                 if (!PhotonNetwork.IsMasterClient)
                 {
-                    Logger.Log(Logger.Category.Warning, "Only the host (MasterClient) can instantiate models.");
+                    Logger.Log(Logger.Category.Info, "Only the host (MasterClient) can instantiate models.");
                     return;
                 }
             }
@@ -109,7 +109,7 @@ namespace ClearView
             instantiatedModels.Add(instantiatedModel);
 
             // Update the UI panel with model details
-            modelDetailsPanel?.SetModel(modelPrefab);
+            modelDetailsPanel?.SetModel(instantiatedModel);
         }
 
         public void RemoveModels()
