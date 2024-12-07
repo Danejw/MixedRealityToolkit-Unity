@@ -5840,7 +5840,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   toggles: []
   allowSwitchOff: 0
-  currentIndex: 0
+  currentIndex: 2
   onToggleSelected:
     m_PersistentCalls:
       m_Calls: []
@@ -13797,8 +13797,8 @@ RectTransform:
   m_Father: {fileID: 4190002496434334331}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: -133.4, y: 58.8}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
@@ -20427,7 +20427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentObject: {fileID: 0}
-  transparencyLevel: 88
+  transparencyLevel: 100
   childMaterials: []
 --- !u!114 &8332325029665383201
 MonoBehaviour:

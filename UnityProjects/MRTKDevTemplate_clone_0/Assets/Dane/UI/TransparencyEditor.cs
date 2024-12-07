@@ -55,9 +55,9 @@ namespace ClearView
         // Function to update transparency for all materials
         public void UpdateTransparency()
         {
-            /*
+
             // Convert transparencyLevel (1-100) to alpha value (0.01 to 1.0)
-            float alphaValue = Mathf.Clamp(transparencyLevel / 100f, 0.01f, 1f);
+            float alphaValue = Mathf.Clamp(transparencyLevel / 100f, 0.0f, 1f);
 
             // Loop through all child materials and update their alpha value
             foreach (Material mat in childMaterials)
@@ -69,13 +69,13 @@ namespace ClearView
                     mat.color = color;
                 }
             }
-            */
+
         }
 
         // Optionally call this method at runtime to set a new transparency level
         public void SetTransparencyLevel(float newTransparency)
         {
-            transparencyLevel = Mathf.Clamp(newTransparency, 1, 100);
+            transparencyLevel = Mathf.Clamp(newTransparency, 0, 100);
             UpdateTransparency();
         }
     }
