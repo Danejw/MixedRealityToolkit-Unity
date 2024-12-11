@@ -221,11 +221,11 @@ Material:
     - _ZTest: 4
     - _ZWrite: 0
     m_Colors:
-    - _BaseColor: {r: 0.39163253, g: 0.50980073, b: 0.5372549, a: 1}
+    - _BaseColor: {r: 0.3905038, g: 0.50980073, b: 0.5372549, a: 1}
     - _BlurBackgroundRect: {r: 0, g: 0, b: 1, a: 1}
     - _BorderColor: {r: 1, g: 1, b: 1, a: 0}
     - _ClippingBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
-    - _Color: {r: 0.3916325, g: 0.50980073, b: 0.5372549, a: 1}
+    - _Color: {r: 0.39050376, g: 0.50980073, b: 0.5372549, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EnvironmentColorX: {r: 1, g: 0, b: 0, a: 1}
