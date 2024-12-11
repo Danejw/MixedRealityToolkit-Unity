@@ -62,11 +62,9 @@ namespace ClearView
             // Loop through all child materials and update their alpha value
             foreach (Material mat in childMaterials)
             {
-                if (mat.HasProperty("_Color"))
+                if (mat.HasProperty("_Transparency"))
                 {
-                    Color color = mat.color;
-                    color.a = alphaValue; // Set the alpha value
-                    mat.color = color;
+                    mat.SetFloat("_Transparency", alphaValue);
                 }
             }
 

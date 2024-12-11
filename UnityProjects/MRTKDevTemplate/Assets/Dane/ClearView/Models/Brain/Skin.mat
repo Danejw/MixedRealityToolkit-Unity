@@ -21,20 +21,16 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Skin
-  m_Shader: {fileID: 4800000, guid: ee7e4c9a5f6364b688a332c67fc32cca, type: 3}
-  m_ValidKeywords:
-  - _SURFACE_TYPE_TRANSPARENT
+  m_Shader: {fileID: -6465566751694194690, guid: da91637c787c6c841a78881952d1f2b1, type: 3}
+  m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_DoubleSidedGI: 1
+  m_CustomRenderQueue: -1
   stringTagMap:
     DisableBatching: False
-    RenderType: Transparent
-  disabledShaderPasses:
-  - DepthOnly
-  - SHADOWCASTER
+  disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -118,7 +114,7 @@ Material:
     m_Floats:
     - _AlbedoAlphaMode: 0
     - _AlbedoAssignedAtRuntime: 0
-    - _AlphaClip: 0
+    - _AlphaClip: 1
     - _Blend: 0
     - _BlendOp: 0
     - _BlendedClippingWidth: 0
@@ -133,6 +129,7 @@ Material:
     - _BorderLightUsesHoverColor: 0
     - _BorderMinValue: 0.1
     - _BorderWidth: 0.1
+    - _BumpMapUVChannel: 0
     - _BumpScale: 1
     - _ClearCoat: 0
     - _ClearCoatMask: 0
@@ -140,10 +137,10 @@ Material:
     - _ClippingBorder: 0
     - _ClippingBorderWidth: 0.025
     - _ColorWriteMask: 15
-    - _Cull: 2
+    - _Cull: 0
     - _CullMode: 0
-    - _CustomMode: 0
-    - _Cutoff: 0.5
+    - _CustomMode: 2
+    - _Cutoff: 0.21
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DirectionalLight: 1
@@ -151,6 +148,7 @@ Material:
     - _DstBlendAlpha: 1
     - _EdgeSmoothingMode: 0
     - _EdgeSmoothingValue: 0.002
+    - _EmissionMapUVChannel: 0
     - _EnableChannelMap: 0
     - _EnableEmission: 0
     - _EnableHoverColorOverride: 0
@@ -187,16 +185,18 @@ Material:
     - _IridescenceThreshold: 0.05
     - _Metallic: 0
     - _MipmapBias: -2
-    - _Mode: 0
+    - _Mode: 3
     - _NPR: 0
     - _NearLightFade: 0
     - _NearPlaneFade: 0
     - _NormalMapScale: 1
+    - _OcclusionMapUVChannel: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _ProximityLight: 0
     - _ProximityLightSubtractive: 0
     - _ProximityLightTwoSided: 0
+    - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Reflections: 1
@@ -210,9 +210,10 @@ Material:
     - _RoundCorners: 0
     - _RoundCornersHideInterior: 0
     - _Shininess: 0
-    - _Smoothness: 0.5
+    - _Smoothness: 0.315
     - _SmoothnessSource: 0
     - _SmoothnessTextureChannel: 0
+    - _SpecGlossMapUVChannel: 0
     - _SpecSource: 0
     - _SpecularHighlights: 1
     - _SphericalHarmonics: 0
@@ -225,6 +226,7 @@ Material:
     - _StencilReference: 0
     - _StencilWriteMask: 255
     - _Surface: 1
+    - _Transparency: 0.293
     - _TriplanarMappingBlendSharpness: 4
     - _UVSec: 0
     - _UseWorldScale: 1
@@ -233,18 +235,22 @@ Material:
     - _VertexExtrusionConstantWidth: 0
     - _VertexExtrusionSmoothNormals: 0
     - _VertexExtrusionValue: 0
+    - _WireThickness: 100
     - _WorkflowMode: 1
     - _ZOffsetFactor: 0
     - _ZOffsetUnits: 0
     - _ZTest: 4
     - _ZWrite: 0
+    - baseColorTextureUVChannel: 0
     m_Colors:
-    - _BaseColor: {r: 0.6901961, g: 0.5294118, b: 0.29411757, a: 1}
+    - _BaseColor: {r: 0.6901961, g: 0.5294118, b: 0.29337922, a: 1}
     - _BlurBackgroundRect: {r: 0, g: 0, b: 1, a: 1}
     - _BorderColor: {r: 1, g: 1, b: 1, a: 0}
+    - _BumpMapRotation: {r: 0, g: 0, b: 0, a: 0}
     - _ClippingBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
-    - _Color: {r: 0.6901961, g: 0.5294118, b: 0.29411763, a: 1}
+    - _Color: {r: 0.6901961, g: 0.5294118, b: 0.29337922, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionMapRotation: {r: 0, g: 0, b: 0, a: 0}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EnvironmentColorX: {r: 1, g: 0, b: 0, a: 1}
     - _EnvironmentColorY: {r: 0, g: 1, b: 0, a: 1}
@@ -258,10 +264,15 @@ Material:
     - _GradientColor4: {r: 1, g: 1, b: 1, a: 1}
     - _HoverColorOverride: {r: 1, g: 1, b: 1, a: 1}
     - _InnerGlowColor: {r: 1, g: 1, b: 1, a: 0.75}
+    - _MainTexRotation: {r: 0, g: 0, b: 0, a: 0}
+    - _MainTex_ST: {r: 1, g: 1, b: 0, a: 0}
+    - _OcclusionMapRotation: {r: 0, g: 0, b: 0, a: 0}
     - _ProximityLightCenterColorOverride: {r: 1, g: 0, b: 0, a: 0}
     - _ProximityLightMiddleColorOverride: {r: 0, g: 1, b: 0, a: 0.5}
     - _ProximityLightOuterColorOverride: {r: 0, g: 0, b: 1, a: 1}
     - _RimColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _RoundCornersRadius: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _SpecGlossMapRotation: {r: 0, g: 0, b: 0, a: 0}
+    - _WireColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
