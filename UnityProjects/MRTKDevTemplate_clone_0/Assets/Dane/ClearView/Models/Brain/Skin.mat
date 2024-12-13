@@ -21,23 +21,15 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Skin
-  m_Shader: {fileID: 4800000, guid: c331f6c43a2ef0945864cb668f2653c9, type: 3}
-  m_ValidKeywords:
-  - _ALPHABLEND_TRANS_ON
-  - _DIRECTIONAL_LIGHT
-  - _DISABLE_ALBEDO_MAP
-  - _HOVER_LIGHT
-  - _REFLECTIONS
-  - _SPECULAR_HIGHLIGHTS
-  - _USE_WORLD_SCALE
+  m_Shader: {fileID: -6465566751694194690, guid: da91637c787c6c841a78881952d1f2b1, type: 3}
+  m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 1
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: -1
   stringTagMap:
     DisableBatching: False
-    RenderType: Fade
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -123,8 +115,8 @@ Material:
     - _AlbedoAlphaMode: 0
     - _AlbedoAssignedAtRuntime: 0
     - _AlphaClip: 1
-    - _Angle: -0.56
-    - _Axis: 5.59
+    - _Angle: -0.33
+    - _Axis: 5.01
     - _Blend: 0
     - _BlendOp: 0
     - _BlendedClippingWidth: 0
@@ -150,12 +142,12 @@ Material:
     - _ColorWriteMask: 15
     - _Cull: 0
     - _CullMode: 0
-    - _CustomMode: 2
+    - _CustomMode: 0
     - _Cutoff: 0.21
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DirectionalLight: 1
-    - _DstBlend: 10
+    - _DstBlend: 0
     - _DstBlendAlpha: 1
     - _EdgeSmoothingMode: 0
     - _EdgeSmoothingValue: 0.002
@@ -196,14 +188,14 @@ Material:
     - _IridescenceThreshold: 0.05
     - _Metallic: 0
     - _MipmapBias: -2
-    - _Mode: 3
+    - _Mode: 0
     - _NPR: 0
     - _NearLightFade: 0
     - _NearPlaneFade: 0
     - _NormalMapScale: 1
     - _OcclusionMapUVChannel: 0
     - _OcclusionStrength: 1
-    - _Origin: -0.13
+    - _Origin: -0.209
     - _Parallax: 0.02
     - _ProximityLight: 0
     - _ProximityLightSubtractive: 0
@@ -217,6 +209,7 @@ Material:
     - _RenderQueueOverride: -1
     - _RimLight: 0
     - _RimPower: 0.25
+    - _Rotation: 4.7
     - _RoundCornerMargin: 0.01
     - _RoundCornerRadius: 0.25
     - _RoundCorners: 0
@@ -229,7 +222,7 @@ Material:
     - _SpecSource: 0
     - _SpecularHighlights: 1
     - _SphericalHarmonics: 0
-    - _Spread: 0.01
+    - _Spread: 0.066
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Stencil: 0
@@ -239,7 +232,7 @@ Material:
     - _StencilReference: 0
     - _StencilWriteMask: 255
     - _Surface: 1
-    - _Transparency: 1
+    - _Transparency: 0.03
     - _TriplanarMappingBlendSharpness: 4
     - _UVSec: 0
     - _UseWorldScale: 1
@@ -250,11 +243,17 @@ Material:
     - _VertexExtrusionValue: 0
     - _WireThickness: 100
     - _WorkflowMode: 1
-    - _World_Space: 1
+    - _World_Space: 0
+    - _X: 1.5
+    - _Y: 1.5
+    - _Z: 1.5
     - _ZOffsetFactor: 0
     - _ZOffsetUnits: 0
     - _ZTest: 4
-    - _ZWrite: 0
+    - _ZWrite: 1
+    - _rX: 270
+    - _rY: 335
+    - _rZ: 0
     - baseColorTextureUVChannel: 0
     m_Colors:
     - _BaseColor: {r: 0.6901961, g: 0.5294118, b: 0.29337922, a: 1}
@@ -284,12 +283,12 @@ Material:
     - _MainTexRotation: {r: 0, g: 0, b: 0, a: 0}
     - _MainTex_ST: {r: 1, g: 1, b: 0, a: 0}
     - _OcclusionMapRotation: {r: 0, g: 0, b: 0, a: 0}
-    - _Position: {r: 0, g: -0.015, b: 0, a: 0}
+    - _Position: {r: 1.53, g: 1.08, b: 0, a: 0}
     - _ProximityLightCenterColorOverride: {r: 1, g: 0, b: 0, a: 0}
     - _ProximityLightMiddleColorOverride: {r: 0, g: 1, b: 0, a: 0.5}
     - _ProximityLightOuterColorOverride: {r: 0, g: 0, b: 1, a: 1}
     - _RimColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    - _Rotation: {r: 3.31, g: 2.08, b: -0.77, a: -0.75}
+    - _Rotation: {r: 3.65, g: 2.08, b: -0.77, a: -0.75}
     - _RoundCornersRadius: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _SpecGlossMapRotation: {r: 0, g: 0, b: 0, a: 0}

@@ -128,7 +128,7 @@ Material:
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DirectionalLight: 1
-    - _DstBlend: 0
+    - _DstBlend: 10
     - _DstBlendAlpha: 1
     - _EdgeSmoothingMode: 0
     - _EdgeSmoothingValue: 0.002
@@ -187,6 +187,7 @@ Material:
     - _RenderQueueOverride: -1
     - _RimLight: 0
     - _RimPower: 0.25
+    - _Rotation: 4.7
     - _RoundCornerMargin: 0.01
     - _RoundCornerRadius: 0.25
     - _RoundCorners: 0
@@ -195,7 +196,7 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SphericalHarmonics: 0
-    - _Spread: 1
+    - _Spread: 0.066
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Stencil: 0
@@ -205,7 +206,7 @@ Material:
     - _StencilReference: 0
     - _StencilWriteMask: 255
     - _Surface: 0
-    - _Transparency: 0.164
+    - _Transparency: 0.03
     - _TriplanarMappingBlendSharpness: 4
     - _UVSec: 0
     - _UseWorldScale: 1
@@ -216,10 +217,16 @@ Material:
     - _VertexExtrusionValue: 0
     - _WorkflowMode: 1
     - _World_Space: 0
+    - _X: 1.5
+    - _Y: 1.5
+    - _Z: 1.5
     - _ZOffsetFactor: 0
     - _ZOffsetUnits: 0
     - _ZTest: 4
-    - _ZWrite: 1
+    - _ZWrite: 0
+    - _rX: 270
+    - _rY: 335
+    - _rZ: 0
     m_Colors:
     - _BaseColor: {r: 0.5568628, g: 0.07278406, b: 0.07278406, a: 0.33986348}
     - _BlurBackgroundRect: {r: 0, g: 0, b: 1, a: 1}
