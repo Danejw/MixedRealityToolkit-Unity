@@ -217,7 +217,7 @@ Material:
     - _StencilReference: 0
     - _StencilWriteMask: 255
     - _Surface: 0
-    - _Transparency: 0.790438
+    - _Transparency: 0.182
     - _TriplanarMappingBlendSharpness: 4
     - _UVSec: 0
     - _UseWorldScale: 1
