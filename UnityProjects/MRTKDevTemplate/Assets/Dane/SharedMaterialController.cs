@@ -65,6 +65,12 @@ namespace ClearView
             }
         }
 
+        public void AddRenderers(Renderer[] renderer)
+        {
+            targetRenderers.Clear();
+            targetRenderers.AddRange(renderer);
+        }
+
         private void Update()
         {
             // If transparency reaches 0, set x, y, z to their minimum values
@@ -94,7 +100,6 @@ namespace ClearView
                     sharedMaterial.SetFloat(yProperty, y);
                     sharedMaterial.SetFloat(zProperty, z);
                     sharedMaterial.SetFloat(spreadProperty, spread);
-
                 }
             }
         }

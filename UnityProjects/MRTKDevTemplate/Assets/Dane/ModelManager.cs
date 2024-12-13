@@ -17,7 +17,7 @@ namespace ClearView
         // UI
         public ModelDetailsPanel modelDetailsPanel;
         public Transform roomCenter;
-        public AdvancedClippingBox advancedClippingBox;
+        public SharedMaterialController sharedMaterialController;
 
         // Models Storage
         [SerializeField] private List<GameObject> availableModels = new List<GameObject>();
@@ -110,10 +110,10 @@ namespace ClearView
             instantiatedModels.Add(instantiatedModel);
 
             // Add renders of self and children to the clipping box
-            if (advancedClippingBox != null)
+            if (sharedMaterialController != null)
             {
                 Renderer[] renderers = instantiatedModel.GetComponentsInChildren<Renderer>();
-                advancedClippingBox.AddRenderers(renderers);
+                sharedMaterialController.AddRenderers(renderers);
             }
 
             // Update the UI panel with model details
