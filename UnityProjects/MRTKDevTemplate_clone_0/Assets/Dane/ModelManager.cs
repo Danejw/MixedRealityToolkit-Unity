@@ -20,6 +20,7 @@ namespace ClearView
         public SharedMaterialController sharedMaterialController;
 
         // Models Storage
+        public GameObject currentModel;
         [SerializeField] private List<GameObject> availableModels = new List<GameObject>();
         [SerializeField] private List<GameObject> instantiatedModels = new List<GameObject>();
 
@@ -109,7 +110,7 @@ namespace ClearView
             instantiatedModel.transform.parent = transform; // Set the parent to keep the hierarchy organized
             instantiatedModels.Add(instantiatedModel);
 
-            // Add renders of self and children to the clipping box
+            // Add renders of self and children to the clipping shader
             if (sharedMaterialController != null)
             {
                 Renderer[] renderers = instantiatedModel.GetComponentsInChildren<Renderer>();
@@ -118,6 +119,8 @@ namespace ClearView
 
             // Update the UI panel with model details
             modelDetailsPanel?.SetModel(instantiatedModel);
+
+            currentModel = instantiatedModel;
         }
 
         public void RemoveModels()
@@ -158,6 +161,8 @@ namespace ClearView
             }
 
             instantiatedModels.Clear(); // Clear the list of instantiated models
+
+            currentModel = null;
         }
 
         public void AddModel(GameObject go)
