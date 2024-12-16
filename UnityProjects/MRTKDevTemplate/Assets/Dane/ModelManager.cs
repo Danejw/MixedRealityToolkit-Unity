@@ -12,12 +12,11 @@ namespace ClearView
     {
         // State
         public bool isOnline = false;
-
+        public bool instantiateMode = false;
 
         // UI
         public ModelDetailsPanel modelDetailsPanel;
         public Transform roomCenter;
-        public SharedMaterialController sharedMaterialController;
 
         // Models Storage
         public GameObject currentModel;
@@ -61,6 +60,71 @@ namespace ClearView
             base.OnLeftRoom();
 
             isOnline = false;
+        }
+
+
+        public void SwitchToBrain()
+        {
+            if (!instantiateMode)
+            {
+                // Find the model with the specified name
+                GameObject modelPrefab = availableModels.Find(m => m.name == "Brain");
+                currentModel = modelPrefab;
+                if (!instantiatedModels.Contains(modelPrefab)) instantiatedModels.Add(modelPrefab);
+                // set every other model to false
+                foreach (var model in availableModels)
+                {
+                    if (model != modelPrefab)
+                    {
+                        model.SetActive(false);
+                    }
+                    else
+                    {
+                        model.SetActive(true);
+                        // Update the UI panel with model details
+                        modelDetailsPanel?.SetModel(model);
+                    }
+                }
+            }
+        }
+
+        public void SwitchToHeart()
+        {
+            if (!instantiateMode)
+            {
+                // Find the model with the specified name
+                GameObject modelPrefab = availableModels.Find(m => m.name == "Heart");
+                currentModel = modelPrefab;
+                if (!instantiatedModels.Contains(modelPrefab)) instantiatedModels.Add(modelPrefab);
+                // set every other model to false
+                foreach (var model in availableModels)
+                {
+                    if (model != modelPrefab)
+                    {
+                        model.SetActive(false);
+                    }
+                    else
+                    {
+                        model.SetActive(true);
+                        // Update the UI panel with model details
+                        modelDetailsPanel?.SetModel(model);
+                    }
+                }
+            }
+        }
+
+        public void SwitchToNone()
+        {
+            if (!instantiateMode)
+            {
+                // set every other model to false
+                foreach (var model in availableModels)
+                {
+                    model.SetActive(false);
+                }
+
+                modelDetailsPanel?.Close();
+            }
         }
 
 
@@ -109,13 +173,6 @@ namespace ClearView
 
             instantiatedModel.transform.parent = transform; // Set the parent to keep the hierarchy organized
             instantiatedModels.Add(instantiatedModel);
-
-            // Add renders of self and children to the clipping shader
-            if (sharedMaterialController != null)
-            {
-                Renderer[] renderers = instantiatedModel.GetComponentsInChildren<Renderer>();
-                sharedMaterialController.AddRenderers(renderers);
-            }
 
             // Update the UI panel with model details
             modelDetailsPanel?.SetModel(instantiatedModel);

@@ -25,7 +25,7 @@ namespace ClearView
             InitializeJointVisuals();
         }
 
-        private void InitializeJointVisuals()
+        public void InitializeJointVisuals()
         {
             foreach (var joint in XRHandJointManager.Instance.GetJoints())
             {

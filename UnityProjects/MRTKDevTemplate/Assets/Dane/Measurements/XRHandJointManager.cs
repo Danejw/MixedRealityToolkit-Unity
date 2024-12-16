@@ -81,7 +81,7 @@ namespace ClearView
             {
                 for (int i = 0; i < jointPoses.Count; i++)
                 {
-                    string jointName = ((TrackedHandJoint)i).ToString();
+                    string jointName = ((TrackedHandJoint)i).ToString() + $"{handNode}";
                     if (jointDictionary.ContainsKey(jointName))
                     {
                         Transform jointTransform = jointDictionary[jointName];
@@ -117,6 +117,17 @@ namespace ClearView
                 objToAttach.transform.SetParent(jointTransform);
                 objToAttach.transform.localPosition = Vector3.zero;
                 objToAttach.transform.localRotation = Quaternion.identity;
+            }
+        }
+
+        // Detach object from joint
+        public void DetachObjectFromJoint(string jointName, GameObject objToDetach)
+        {
+            Transform jointTransform = GetJointTransform(jointName);
+
+            if (jointTransform != null)
+            {
+                objToDetach.transform.SetParent(null);
             }
         }
     }
