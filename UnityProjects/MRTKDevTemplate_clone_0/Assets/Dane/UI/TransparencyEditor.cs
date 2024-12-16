@@ -13,15 +13,24 @@ namespace ClearView
         public float transparencyLevel = 100; // Transparency range from 1 (fully transparent) to 100 (fully opaque)
 
         [SerializeField] private List<Material> childMaterials;
+        private ShaderRenderingModeSwitcher switcher;
 
         public void Setup(Transform model)
         {
             parentObject = model;
-            // Get all the child objects' materials
-            childMaterials = GetAllChildMaterials(parentObject);
 
             // Adjust transparency initially
             UpdateTransparency();
+
+            bool mod = model.TryGetComponent(out ShaderRenderingModeSwitcher switcher);
+            if (mod)
+            {
+                Debug.Log("ShaderRenderingModeSwitcher found");
+            }
+            else
+            {
+                Debug.Log("ShaderRenderingModeSwitcher not found");
+            }
         }
 
         void Update()
@@ -31,6 +40,8 @@ namespace ClearView
                 // Adjust transparency in real-time (based on the inspector value or other runtime changes)
                 UpdateTransparency();
             }
+
+
         }
 
         // Function to get the materials from all child objects
@@ -55,19 +66,13 @@ namespace ClearView
         // Function to update transparency for all materials
         public void UpdateTransparency()
         {
-
             // Convert transparencyLevel (1-100) to alpha value (0.01 to 1.0)
-            float alphaValue = Mathf.Clamp(transparencyLevel / 100f, 0.0f, 1f);
+            //float alphaValue = Mathf.Clamp(transparencyLevel, 0.0f, 1f);
 
-            // Loop through all child materials and update their alpha value
-            foreach (Material mat in childMaterials)
-            {
-                if (mat.HasProperty("_Transparency"))
-                {
-                    mat.SetFloat("_Transparency", alphaValue);
-                }
-            }
+            //remap transparency level to alpha value
+            float alphaValue = transparencyLevel / 100;
 
+            if (switcher) switcher.SetAlpha(alphaValue);
         }
 
         // Optionally call this method at runtime to set a new transparency level

@@ -12,7 +12,7 @@ namespace ClearView
         // slider for alpha value
         [Header("Alpha Value")]
         [Range(0,1)]
-        [SerializeField] private float alphaValue = 1.0f;
+        [SerializeField] public float alphaValue = 1.0f;
 
         // Ensures there's a renderer attached
         private void Awake()
@@ -90,8 +90,6 @@ namespace ClearView
                 material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
                 material.SetInt("_ZWrite", 1);
             }
-
-            Logger.Log(Logger.Category.Info, $"Material rendering mode set to {(transparent ? "Transparent" : "Opaque")}.");
         }
     
 
@@ -118,5 +116,13 @@ namespace ClearView
             }
         }
 
+
+
+        public void SetAlpha(float alpha)
+        {
+            alphaValue = alpha;
+        }
     }
+
+
 }

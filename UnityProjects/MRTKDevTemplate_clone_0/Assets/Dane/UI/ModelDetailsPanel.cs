@@ -115,7 +115,7 @@ namespace ClearView
 
         public void Close()
         {
-            if (!photonView.IsMine) return;
+            //if (!photonView.IsMine) return;
 
             openButton.SetActive(true);
             closeButton.SetActive(false);
@@ -137,7 +137,7 @@ namespace ClearView
 
         public void SetUp(Transform model)
         {
-            if (!photonView.IsMine) return;
+            //if (!photonView.IsMine) return;
 
             layerToggles.SetToggleCollection(Model.transform);
             rotator.Setup(model);
