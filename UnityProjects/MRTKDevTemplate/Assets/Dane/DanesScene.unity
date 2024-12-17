@@ -11636,12 +11636,16 @@ PrefabInstance:
       value: 93.1
       objectReference: {fileID: 0}
     - target: {fileID: 4863252631456972267, guid: 7f04c34a79e1f014aa3314bc5b229612, type: 3}
+      propertyPath: <ToggleMode>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4863252631456972267, guid: 7f04c34a79e1f014aa3314bc5b229612, type: 3}
       propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4863252631456972267, guid: 7f04c34a79e1f014aa3314bc5b229612, type: 3}
       propertyPath: <IsToggled>k__BackingField.onExited.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4863252631456972267, guid: 7f04c34a79e1f014aa3314bc5b229612, type: 3}
       propertyPath: <IsToggled>k__BackingField.onEntered.m_PersistentCalls.m_Calls.Array.size
@@ -18147,6 +18151,10 @@ PrefabInstance:
       value: 93.1
       objectReference: {fileID: 0}
     - target: {fileID: 4863252631456972267, guid: 7f04c34a79e1f014aa3314bc5b229612, type: 3}
+      propertyPath: <ToggleMode>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4863252631456972267, guid: 7f04c34a79e1f014aa3314bc5b229612, type: 3}
       propertyPath: <IsToggled>k__BackingField.onExited.m_PersistentCalls.m_Calls.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -24151,12 +24159,16 @@ PrefabInstance:
       value: 93.1
       objectReference: {fileID: 0}
     - target: {fileID: 4863252631456972267, guid: 7f04c34a79e1f014aa3314bc5b229612, type: 3}
+      propertyPath: <ToggleMode>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4863252631456972267, guid: 7f04c34a79e1f014aa3314bc5b229612, type: 3}
       propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4863252631456972267, guid: 7f04c34a79e1f014aa3314bc5b229612, type: 3}
       propertyPath: <IsToggled>k__BackingField.onExited.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4863252631456972267, guid: 7f04c34a79e1f014aa3314bc5b229612, type: 3}
       propertyPath: <IsToggled>k__BackingField.onEntered.m_PersistentCalls.m_Calls.Array.size
