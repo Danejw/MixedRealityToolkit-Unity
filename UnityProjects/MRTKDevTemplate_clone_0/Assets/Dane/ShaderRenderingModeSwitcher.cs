@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace ClearView
@@ -7,6 +8,7 @@ namespace ClearView
     {
         [Header("Target Renderers")]
         [SerializeField] private List<Renderer> renderers = new List<Renderer>();
+        private List<Material> cachedMaterials = new List<Material>();
 
 
         // slider for alpha value
@@ -17,8 +19,15 @@ namespace ClearView
         // Ensures there's a renderer attached
         private void Awake()
         {
-            // Gather all Renderer components in children
             renderers.AddRange(GetComponentsInChildren<Renderer>());
+
+            foreach (var renderer in renderers)
+            {
+                if (renderer.material != null)
+                {
+                    cachedMaterials.Add(renderer.material);
+                }
+            }
 
             if (renderers.Count == 0)
             {
@@ -34,11 +43,11 @@ namespace ClearView
             {
                 if (alphaValue > 0.9f)
                 {
-                    SetRenderingMode(renderer.material, false);
+                    SetRenderingMode(renderer.material, "Opaque");
                 }
                 else
                 {
-                    SetRenderingMode(renderer.material, true);
+                    SetRenderingMode(renderer.material, "Transparent");
                 }
             }
         }
@@ -56,13 +65,13 @@ namespace ClearView
 
             foreach (var renderer in renderers)
             {
-                if (renderer.material.GetFloat("_Rendering Mode") == 1.0f)
+                if (renderer.material.GetFloat("_Mode") == 3f)
                 {
-                    SetRenderingMode(renderer.material, false);
+                    SetRenderingMode(renderer.material, "Opaque");
                 }
                 else
                 {
-                    SetRenderingMode(renderer.material, true);
+                    SetRenderingMode(renderer.material, "Transparent");
                 }
             }
         }
@@ -72,32 +81,59 @@ namespace ClearView
         /// </summary>
         /// <param name="material">The material to modify.</param>
         /// <param name="transparent">True for Transparent, False for Opaque.</param>
-        private void SetRenderingMode(Material material, bool transparent)
+        private void SetRenderingMode(Material material, string mode)
         {
-            if (transparent)
+            switch (mode)
             {
-                material.SetFloat("_Rendering Mode", 1.0f); // Transparent
-                material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
-                material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-                material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                material.SetInt("_ZWrite", 0);
-            }
-            else
-            {
-                material.SetFloat("_Rendering Mode", 0.0f); // Opaque
-                material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Geometry;
-                material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-                material.SetInt("_ZWrite", 1);
-            }
-        }
-    
+                case "Opaque":
+                    material.SetFloat("_Mode", 0); // Set mode to Opaque
+                    material.SetOverrideTag("RenderType", "Opaque");
 
-    /// <summary>
-    /// Sets the alpha value for all materials in child renderers.
-    /// </summary>
-    /// <param name="alpha">Alpha value to set.</param>
-    private void SetAlphaForAll(float alpha)
+                    material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                    material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+                    material.SetInt("_ZWrite", 1); // Write to depth buffer
+
+                    material.DisableKeyword("_ALPHATEST_ON");
+                    material.DisableKeyword("_ALPHABLEND_ON");
+                    material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+
+                    material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Geometry;
+                    break;
+
+                case "Transparent":
+                    material.SetFloat("_Mode", 3); // Set mode to Transparent
+                    material.SetOverrideTag("RenderType", "Transparent");
+
+                    material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                    material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                    material.SetInt("_ZWrite", 0); // Disable depth writing
+
+                    material.DisableKeyword("_ALPHATEST_ON");
+                    material.EnableKeyword("_ALPHABLEND_ON");
+                    material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+
+                    material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+                    break;
+
+                default:
+                    Debug.LogError("Unsupported rendering mode.");
+                    return;
+            }
+
+#if UNITY_EDITOR
+            // Update the material in the Unity Editor
+            EditorUtility.SetDirty(material);
+#endif
+        }
+
+
+
+
+        /// <summary>
+        /// Sets the alpha value for all materials in child renderers.
+        /// </summary>
+        /// <param name="alpha">Alpha value to set.</param>
+        private void SetAlphaForAll(float alpha)
         {
             foreach (var renderer in renderers)
             {
@@ -108,13 +144,19 @@ namespace ClearView
                 }
 
                 Material material = renderer.material;
-                material.SetFloat("_Alpha Fade", alpha);
 
-                var color = material.GetColor("_Color");
-                color.a = alpha;
-                material.SetColor("_Color", color);
+                // Modify alpha only if in transparent mode
+                if (material.GetFloat("_Mode") == 3)
+                {
+                    material.SetFloat("_Alpha Fade", alpha);
+
+                    var color = material.GetColor("_Color");
+                    color.a = alpha;
+                    material.SetColor("_Color", color);
+                }
             }
         }
+
 
 
 
