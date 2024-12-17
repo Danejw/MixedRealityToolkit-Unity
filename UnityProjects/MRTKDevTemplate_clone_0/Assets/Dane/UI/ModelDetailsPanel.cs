@@ -71,14 +71,16 @@ namespace ClearView
 
         private void OnTransparencySliderChanged(SliderEventData value)
         {
-            if (!photonView.IsMine) return;
+            //if (!photonView.IsMine) return;
 
             if (transparencyEditor) transparencyEditor.transparencyLevel = value.NewValue;
+
+            Debug.Log("Transparency Slider Changed");
         }
 
         private void OnRotationSliderChanged(SliderEventData value)
         {
-            if (!photonView.IsMine) return;
+            //if (!photonView.IsMine) return;
 
             if (rotator) rotator.SetRotationSpeed((int)value.NewValue);
         }
