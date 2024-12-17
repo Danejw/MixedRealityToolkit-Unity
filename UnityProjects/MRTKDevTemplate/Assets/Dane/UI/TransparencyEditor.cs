@@ -19,10 +19,12 @@ namespace ClearView
         {
             parentObject = model;
 
+            this.switcher = null;
+
             // Adjust transparency initially
             UpdateTransparency();
 
-            bool mod = model.TryGetComponent(out ShaderRenderingModeSwitcher switcher);
+            bool mod = parentObject.TryGetComponent(out ShaderRenderingModeSwitcher switcher);
             if (mod)
             {
                 Debug.Log("ShaderRenderingModeSwitcher found");
@@ -43,25 +45,6 @@ namespace ClearView
 
 
         }
-
-        // Function to get the materials from all child objects
-        public List<Material> GetAllChildMaterials(Transform model)
-        {
-            // Get all child renderers of the object
-            Renderer[] childRenderers = model.GetComponentsInChildren<Renderer>();
-
-            // Collect materials from all child renderers
-            childMaterials = new List<Material>();
-
-            foreach (var renderer in childRenderers)
-            {
-                var mat = renderer.sharedMaterial;
-                childMaterials.Add(mat);
-            }
-
-            return childMaterials;
-        }
-
 
         // Function to update transparency for all materials
         public void UpdateTransparency()
