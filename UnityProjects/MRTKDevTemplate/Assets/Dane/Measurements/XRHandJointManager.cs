@@ -19,7 +19,7 @@ namespace ClearView
 
         public static XRHandJointManager Instance { get; private set; }
 
-        private void Awake()
+        private void OnEnable()
         {
             if (Instance == null)
             {

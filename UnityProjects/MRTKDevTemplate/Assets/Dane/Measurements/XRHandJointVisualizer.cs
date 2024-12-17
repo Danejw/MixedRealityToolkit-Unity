@@ -14,7 +14,7 @@ namespace ClearView
 
         private Dictionary<string, GameObject> jointVisuals = new Dictionary<string, GameObject>();
 
-        private void Start()
+        private void OnEnable()
         {
             if (XRHandJointManager.Instance == null)
             {
@@ -23,6 +23,14 @@ namespace ClearView
             }
 
             InitializeJointVisuals();
+        }
+
+        private void OnDestroy()
+        {
+            foreach (var jointVisual in jointVisuals.Values)
+            {
+                Destroy(jointVisual);
+            }
         }
 
         public void InitializeJointVisuals()

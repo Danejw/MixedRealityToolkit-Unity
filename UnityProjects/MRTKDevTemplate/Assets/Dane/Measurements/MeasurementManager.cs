@@ -36,11 +36,11 @@ namespace ClearView
 
         [SerializeField] private List<GameObject> handJoints = new List<GameObject>();
 
-        private void Start()
+        private void OnEnable()
         {
             measurements.Clear();
 
-
+            StartCoroutine(EnableWhenSubsystemAvailable());
         }
 
         private void Update()
@@ -91,10 +91,15 @@ namespace ClearView
             }
         }
 
-        public void StartMeasuringAtFingertip()
+
+        public void AddPointToMeasurement()
         {
+            if (currentMeasurement == null) return;
+
+
             if (!isMeasuring)
             {
+                // creates the hierarchy for the measurement and sets up the first point
 
                 GameObject measurementParent = new GameObject("Measurement");
                 measurementParent.transform.parent = transform;
@@ -109,28 +114,31 @@ namespace ClearView
                 lineRendererObject.name = "LineRenderer";
                 currentMeasurement.lineRenderer = lineRendererObject.GetComponent<LineRenderer>();
 
+
+                GameObject startPoint = Instantiate(pointPrefab, measuringTip.transform.position, Quaternion.identity, currentMeasurement.parent.transform);
+                startPoint.name = "StartPoint";
+                currentMeasurement.points.Add(startPoint);
+
                 // Set the initial positions
-                currentMeasurement.lineRenderer.positionCount = 2;
+                currentMeasurement.lineRenderer.positionCount = currentMeasurement.points.Count + 1;
                 Vector3 measuringTipPosition = measuringTip.transform.position;
-                currentMeasurement.lineRenderer.SetPosition(0, measuringTipPosition);
+                currentMeasurement.lineRenderer.SetPosition(0, startPoint.transform.position);
 
                 currentMeasurement.lineRenderer.SetPosition(1, measuringTip.transform.position);
 
                 measurements.Add(currentMeasurement);
+
+                isMeasuring = true;
             }
+            else
+            {
+                GameObject newPoint = Instantiate(pointPrefab, measuringTip.transform.position, Quaternion.identity, currentMeasurement.parent.transform);
+                newPoint.name = "Point";
+                currentMeasurement.points.Add(newPoint);
 
-            AddPointToMeasurement();
-            isMeasuring = true;
-        }
-
-
-        public void AddPointToMeasurement()
-        {
-            if (currentMeasurement == null) return;
-
-            GameObject newPoint = Instantiate(pointPrefab, measuringTip.transform.position, Quaternion.identity, currentMeasurement.parent.transform);
-            newPoint.name = "Point";
-            currentMeasurement.points.Add(newPoint);
+                currentMeasurement.lineRenderer.positionCount = currentMeasurement.points.Count + 1;
+                currentMeasurement.lineRenderer.SetPosition(currentMeasurement.points.Count, newPoint.transform.position);
+            }
 
             GameObject distanceText = Instantiate(distanceTextPrefab, measuringTip.transform.position + textOffset, Quaternion.identity, currentMeasurement.parent.transform);
             distanceText.name = "Distance";
@@ -140,7 +148,8 @@ namespace ClearView
             deleteButton.transform.localPosition = Vector3.zero;
             deleteButton.name = "Delete";
             bool isButton = deleteButton.TryGetComponent<PressableButton>(out PressableButton buttonComponent);
-            if (isButton) buttonComponent.OnClicked?.AddListener(() => DeleteMeasurement(currentMeasurement));
+            var measurement = currentMeasurement;
+            if (isButton) buttonComponent.OnClicked?.AddListener(() => DeleteMeasurement(measurement));
 
             currentMeasurement.distanceTexts.Add(distanceText);
 
@@ -244,6 +253,17 @@ namespace ClearView
         public void StopMeasuringAtFingertip()
         {
             if (!isMeasuring) return;
+
+            if (currentMeasurement == null) return;
+
+            GameObject newPoint = Instantiate(pointPrefab, measuringTip.transform.position, Quaternion.identity, currentMeasurement.parent.transform);
+            newPoint.name = "End Point";
+            currentMeasurement.points.Add(newPoint);
+
+            currentMeasurement.lineRenderer.positionCount = currentMeasurement.points.Count + 1;
+            currentMeasurement.lineRenderer.SetPosition(currentMeasurement.points.Count, newPoint.transform.position);
+
+            UpdateLineRenderer();
 
             isMeasuring = false;
         }

@@ -7159,7 +7159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jointPrefab: {fileID: 675614268237390113, guid: 7ca669050dff38b4fb6bd78238aad9b3, type: 3}
-  jointColor: {r: 0, g: 0.6787319, b: 1, a: 1}
+  jointColor: {r: 0.509434, g: 0.509434, b: 0.509434, a: 0.50980395}
 --- !u!114 &564379707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9543,7 +9543,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1317220742}
         m_TargetAssemblyTypeName: ClearView.MeasurementManager, Assembly-CSharp
-        m_MethodName: StartMeasuringAtFingertip
+        m_MethodName: AddPointToMeasurement
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10511,7 +10511,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1317220742}
         m_TargetAssemblyTypeName: ClearView.MeasurementManager, Assembly-CSharp
-        m_MethodName: StartMeasuringAtFingertip
+        m_MethodName: AddPointToMeasurement
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -15652,7 +15652,7 @@ MonoBehaviour:
   deleteButtonPrefab: {fileID: 2027408271850428397, guid: 18596d0263fb60447961220a75141e53, type: 3}
   measuringTip: {fileID: 4884616450113356444}
   thumbTip: {fileID: 1709802350}
-  textOffset: {x: 0, y: 0.01, z: 0}
+  textOffset: {x: 0, y: 0.02, z: 0}
   measurements: []
   currentMeasurement:
     parent: {fileID: 0}
