@@ -63,12 +63,36 @@ namespace ClearView
         }
 
 
-        public void SwitchToBrain()
+        // check the available models if a model with said name exists, if it does, set it to active and set the current model to it
+        public void SwitchTo(string name) // None, Brain, Heart, Aorta, etc.
         {
             if (!instantiateMode)
             {
+                if (name == "None")
+                {
+                    if (!instantiateMode)
+                    {
+                        // set every other model to false
+                        foreach (var model in availableModels)
+                        {
+                            model.SetActive(false);
+                        }
+
+                        modelDetailsPanel?.Close();
+                    }
+                    return;
+                }
+
+
                 // Find the model with the specified name
-                GameObject modelPrefab = availableModels.Find(m => m.name == "Brain");
+                GameObject modelPrefab = availableModels.Find(m => m.name == name);
+
+                if (modelPrefab == null)
+                {
+                    Logger.Log(Logger.Category.Error, $"Model with name '{name}' not found in our available models.");
+                    return;
+                }
+
                 currentModel = modelPrefab;
                 if (!instantiatedModels.Contains(modelPrefab)) instantiatedModels.Add(modelPrefab);
                 // set every other model to false
@@ -85,45 +109,6 @@ namespace ClearView
                         modelDetailsPanel?.SetModel(model);
                     }
                 }
-            }
-        }
-
-        public void SwitchToHeart()
-        {
-            if (!instantiateMode)
-            {
-                // Find the model with the specified name
-                GameObject modelPrefab = availableModels.Find(m => m.name == "Heart");
-                currentModel = modelPrefab;
-                if (!instantiatedModels.Contains(modelPrefab)) instantiatedModels.Add(modelPrefab);
-                // set every other model to false
-                foreach (var model in availableModels)
-                {
-                    if (model != modelPrefab)
-                    {
-                        model.SetActive(false);
-                    }
-                    else
-                    {
-                        model.SetActive(true);
-                        // Update the UI panel with model details
-                        modelDetailsPanel?.SetModel(model);
-                    }
-                }
-            }
-        }
-
-        public void SwitchToNone()
-        {
-            if (!instantiateMode)
-            {
-                // set every other model to false
-                foreach (var model in availableModels)
-                {
-                    model.SetActive(false);
-                }
-
-                modelDetailsPanel?.Close();
             }
         }
 
