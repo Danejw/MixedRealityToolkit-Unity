@@ -74,7 +74,7 @@ sysinfo.txt
 *.aab
 *.unitypackage
 *.fbx
-*.glb
+#*.glb
 *.gltf
 
 # Crashlytics generated file
