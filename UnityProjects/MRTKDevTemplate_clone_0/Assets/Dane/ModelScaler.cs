@@ -11,7 +11,7 @@ namespace ClearView
     public class ModelScaler : MonoBehaviour
     {
         [SerializeField] private ModelManager modelManager; // Reference to the ModelManager component
-        [SerializeField] private Vector3 originalScale = new Vector3(.001f, 0.001f, .001f); // Hardcodes the original scale of the model
+        [SerializeField] private Vector3 originalScale = new Vector3(.001f, 0.001f, .001f); // Hard-codes the original scale of the model
         [SerializeField] private float lerpDuration = 1.0f; // Duration for the lerp effect
 
         private Coroutine scaleCoroutine;
@@ -36,7 +36,10 @@ namespace ClearView
             // Set the scale of the model by the specified percentage
             if (modelManager && modelManager.currentModel)
             {
-                Vector3 targetScale = originalScale * (1 + percentage);
+                // Calculate the target scale based on the current scale and the percentage
+                Vector3 currentScale = modelManager.currentModel.transform.localScale;
+                Vector3 targetScale = currentScale * (1 + percentage);
+
                 if (scaleCoroutine != null)
                 {
                     StopCoroutine(scaleCoroutine);
