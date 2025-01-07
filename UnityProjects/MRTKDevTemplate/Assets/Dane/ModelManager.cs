@@ -18,6 +18,10 @@ namespace ClearView
         public ModelDetailsPanel modelDetailsPanel;
         public Transform roomCenter;
 
+        // Clipping Tool
+        public Transform toolSnap;
+        public GameObject clippingTool;
+
         // Models Storage
         public GameObject currentModel;
         [SerializeField] private List<GameObject> availableModels = new List<GameObject>();
@@ -42,8 +46,11 @@ namespace ClearView
 
         private void Start()
         {
-            App.Instance.OneDriveManager.OnImportComplete += OnImportComplete;
-            App.Instance.OneDriveManager.OnInitialize += GetOneDriveFiles;
+            if (App.Instance.OneDriveManager)
+            {
+                App.Instance.OneDriveManager.OnImportComplete += OnImportComplete;
+                App.Instance.OneDriveManager.OnInitialize += GetOneDriveFiles;
+            }
         }
 
 
@@ -211,6 +218,33 @@ namespace ClearView
         {
             availableModels.Add(go);
         }
+
+
+        // Toggles the clipping tool's active state and positions it at the tool snap location.
+        public void ToggleClippingTool(bool isActive)
+        {
+            // Check if the clipping tool is assigned
+            if (clippingTool == null)
+            {
+                Logger.Log(Logger.Category.Error, "Clipping tool is missing.");
+                return;
+            }
+
+            // Check if the tool snap transform is assigned
+            if (toolSnap == null)
+            {
+                Logger.Log(Logger.Category.Error, "Tool snap transform is missing.");
+                return;
+            }
+
+            // Set the position and rotation of the clipping tool to match the tool snap transform
+            clippingTool.transform.position = toolSnap.position;
+            clippingTool.transform.rotation = toolSnap.rotation;
+
+            // Activate or deactivate the clipping tool based on the isActive parameter
+            clippingTool?.SetActive(isActive);
+        }
+
 
 
         // Test

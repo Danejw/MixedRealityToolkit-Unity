@@ -15,9 +15,9 @@ namespace ClearView
 
         private void OnEnable()
         {
-            keyboard.OnTextUpdate.AddListener(OnTextUpdated);
-            inputField.onSelect.AddListener(OnSelect);
-            inputField.onDeselect.AddListener(OnDeselect);
+            keyboard?.OnTextUpdate.AddListener(OnTextUpdated);
+            inputField?.onSelect.AddListener(OnSelect);
+            inputField?.onDeselect.AddListener(OnDeselect);
         }
 
         private void OnDeselect(string arg0)

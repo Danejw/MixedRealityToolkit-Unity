@@ -45,7 +45,7 @@ namespace MixedReality.Toolkit.Examples.Demos
         /// </summary>
         private void Awake()
         {
-            rayToggle.ForceSetToggled(GetHandRaysActive());
+            rayToggle?.ForceSetToggled(GetHandRaysActive());
             gazePinchToggle.ForceSetToggled(GetGazePinchActive());
 
             rayToggle.OnClicked.AddListener(() => SetHandRaysActive(rayToggle.IsToggled));

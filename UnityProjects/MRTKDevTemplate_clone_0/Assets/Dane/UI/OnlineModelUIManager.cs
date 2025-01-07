@@ -20,7 +20,7 @@ namespace ClearView.UI
 
         private void OnEnable()
         {
-            if (App.Instance.MicrosoftAuth.currentState != MicrosoftAuth.State.Authenticated) return;
+            if (App.Instance.MicrosoftAuth && App.Instance.MicrosoftAuth.currentState != MicrosoftAuth.State.Authenticated) return;
 
             App.Instance.ModelManager?.GetOneDriveFiles();
         }

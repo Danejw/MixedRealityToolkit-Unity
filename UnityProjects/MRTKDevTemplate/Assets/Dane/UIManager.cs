@@ -26,11 +26,11 @@ namespace ClearView
             switch (state)
             {
                 case false:
-                    SignInFlow.SetActive(true);
+                    SignInFlow?.SetActive(true);
                     MainAppUI.SetActive(false);
                     break;
                 case true:
-                    SignInFlow.SetActive(false);
+                    SignInFlow?.SetActive(false);
                     MainAppUI.SetActive(true);
                     break;
             }
