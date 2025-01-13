@@ -1,7 +1,7 @@
+using ClearView.Network;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
 
 namespace ClearView
 {
@@ -14,34 +14,24 @@ namespace ClearView
         [Tooltip("Array of StatefulInteractable toggles that will be managed by this controller.")]
         public List<CustomToggle> toggles = new List<CustomToggle>();
 
+        private ModelLayerSync modelLayerSync;
+
         public void SetToggleCollection(Transform model)
         {
             RemoveCurrentToggles(); // Clear existing toggles before creating new ones
 
+            // Ensure the ModelLayerSync component exists on the root object
+            if (model.TryGetComponent(out ModelLayerSync sync))
+            {
+                modelLayerSync = sync;
+            }
+            else
+            {
+                Debug.LogError($"ModelLayerSync component not found on {model.name}. Ensure it's attached to the root object.");
+                return;
+            }
 
             AddTogglesRecursively(model);
-
-            /* Add toggles for the first level of children only
-            // Create toggles
-            for (int i = 0; i < model.childCount; i++)
-            {
-                CustomToggle layerToggle = Instantiate(prefab, verticalLayout);
-
-                Transform child = model.GetChild(i); // Get the current child
-
-                // Set the toggle label to the child's name
-                layerToggle.label.text = child.name;
-
-                // Set the toggle initially based on the child's active state
-                layerToggle.toggle.ForceSetToggled(child.gameObject.activeSelf);
-
-                // Add a listener to the toggle to set the child's active state when toggled
-                int childIndex = i; // Capture index in a local variable to avoid closure issues
-                layerToggle.toggle.OnClicked.AddListener(() => OnToggleValueChanged(childIndex, model));
-
-                toggles.Add(layerToggle);
-            }
-            */
         }
 
         private void AddTogglesRecursively(Transform parent)
@@ -61,7 +51,8 @@ namespace ClearView
                 layerToggle.toggle.ForceSetToggled(child.gameObject.activeSelf);
 
                 // Add a listener to the toggle to set the child's active state when toggled
-                layerToggle.toggle.OnClicked.AddListener(() => OnToggleValueChanged(child));
+                int childIndex = child.GetSiblingIndex(); // Capture sibling index for the toggle
+                layerToggle.toggle.OnClicked.AddListener(() => OnToggleValueChanged(childIndex, child));
 
                 // Add the new toggle to the list of toggles
                 toggles.Add(layerToggle);
@@ -72,25 +63,31 @@ namespace ClearView
         }
 
         // Listener function to handle the toggling of a child
-        private void OnToggleValueChanged(Transform child)
+        private void OnToggleValueChanged(int childIndex, Transform child)
         {
             // Find the toggle associated with this child
             CustomToggle correspondingToggle = toggles.FirstOrDefault(t => t.label.text == child.name);
 
-            // Check if the toggle was found and if it has a valid IsToggled property
             if (correspondingToggle != null && correspondingToggle.toggle != null)
             {
-                // Get the toggle state and set the child active or inactive based on that
-                bool isToggled = correspondingToggle.toggle.IsToggled; // This assumes StatefulInteractable has an IsToggled property
+                // Get the toggle state
+                bool isToggled = correspondingToggle.toggle.IsToggled;
 
-                // Set the child's active state based on the toggle's state
-                child.gameObject.SetActive(isToggled);
+                // Use ModelLayerSync to synchronize the toggle state across the network
+                if (modelLayerSync != null)
+                {
+                    modelLayerSync.ToggleLayer(childIndex, isToggled);
+                }
+                else
+                {
+                    Debug.LogError("ModelLayerSync is not initialized. Ensure it's attached to the root model.");
+                }
             }
         }
 
         public void RemoveCurrentToggles()
         {
-            // Clear existing layers
+            // Clear existing toggles
             if (toggles.Count > 0)
             {
                 foreach (var toggle in toggles)

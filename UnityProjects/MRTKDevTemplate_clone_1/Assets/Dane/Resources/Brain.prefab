@@ -433,6 +433,7 @@ GameObject:
   - component: {fileID: 919132148988664795}
   - component: {fileID: 1272562117}
   - component: {fileID: 1272562118}
+  - component: {fileID: 8992126785906731894}
   m_Layer: 6
   m_Name: Brain
   m_TagString: Untagged
@@ -868,6 +869,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 919132148988664794}
+  - {fileID: 8992126785906731894}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -884,7 +886,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   renderers: []
-  alphaValue: 1
+  alphaValue: 0.61174446
 --- !u!114 &1272562118
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -903,6 +905,26 @@ MonoBehaviour:
   minimumScale: {x: 0.2, y: 0.2, z: 0.2}
   maximumScale: {x: 2, y: 2, z: 2}
   relativeToInitialState: 1
+--- !u!114 &8992126785906731894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3192042494885651670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34220b89ca4652144abc135ae1244fe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layers:
+  - {fileID: 7458390703185525723}
+  - {fileID: 1743072614028089376}
+  - {fileID: 1848721091719103924}
+  - {fileID: 873001232792659311}
+  - {fileID: 698896068808050763}
+  - {fileID: 9179461590783647140}
+  - {fileID: 2132364673145035926}
 --- !u!1 &7458390703185525723
 GameObject:
   m_ObjectHideFlags: 0

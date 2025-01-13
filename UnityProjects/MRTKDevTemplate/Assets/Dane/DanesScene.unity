@@ -24326,6 +24326,10 @@ PrefabInstance:
       propertyPath: renderers.Array.size
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 496932181438593616, guid: e67abafa148e6944f98c5d76aa00217a, type: 3}
+      propertyPath: sceneViewId
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 891785418507715482, guid: e67abafa148e6944f98c5d76aa00217a, type: 3}
       propertyPath: roomCenter
       value: 
@@ -24414,13 +24418,37 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4331121592868299208, guid: e67abafa148e6944f98c5d76aa00217a, type: 3}
+      propertyPath: sceneViewId
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 4346050491425834009, guid: e67abafa148e6944f98c5d76aa00217a, type: 3}
+      propertyPath: sceneViewId
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 4634355452129354863, guid: e67abafa148e6944f98c5d76aa00217a, type: 3}
+      propertyPath: sceneViewId
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 6137205050514978832, guid: e67abafa148e6944f98c5d76aa00217a, type: 3}
       propertyPath: sceneViewId
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 7789671022939299968, guid: e67abafa148e6944f98c5d76aa00217a, type: 3}
+      propertyPath: sceneViewId
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 7861866528035328927, guid: e67abafa148e6944f98c5d76aa00217a, type: 3}
       propertyPath: sceneViewId
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8192252599627610930, guid: e67abafa148e6944f98c5d76aa00217a, type: 3}
+      propertyPath: sceneViewId
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8585549184060827654, guid: e67abafa148e6944f98c5d76aa00217a, type: 3}
+      propertyPath: sceneViewId
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 9163545558820126111, guid: e67abafa148e6944f98c5d76aa00217a, type: 3}
       propertyPath: sceneViewId
