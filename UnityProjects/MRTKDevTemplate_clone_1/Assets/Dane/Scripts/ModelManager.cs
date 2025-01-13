@@ -64,6 +64,7 @@ namespace ClearView
                 clippingToolInstance = Instantiate(clippingToolPrefab, toolSnap.transform.position, toolSnap.transform.rotation, transform);
             }
             clippingToolInstance?.TryGetComponent<ClippingPlane>(out clippingTool);
+            clippingToolInstance.gameObject.SetActive(false);
         }
 
         // Network Events
@@ -71,15 +72,21 @@ namespace ClearView
         {
             base.OnJoinedRoom();
 
+            if (clippingToolInstance) Destroy(clippingToolInstance);
             clippingToolInstance = PhotonNetwork.Instantiate(clippingToolPrefab.name, toolSnap.transform.position, toolSnap.transform.rotation);
+            clippingToolInstance?.TryGetComponent<ClippingPlane>(out clippingTool);
             clippingToolInstance.transform.parent = transform;
+            clippingToolInstance.gameObject.SetActive(false);
         }
 
         public override void OnLeftRoom()
         {
             base.OnLeftRoom();
 
+            if (clippingToolInstance) Destroy(clippingToolInstance);
             clippingToolInstance = Instantiate(clippingToolPrefab, toolSnap.transform.position, toolSnap.transform.rotation, transform);
+            clippingToolInstance?.TryGetComponent<ClippingPlane>(out clippingTool);
+            clippingToolInstance.gameObject.SetActive(false);
         }
 
         // Check the available models if a model with said name exists, if it does, set it to active and set the current model to it
