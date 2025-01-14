@@ -100,6 +100,7 @@ GameObject:
   - component: {fileID: 4883259258071937655}
   - component: {fileID: 74363535975555726}
   - component: {fileID: 1666992748726718923}
+  - component: {fileID: 8622015484569854639}
   m_Layer: 0
   m_Name: Aorta
   m_TagString: Untagged
@@ -529,6 +530,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 4883259258071937655}
+  - {fileID: 8622015484569854639}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -546,3 +548,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   renderers: []
   alphaValue: 1
+--- !u!114 &8622015484569854639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9151157379448224580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34220b89ca4652144abc135ae1244fe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layers:
+  - {fileID: 2931896814227922147}

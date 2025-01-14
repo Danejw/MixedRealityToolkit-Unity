@@ -3302,6 +3302,11 @@ PrefabInstance:
       objectReference: {fileID: 588744814}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16750275763719646afa2c7c7592395d, type: 3}
+--- !u!1 &198585740 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5591207501872000146, guid: e67abafa148e6944f98c5d76aa00217a, type: 3}
+  m_PrefabInstance: {fileID: 891785417894597595}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &232982574
 GameObject:
   m_ObjectHideFlags: 0
@@ -8205,6 +8210,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 28
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &738477991 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3853018321344335966, guid: e67abafa148e6944f98c5d76aa00217a, type: 3}
+  m_PrefabInstance: {fileID: 891785417894597595}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &740567391
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13660,8 +13670,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   autoSignIn: 1
-  token: 
-  clientId: 
   currentState: 0
   accessToken: 
 --- !u!224 &929714604 stripped
@@ -13932,6 +13940,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &992343579 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 61981917434668117, guid: e67abafa148e6944f98c5d76aa00217a, type: 3}
+  m_PrefabInstance: {fileID: 891785417894597595}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &992798530
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14265,11 +14278,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd59526af4d028f4e9966a9d295fd166, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pvCache: {fileID: 0}
   loadFromEnvironmentVariable: 1
   networkPrefab: {fileID: 6098007722030700589, guid: 689347393929fd14ca38468583057822, type: 3}
   realPlayer: {fileID: 1040817774}
-  networkedPlayer: {fileID: 0}
   networkPrefabs: []
   spawnPoints:
   - {fileID: 887975063}
@@ -24349,15 +24360,31 @@ PrefabInstance:
     - target: {fileID: 891785418507715482, guid: e67abafa148e6944f98c5d76aa00217a, type: 3}
       propertyPath: availableModels.Array.data[0]
       value: 
-      objectReference: {fileID: 3192042494885651670, guid: a026aad2e9c30fe44bd54683a307754f, type: 3}
+      objectReference: {fileID: 198585740}
     - target: {fileID: 891785418507715482, guid: e67abafa148e6944f98c5d76aa00217a, type: 3}
       propertyPath: availableModels.Array.data[1]
       value: 
-      objectReference: {fileID: 1612696571794025061, guid: 56e85af8962e32a488a80b143b732d06, type: 3}
+      objectReference: {fileID: 738477991}
     - target: {fileID: 891785418507715482, guid: e67abafa148e6944f98c5d76aa00217a, type: 3}
       propertyPath: availableModels.Array.data[2]
       value: 
-      objectReference: {fileID: 9151157379448224580, guid: e66c8e3f46b01464dabc951d6ff7ea55, type: 3}
+      objectReference: {fileID: 992343579}
+    - target: {fileID: 891785418507715482, guid: e67abafa148e6944f98c5d76aa00217a, type: 3}
+      propertyPath: instantiatedModels.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 891785418507715482, guid: e67abafa148e6944f98c5d76aa00217a, type: 3}
+      propertyPath: instantiatedModels.Array.data[0]
+      value: 
+      objectReference: {fileID: 198585740}
+    - target: {fileID: 891785418507715482, guid: e67abafa148e6944f98c5d76aa00217a, type: 3}
+      propertyPath: instantiatedModels.Array.data[1]
+      value: 
+      objectReference: {fileID: 992343579}
+    - target: {fileID: 891785418507715482, guid: e67abafa148e6944f98c5d76aa00217a, type: 3}
+      propertyPath: instantiatedModels.Array.data[2]
+      value: 
+      objectReference: {fileID: 738477991}
     - target: {fileID: 891785418507715483, guid: e67abafa148e6944f98c5d76aa00217a, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -27890,7 +27917,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4963327094909537338}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5599758d3df2ce248a20ceb9bcb9a312, type: 3}
+  m_Script: {fileID: 11500000, guid: fb9a7e95902c43b448f4179e45a5b21f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   tranparencyEditor: {fileID: 8332325029665383200}

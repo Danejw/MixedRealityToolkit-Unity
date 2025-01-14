@@ -22,7 +22,8 @@ namespace ClearView
         // Clipping Tool
         public Transform toolSnap;
         public GameObject clippingToolPrefab;
-        private GameObject clippingToolInstance;
+        private GameObject clippingToolInstanceOnline;
+        private GameObject clippingToolInstanceOffline;
         public ClippingPlane clippingTool;
 
         // Models Storage
@@ -53,18 +54,26 @@ namespace ClearView
                 App.Instance.OneDriveManager.OnInitialize += GetOneDriveFiles;
             }
 
+            SetUpClippingTool();
+        }
 
+        private void SetUpClippingTool()
+        {
+            // TODO: Clipping tool management should be moved to a separate class
             if (PhotonNetwork.IsConnected)
             {
-                clippingToolInstance = PhotonNetwork.Instantiate(clippingToolPrefab.name, toolSnap.transform.position, toolSnap.transform.rotation);
-                clippingToolInstance.transform.parent = transform;
+                if (!clippingToolInstanceOnline) clippingToolInstanceOnline = PhotonNetwork.Instantiate(clippingToolPrefab.name, toolSnap.transform.position, toolSnap.transform.rotation);
+                clippingToolInstanceOnline.TryGetComponent<ClippingPlane>(out clippingTool);
+                clippingToolInstanceOnline.transform.parent = transform;
+                clippingToolInstanceOnline.gameObject.SetActive(false);
             }
             else
             {
-                clippingToolInstance = Instantiate(clippingToolPrefab, toolSnap.transform.position, toolSnap.transform.rotation, transform);
+                if (!clippingToolInstanceOffline) clippingToolInstanceOffline = Instantiate(clippingToolPrefab, toolSnap.transform.position, toolSnap.transform.rotation, transform);
+                clippingToolInstanceOffline.TryGetComponent<ClippingPlane>(out clippingTool);
+                clippingToolInstanceOffline.transform.parent = transform;
+                clippingToolInstanceOffline.gameObject.SetActive(false);
             }
-            clippingToolInstance?.TryGetComponent<ClippingPlane>(out clippingTool);
-            clippingToolInstance.gameObject.SetActive(false);
         }
 
         // Network Events
@@ -72,21 +81,14 @@ namespace ClearView
         {
             base.OnJoinedRoom();
 
-            if (clippingToolInstance) Destroy(clippingToolInstance);
-            clippingToolInstance = PhotonNetwork.Instantiate(clippingToolPrefab.name, toolSnap.transform.position, toolSnap.transform.rotation);
-            clippingToolInstance?.TryGetComponent<ClippingPlane>(out clippingTool);
-            clippingToolInstance.transform.parent = transform;
-            clippingToolInstance.gameObject.SetActive(false);
+            SetUpClippingTool();
         }
 
         public override void OnLeftRoom()
         {
             base.OnLeftRoom();
 
-            if (clippingToolInstance) Destroy(clippingToolInstance);
-            clippingToolInstance = Instantiate(clippingToolPrefab, toolSnap.transform.position, toolSnap.transform.rotation, transform);
-            clippingToolInstance?.TryGetComponent<ClippingPlane>(out clippingTool);
-            clippingToolInstance.gameObject.SetActive(false);
+            SetUpClippingTool();
         }
 
         // Check the available models if a model with said name exists, if it does, set it to active and set the current model to it
@@ -109,22 +111,33 @@ namespace ClearView
                     return;
                 }
 
-                // Find the model with the specified name
-                GameObject modelPrefab = availableModels.Find(m => m.name == name);
-
-                if (modelPrefab == null)
-                {
-                    Logger.Log(Logger.Category.Error, $"Model with name '{name}' not found in our available models.");
-                    return;
-                }
 
                 if (isOnline)
                 {
+                    // Find the model with the specified name
+                    GameObject modelPrefab = Resources.Load<GameObject>(name);
+
+                    if (modelPrefab == null)
+                    {
+                        Logger.Log(Logger.Category.Error, $"Model with name '{name}' not found in our resources folder.");
+                        return;
+                    }
+
                     // If online, instantiate the model using Photon
                     InstantiateModelOnline(modelPrefab);
                 }
                 else
                 {
+                    // Find the model with the specified name
+                    GameObject modelPrefab = availableModels.Find(m => m.name == name);
+
+                    if (modelPrefab == null)
+                    {
+                        Logger.Log(Logger.Category.Error, $"Model with name '{name}' not found in our available models.");
+                        return;
+                    }
+
+
                     // If offline, switch to the model
                     SwitchToOfflineModel(modelPrefab);
                 }
@@ -237,6 +250,8 @@ namespace ClearView
         {
             // set child renderers into the clipping tool
             clippingTool?.renderers.Clear();
+            clippingTool?.renderers.RemoveAll(item => item == null); // Removes null references
+
             foreach (var renderer in model.GetComponentsInChildren<Renderer>())
             {
                 clippingTool?.renderers.Add(renderer);
@@ -246,6 +261,7 @@ namespace ClearView
 
         public void RemoveModels()
         {
+            
             if (isOnline)
             {
                 // Ensure that only the host can remove models
@@ -272,14 +288,18 @@ namespace ClearView
                     }
                 }
             }
+            
             else
             {
                 // Destroy all instantiated models
                 foreach (var model in instantiatedModels)
                 {
-                    Destroy(model);
+                    model.SetActive(false);
+                    //Destroy(model);
                 }
             }
+            
+            
 
             instantiatedModels.Clear(); // Clear the list of instantiated models
 
