@@ -100,6 +100,7 @@ GameObject:
   - component: {fileID: 683194834383799688}
   - component: {fileID: 7028908893087219961}
   - component: {fileID: 8619872798895460147}
+  - component: {fileID: 6403764842074967905}
   m_Layer: 0
   m_Name: ClippingPlane
   m_TagString: Untagged
@@ -149,21 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   applyToSharedMaterial: 1
-  renderers:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  renderers: []
   materials: []
   clippingSide: 1
   useOnPreRender: 0
@@ -604,6 +591,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 8619872798895460147}
+  - {fileID: 6403764842074967905}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -623,3 +611,16 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 0
+--- !u!114 &6403764842074967905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 683194834383799703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daf0e57d800e6624086d8c99d1173591, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clippingTool: {fileID: 683194834383799703}

@@ -13660,6 +13660,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   autoSignIn: 1
+  token: 
+  clientId: 
   currentState: 0
   accessToken: 
 --- !u!224 &929714604 stripped
@@ -14263,9 +14265,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd59526af4d028f4e9966a9d295fd166, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pvCache: {fileID: 0}
   loadFromEnvironmentVariable: 1
   networkPrefab: {fileID: 6098007722030700589, guid: 689347393929fd14ca38468583057822, type: 3}
   realPlayer: {fileID: 1040817774}
+  networkedPlayer: {fileID: 0}
   networkPrefabs: []
   spawnPoints:
   - {fileID: 887975063}
@@ -25704,6 +25708,7 @@ GameObject:
   - component: {fileID: 8332325029665383201}
   - component: {fileID: 8332325029665383203}
   - component: {fileID: 8332325029665383202}
+  - component: {fileID: 8332325029665383204}
   m_Layer: 0
   m_Name: ModelControlMenu
   m_TagString: Untagged
@@ -27872,9 +27877,23 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 8332325029665383202}
+  - {fileID: 8332325029665383204}
   sceneViewId: 4
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &8332325029665383204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4963327094909537338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5599758d3df2ce248a20ceb9bcb9a312, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tranparencyEditor: {fileID: 8332325029665383200}
 --- !u!114 &8359390084112786076
 MonoBehaviour:
   m_ObjectHideFlags: 0

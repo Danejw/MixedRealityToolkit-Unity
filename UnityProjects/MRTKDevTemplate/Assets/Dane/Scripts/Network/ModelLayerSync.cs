@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace ClearView.Network
 {
+    // This script scynchronizes the active state of the model layers over the network as they are changed by the owner
     public class ModelLayerSync : MonoBehaviourPun, IPunObservable
     {
         [Header("Assign your child layers here")]
@@ -46,6 +47,8 @@ namespace ClearView.Network
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
+            if (layers == null) return;
+
             if (stream.IsWriting)
             {
                 // Send the current layer states to other players
