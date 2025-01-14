@@ -231,10 +231,7 @@ namespace ClearView
         public void UpdateClippingToolRenderers(GameObject model)
         {
             // set child renderers into the clipping tool
-            foreach (var renderer in clippingTool.renderers)
-            {
-                clippingTool?.RemoveRenderer(renderer);
-            }
+            clippingTool?.ClearRenderers();
 
             foreach (var renderer in model.GetComponentsInChildren<Renderer>())
             {
