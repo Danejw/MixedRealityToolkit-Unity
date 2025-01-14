@@ -57,24 +57,6 @@ namespace ClearView
             SetUpClippingTool();
         }
 
-        private void SetUpClippingTool()
-        {
-            // TODO: Clipping tool management should be moved to a separate class
-            if (PhotonNetwork.IsConnected)
-            {
-                if (!clippingToolInstanceOnline) clippingToolInstanceOnline = PhotonNetwork.Instantiate(clippingToolPrefab.name, toolSnap.transform.position, toolSnap.transform.rotation);
-                clippingToolInstanceOnline.TryGetComponent<ClippingPlane>(out clippingTool);
-                clippingToolInstanceOnline.transform.parent = transform;
-                clippingToolInstanceOnline.gameObject.SetActive(false);
-            }
-            else
-            {
-                if (!clippingToolInstanceOffline) clippingToolInstanceOffline = Instantiate(clippingToolPrefab, toolSnap.transform.position, toolSnap.transform.rotation, transform);
-                clippingToolInstanceOffline.TryGetComponent<ClippingPlane>(out clippingTool);
-                clippingToolInstanceOffline.transform.parent = transform;
-                clippingToolInstanceOffline.gameObject.SetActive(false);
-            }
-        }
 
         // Network Events
         public override void OnJoinedRoom()
@@ -249,12 +231,14 @@ namespace ClearView
         public void UpdateClippingToolRenderers(GameObject model)
         {
             // set child renderers into the clipping tool
-            clippingTool?.renderers.Clear();
-            clippingTool?.renderers.RemoveAll(item => item == null); // Removes null references
+            foreach (var renderer in clippingTool.renderers)
+            {
+                clippingTool?.RemoveRenderer(renderer);
+            }
 
             foreach (var renderer in model.GetComponentsInChildren<Renderer>())
             {
-                clippingTool?.renderers.Add(renderer);
+                clippingTool?.AddRenderer(renderer);
             }
         }
         
@@ -335,6 +319,26 @@ namespace ClearView
             // Activate or deactivate the clipping tool based on the isActive parameter
             clippingTool?.gameObject.SetActive(isActive);
         }
+
+        private void SetUpClippingTool()
+        {
+            // TODO: Clipping tool management should be moved to a separate class
+            if (PhotonNetwork.IsConnected)
+            {
+                if (!clippingToolInstanceOnline && PhotonNetwork.IsMasterClient) clippingToolInstanceOnline = PhotonNetwork.Instantiate(clippingToolPrefab.name, toolSnap.transform.position, toolSnap.transform.rotation);
+                clippingToolInstanceOnline.TryGetComponent<ClippingPlane>(out clippingTool);
+                clippingToolInstanceOnline.transform.parent = transform;
+                clippingToolInstanceOnline.gameObject.SetActive(false);
+            }
+            else
+            {
+                if (!clippingToolInstanceOffline) clippingToolInstanceOffline = Instantiate(clippingToolPrefab, toolSnap.transform.position, toolSnap.transform.rotation, transform);
+                clippingToolInstanceOffline.TryGetComponent<ClippingPlane>(out clippingTool);
+                clippingToolInstanceOffline.transform.parent = transform;
+                clippingToolInstanceOffline.gameObject.SetActive(false);
+            }
+        }
+
 
         // Test
         public void InstantiateModel()
