@@ -11,6 +11,7 @@ Material:
   m_Shader: {fileID: 4800000, guid: c331f6c43a2ef0945864cb668f2653c9, type: 3}
   m_ValidKeywords:
   - _DIRECTIONAL_LIGHT
+  - _DISABLE_ALBEDO_MAP
   - _HOVER_LIGHT
   - _REFLECTIONS
   - _SPECULAR_HIGHLIGHTS

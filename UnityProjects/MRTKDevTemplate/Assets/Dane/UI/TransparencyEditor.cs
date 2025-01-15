@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine;
 
 namespace ClearView
 {
-    public class TransparencyEditor : MonoBehaviour
+    public class TransparencyEditor : MonoBehaviourPun, IPunObservable
     {
         public Transform parentObject; // The parent object containing the child objects to adjust
 
@@ -14,6 +15,9 @@ namespace ClearView
 
         [SerializeField] private List<Material> childMaterials;
         [SerializeField] private ShaderRenderingModeSwitcher switcher;
+
+        private float lastTransparencyLevel = -1;
+
 
         public void Setup(Transform model)
         {
@@ -40,10 +44,12 @@ namespace ClearView
             if (parentObject != null)
             {
                 // Adjust transparency in real-time (based on the inspector value or other runtime changes)
-                UpdateTransparency();
+                if (Mathf.Abs(lastTransparencyLevel - transparencyLevel) > Mathf.Epsilon)
+                {
+                    UpdateTransparency();
+                    lastTransparencyLevel = transparencyLevel;
+                }
             }
-
-
         }
 
         // Function to update transparency for all materials
@@ -65,6 +71,23 @@ namespace ClearView
         {
             transparencyLevel = Mathf.Clamp(newTransparency, 0, 100);
             UpdateTransparency();
+        }
+
+
+        // Network Stuff
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            if (stream.IsWriting)
+            {
+                // Host sends the transparency level to other clients
+                stream.SendNext(transparencyLevel);
+            }
+            else
+            {
+                // Clients receive and apply the transparency level
+                float receivedTransparency = (float)stream.ReceiveNext();
+                SetTransparencyLevel(receivedTransparency);
+            }
         }
     }
 }
