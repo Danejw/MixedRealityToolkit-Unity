@@ -60,6 +60,17 @@ namespace ClearView
             transparencySlider.OnValueUpdated.AddListener(OnTransparencySliderChanged);
 
             Close();
+
+            // I had to do this wierd delayed toggle to help the details UI layouts to initialize properly. It's a hack, I know.
+            StartCoroutine(SetupDetails());
+        }
+
+
+        private IEnumerator SetupDetails()
+        {
+            detailsParent?.SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+            detailsParent?.SetActive(false);
         }
 
         private void OnEnable()
