@@ -11,6 +11,17 @@ namespace ClearView
         private void OnEnable()
         {
             if (!photonView) photonView = GetComponent<PhotonView>();
+
+            if (photonView.IsMine)
+            {
+                // Enable the hand menu
+                gameObject.SetActive(true);
+            }
+            else
+            {
+                // Disable the hand menu
+                gameObject.SetActive(false);
+            }
         }
 
         private void Start()

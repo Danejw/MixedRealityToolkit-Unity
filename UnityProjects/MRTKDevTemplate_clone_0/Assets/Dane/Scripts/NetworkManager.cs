@@ -206,7 +206,10 @@ namespace ClearView.Network
             networkedPlayer = PhotonNetwork.Instantiate(networkPrefab.name, realPlayer.transform.position, realPlayer.transform.rotation);
 
             // move the player to a random spawn point
-            realPlayer.transform.position = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Count)].position;
+            //realPlayer.transform.position = spawnPoints[UnityEngine.Random.Range(1, spawnPoints.Count)].position;
+
+            // Spawn the host at spawn point 0, and the guest at spawn point randomly from 1-count
+            realPlayer.transform.position = spawnPoints[isHost ? 0 : UnityEngine.Random.Range(1, spawnPoints.Count)].position;
 
             // make the player face the center of the map only on the x and z axis
             var here = new Vector3(0, realPlayer.transform.position.y, 0);
