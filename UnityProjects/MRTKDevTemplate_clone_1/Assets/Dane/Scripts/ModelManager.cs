@@ -13,7 +13,6 @@ namespace ClearView
     {
         // State
         public bool isOnline => PhotonNetwork.InRoom;
-        public bool instantiateMode = false;
 
         // UI
         public ModelDetailsPanel modelDetailsPanel;
@@ -72,23 +71,22 @@ namespace ClearView
             base.OnLeftRoom();
         }
 
+
+
         // Check the available models if a model with said name exists, if it does, set it to active and set the current model to it
         public void SwitchTo(string name) // None, Brain, Heart, Aorta, etc.
         {
-            if (!instantiateMode)
-            {
                 if (name == "None")
                 {
-                    if (!instantiateMode)
+                    // Set every other model to false
+                    foreach (var model in instantiatedModels)
                     {
-                        // Set every other model to false
-                        foreach (var model in availableModels)
-                        {
-                            model.SetActive(false);
-                        }
-
-                        modelDetailsPanel?.Close();
+                        model.SetActive(false);
                     }
+
+                    modelDetailsPanel?.Close();
+                    ToggleClippingTool(false);
+
                     return;
                 }
 
@@ -122,7 +120,6 @@ namespace ClearView
                     // If offline, switch to the model
                     SwitchToOfflineModel(modelPrefab);
                 }
-            }
         }
 
         // Functionality
@@ -232,6 +229,9 @@ namespace ClearView
                     UpdateClippingToolRenderers(model);
                 }
             }
+
+            // toggle the button list
+
         }
 
 
@@ -290,6 +290,9 @@ namespace ClearView
         }
 
 
+
+
+        // RPC Recieves
         [PunRPC]
         private void SetCurrentModelRPC(string modelName)
         {
@@ -342,6 +345,8 @@ namespace ClearView
                 }
             
         }
+
+
 
 
         // TODO: Clipping tool management should be moved to a separate class

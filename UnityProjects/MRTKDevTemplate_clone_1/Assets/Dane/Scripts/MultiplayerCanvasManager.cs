@@ -22,9 +22,9 @@ namespace ClearView.Network
         public GameObject playerListPanel; // conditionally enable/disable this panel based on in-room status
         public PressableButton joinRoomButton; // conditionally enable/disable this button based on in-room status
 
-        public TMP_Text joinRoomButtonText; // conditionally change this text based on master client status
+        public TMP_Text joinRoomButtonText; // conditionally change this text based on client status
         public string connectToMasterText = "Connect as the Master Client";
-        public string connectingTest = "Connecting...";
+        public string connectingText = "Connecting...";
         public string connectToRoomText = "Connect to Default Room";
 
         private bool isConnecting => NetworkManager.Instance.isBusy;
@@ -45,7 +45,7 @@ namespace ClearView.Network
 
                 if (isConnecting)
                 {
-                    joinRoomButtonText.text = PhotonNetwork.NetworkClientState.ToString();
+                    joinRoomButtonText.text = connectingText; //PhotonNetwork.NetworkClientState.ToString();
                     if (joinRoomButton && joinRoomButton.enabled) joinRoomButton.enabled = false;
                 }
 

@@ -140,7 +140,7 @@ namespace MixedReality.Toolkit.UX
                 // Force set initial selection in the toggle collection at start
                 if (CurrentIndex >= 0 && CurrentIndex < Toggles.Count)
                 {
-                    SetSelection(CurrentIndex, true);
+                    SetSelection(CurrentIndex);
                     Toggles[CurrentIndex].ForceSetToggled(true);
                 }
             }
@@ -154,7 +154,7 @@ namespace MixedReality.Toolkit.UX
         /// <param name="index">Index of an element in the <see cref="ToggleCollection"/>.</param>
         /// <param name="force">Force selection to be set.</param>
         /// </summary>
-        public void SetSelection(int index, bool force = false)
+        public void SetSelection(int index)
         {
             if (index < 0 || Toggles.Count <= index || Toggles == null || !isActiveAndEnabled)
             {
@@ -162,7 +162,7 @@ namespace MixedReality.Toolkit.UX
                 return;
             }
 
-            if (CurrentIndex != index || force)
+            if (CurrentIndex != index)
             {
                 currentIndex = index;
 
