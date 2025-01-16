@@ -12,11 +12,12 @@ namespace ClearView
     public class ModelManager : MonoBehaviourPunCallbacks
     {
         // State
-        public bool isOnline => PhotonNetwork.InRoom;
+        public bool inRoom => PhotonNetwork.InRoom;
 
-        // UI
+        // Details UI
+        public Transform detailSnap;
         public ModelDetailsPanel modelDetailsPanel;
-        public Transform roomCenter;
+        public Transform center;
 
         // Clipping Tool
         public Transform toolSnap;
@@ -78,20 +79,34 @@ namespace ClearView
         {
                 if (name == "None")
                 {
-                    // Set every other model to false
-                    foreach (var model in instantiatedModels)
+                    if (inRoom && PhotonNetwork.IsMasterClient)
                     {
-                        model.SetActive(false);
-                    }
+                        // Set every other model to false
+                        foreach (var model in instantiatedModels)
+                        {
+                            model.SetActive(false);
+                        }
 
-                    modelDetailsPanel?.Close();
-                    ToggleClippingTool(false);
+                        modelDetailsPanel?.Close();
+                        ToggleClippingTool(false);
+                    }
+                    else if (!inRoom)
+                    {
+                        // Set every other model to false
+                        foreach (var model in instantiatedModels)
+                        {
+                            model.SetActive(false);
+                        }
+
+                        modelDetailsPanel?.Close();
+                        ToggleClippingTool(false);
+                    }
 
                     return;
                 }
 
 
-                if (isOnline)
+                if (inRoom)
                 {
                     // Find the model with the specified name
                     GameObject modelPrefab = Resources.Load<GameObject>(name);
@@ -125,7 +140,7 @@ namespace ClearView
         // Functionality
         public void InstantiateModel(string name)
         {
-            if (isOnline)
+            if (inRoom)
             {
                 // Ensure that only the host can instantiate models
                 if (!PhotonNetwork.IsMasterClient)
@@ -156,13 +171,13 @@ namespace ClearView
 
             // Instantiate the model
             GameObject instantiatedModel;
-            if (isOnline)
+            if (inRoom)
             {
-                instantiatedModel = PhotonNetwork.Instantiate(modelPrefab.name, roomCenter.position, Quaternion.identity);
+                instantiatedModel = PhotonNetwork.Instantiate(modelPrefab.name, center.position, center.rotation);
             }
             else
             {
-                instantiatedModel = Instantiate(modelPrefab, roomCenter.position, Quaternion.identity);
+                instantiatedModel = Instantiate(modelPrefab, center.position, center.rotation);
             }
 
             instantiatedModel.transform.parent = transform; // Set the parent to keep the hierarchy organized
@@ -172,7 +187,7 @@ namespace ClearView
             modelDetailsPanel?.SetModel(instantiatedModel);
 
             // Notify clients about the new model
-            if (isOnline) photonView.RPC("SetCurrentModelRPC", RpcTarget.Others, modelPrefab.name);
+            if (inRoom) photonView.RPC("SetCurrentModelRPC", RpcTarget.Others, modelPrefab.name);
 
             UpdateClippingToolRenderers(instantiatedModel);
 
@@ -192,7 +207,7 @@ namespace ClearView
             RemoveModels();
 
             // Instantiate the model using Photon
-            GameObject instantiatedModel = PhotonNetwork.Instantiate(modelPrefab.name, roomCenter.position, Quaternion.identity);
+            GameObject instantiatedModel = PhotonNetwork.Instantiate(modelPrefab.name, center.position, center.rotation);
             instantiatedModel.transform.parent = transform; // Set the parent to keep the hierarchy organized
             instantiatedModels.Add(instantiatedModel);
 
@@ -202,7 +217,7 @@ namespace ClearView
 
 
             // Notify clients about the new model
-            if (isOnline) photonView.RPC("SetCurrentModelRPC", RpcTarget.Others, modelPrefab.name + "(Clone)");
+            if (inRoom) photonView.RPC("SetCurrentModelRPC", RpcTarget.Others, modelPrefab.name + "(Clone)");
 
             currentModel = instantiatedModel;
         }
@@ -240,7 +255,7 @@ namespace ClearView
         public void RemoveModels()
         {
             
-            if (isOnline)
+            if (inRoom)
             {
                 // Ensure that only the host can remove models
                 if (!PhotonNetwork.IsMasterClient)
@@ -292,7 +307,7 @@ namespace ClearView
 
 
 
-        // RPC Recieves
+        // Client Side RPCs (What the clients should do)
         [PunRPC]
         private void SetCurrentModelRPC(string modelName)
         {
@@ -302,6 +317,8 @@ namespace ClearView
             if (model != null)
             {
                 model.transform.parent = transform; // Set the parent to keep the hierarchy organized
+
+                instantiatedModels.Clear(); // Clear the list of instantiated models
                 instantiatedModels.Add(model);
 
                 // Set it as the current model
@@ -322,14 +339,16 @@ namespace ClearView
         [PunRPC]
         private void ActivateClippingToolRPC(string name, bool isActive)
         {
-           // find object by type
-           var clip = FindObjectOfType<ClippingPrimitive>();
+            if (isActive)
+            {
+                // find object by type
+                var clip = FindObjectOfType<ClippingPrimitive>(true);
 
                 if (clip != null)
                 {
                     clippingToolInstance = clip.gameObject;
+                    clippingTool = clip;
 
-                    clippingToolInstance?.TryGetComponent<ClippingPrimitive>(out clippingTool);
                     clippingToolInstance.transform.parent = transform;
 
 
@@ -343,7 +362,13 @@ namespace ClearView
                 {
                     Logger.Log(Logger.Category.Error, $"Gameobject {name} was not found.");
                 }
-            
+            }
+            else
+            {
+                clippingToolInstance?.gameObject.SetActive(false);
+
+                Logger.Log(Logger.Category.Info, "Clipping tool deactivated.");
+            }
         }
 
 
@@ -376,21 +401,40 @@ namespace ClearView
             }
 
             // Notify clients about the new model
-            if (isOnline) photonView.RPC("ActivateClippingToolRPC", RpcTarget.Others, clippingToolPrefab.name + "(Clone)", isActive);
+            if (inRoom) photonView.RPC("ActivateClippingToolRPC", RpcTarget.Others, clippingToolPrefab.name + "(Clone)", isActive);
         }
 
         private void SetUpClippingTool()
         {
             // If the player is online and the clipping tool instance is not a photon instantiated then destroy the object and instantiate it using photon network
-            // If the player is online and the clipping tool instance is a photon instantiated object then continue
+            /*
+            if (inRoom && clippingToolInstance && !clippingToolInstance.GetComponent<PhotonView>())
+            {
+                Destroy(clippingToolInstance);
+                clippingToolInstance = PhotonNetwork.IsMasterClient ? PhotonNetwork.Instantiate(clippingToolPrefab.name, toolSnap.transform.position, toolSnap.transform.rotation) : null;
+            }
             // If the player is offline and the clipping tool instance is a photon instantiated object then destroy the object and instantiate it locally
-            // If the player is offline and the clipping tool instance is not a photon instantiated object then continue
-            if (clippingToolInstance) Destroy(clippingToolInstance);
+            else if (!inRoom && clippingToolInstance && clippingToolInstance.GetComponent<PhotonView>())
+            {
+                Destroy(clippingToolInstance);
+                clippingToolInstance = Instantiate(clippingToolPrefab, toolSnap.transform.position, toolSnap.transform.rotation, transform);
+            }
+            */
 
-            clippingToolInstance = isOnline
-                ? PhotonNetwork.IsMasterClient ? PhotonNetwork.Instantiate(clippingToolPrefab.name, toolSnap.transform.position, toolSnap.transform.rotation)
-                : null
-                : Instantiate(clippingToolPrefab, toolSnap.transform.position, toolSnap.transform.rotation, transform);
+
+            if (clippingToolInstance == null)
+            {
+                // Instantiate the clipping tool prefab
+                if (inRoom)
+                {
+                    clippingToolInstance = PhotonNetwork.Instantiate(clippingToolPrefab.name, toolSnap.transform.position, toolSnap.transform.rotation);
+                    // Give photon overnership to the host
+                    clippingToolInstance.GetComponent<PhotonView>()?.TransferOwnership(PhotonNetwork.MasterClient);
+                }
+                else clippingToolInstance = Instantiate(clippingToolPrefab, toolSnap.transform.position, toolSnap.transform.rotation, transform);
+            }
+
+
 
             if (clippingToolInstance != null)
             {
@@ -418,6 +462,26 @@ namespace ClearView
                 clippingTool?.AddRenderer(renderer);
             }
         }
+
+
+        // Details Menu Control
+        public void ToggleDetailsMenu(bool isActive)
+        {
+            if (isActive)
+            {
+                if (detailSnap)
+                {
+                    modelDetailsPanel.transform.position = detailSnap.position;
+                    modelDetailsPanel.transform.LookAt(2 * modelDetailsPanel.transform.position - Camera.main.transform.position);
+                }
+                modelDetailsPanel?.Open();
+            }
+            else
+            {
+                modelDetailsPanel?.Close();
+            }
+        }
+
 
 
 
@@ -472,12 +536,12 @@ namespace ClearView
             import.InstantiateMainScene(go.transform);
 
             go.transform.parent = transform; // Set the parent to keep the hierarchy organized
-            Vector3.Lerp(transform.position, roomCenter.position, 1 * Time.deltaTime); // Set the position to the center of the room
+            Vector3.Lerp(transform.position, center.position, 1 * Time.deltaTime); // Set the position to the center of the room
             go.transform.position = transform.position; // Set the position to the center of the room
             go.transform.rotation = Quaternion.identity;
 
             // Check for network components or add
-            if (isOnline)
+            if (inRoom)
             {
                 // Setup Photon View
                 go.TryGetComponent<PhotonView>(out var view);
