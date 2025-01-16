@@ -65,11 +65,17 @@ namespace ClearView
         public override void OnJoinedRoom()
         {
             base.OnJoinedRoom();
+
+            instantiatedModels.Clear(); // Clear the list of instantiated models
+            // remove all null references
+            instantiatedModels.RemoveAll(m => m == null);
         }
 
         public override void OnLeftRoom()
         {
             base.OnLeftRoom();
+
+            RemoveModels();
         }
 
 
@@ -81,8 +87,8 @@ namespace ClearView
                 {
                     if (inRoom && PhotonNetwork.IsMasterClient)
                     {
-                        // Set every other model to false
-                        foreach (var model in instantiatedModels)
+                    // Set every other model to false
+                    foreach (var model in instantiatedModels)
                         {
                             model.SetActive(false);
                         }
@@ -296,6 +302,9 @@ namespace ClearView
 
             instantiatedModels.Clear(); // Clear the list of instantiated models
 
+            // clean up missing and null references in list
+            instantiatedModels.RemoveAll(m => m == null);
+
             currentModel = null;
         }
 
@@ -319,6 +328,10 @@ namespace ClearView
                 model.transform.parent = transform; // Set the parent to keep the hierarchy organized
 
                 instantiatedModels.Clear(); // Clear the list of instantiated models
+
+                // clean up missing and null references in list
+                instantiatedModels.RemoveAll(m => m == null);
+
                 instantiatedModels.Add(model);
 
                 // Set it as the current model
@@ -421,20 +434,16 @@ namespace ClearView
             }
             */
 
-
-            if (clippingToolInstance == null)
+            // Instantiate the clipping tool prefab
+            if (inRoom && PhotonNetwork.IsMasterClient)
             {
-                // Instantiate the clipping tool prefab
-                if (inRoom)
-                {
-                    clippingToolInstance = PhotonNetwork.Instantiate(clippingToolPrefab.name, toolSnap.transform.position, toolSnap.transform.rotation);
-                    // Give photon overnership to the host
-                    clippingToolInstance.GetComponent<PhotonView>()?.TransferOwnership(PhotonNetwork.MasterClient);
-                }
-                else clippingToolInstance = Instantiate(clippingToolPrefab, toolSnap.transform.position, toolSnap.transform.rotation, transform);
+                if (clippingToolInstance != null) Destroy(clippingToolInstance);
+                clippingToolInstance = PhotonNetwork.Instantiate(clippingToolPrefab.name, toolSnap.transform.position, toolSnap.transform.rotation);
             }
-
-
+            else if (!inRoom)
+            {
+                clippingToolInstance = Instantiate(clippingToolPrefab, toolSnap.transform.position, toolSnap.transform.rotation, transform);
+            }
 
             if (clippingToolInstance != null)
             {
@@ -474,7 +483,10 @@ namespace ClearView
                     modelDetailsPanel.transform.position = detailSnap.position;
                     modelDetailsPanel.transform.LookAt(2 * modelDetailsPanel.transform.position - Camera.main.transform.position);
                 }
-                modelDetailsPanel?.Open();
+
+                // only open the details panel if the player is in a room and is the master client
+                if (inRoom && PhotonNetwork.IsMasterClient) modelDetailsPanel?.Open();
+                else if (!inRoom) modelDetailsPanel?.Open();
             }
             else
             {
