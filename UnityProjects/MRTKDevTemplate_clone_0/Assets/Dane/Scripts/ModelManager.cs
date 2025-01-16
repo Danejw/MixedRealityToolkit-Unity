@@ -69,6 +69,11 @@ namespace ClearView
             instantiatedModels.Clear(); // Clear the list of instantiated models
             // remove all null references
             instantiatedModels.RemoveAll(m => m == null);
+
+            foreach (var model in availableModels)
+            {
+                model.SetActive(false);
+            }
         }
 
         public override void OnLeftRoom()
