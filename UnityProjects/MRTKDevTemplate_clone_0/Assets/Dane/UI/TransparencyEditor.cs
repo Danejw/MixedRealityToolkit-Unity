@@ -14,7 +14,7 @@ namespace ClearView
         public float transparencyLevel = 100; // Transparency range from 1 (fully transparent) to 100 (fully opaque)
 
         [SerializeField] private List<Material> childMaterials;
-        [SerializeField] private ShaderRenderingModeSwitcher switcher;
+        [SerializeField] private ShaderRenderingModeSwitcher switcher = null;
 
         private float lastTransparencyLevel = -1;
 
@@ -28,8 +28,8 @@ namespace ClearView
             // Adjust transparency initially
             UpdateTransparency();
 
-            bool mod = parentObject.TryGetComponent(out ShaderRenderingModeSwitcher switcher);
-            if (mod)
+            parentObject?.TryGetComponent(out ShaderRenderingModeSwitcher switcher);
+            if (this.switcher != null)
             {
                 Debug.Log("ShaderRenderingModeSwitcher found");
             }
@@ -58,7 +58,7 @@ namespace ClearView
             // Convert transparencyLevel (1-100) to alpha value (0.01 to 1.0)
             //float alphaValue = Mathf.Clamp(transparencyLevel, 0.0f, 1f);
 
-            if (!switcher) parentObject.TryGetComponent<ShaderRenderingModeSwitcher>(out switcher);
+            if (!switcher) parentObject?.TryGetComponent<ShaderRenderingModeSwitcher>(out switcher);
 
             //remap transparency level to alpha value
             float alphaValue = transparencyLevel / 100;

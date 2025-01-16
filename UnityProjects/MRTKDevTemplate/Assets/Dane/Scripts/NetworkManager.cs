@@ -266,14 +266,16 @@ namespace ClearView.Network
         {
             if (!PhotonNetwork.IsConnectedAndReady)
             {
-                // If not connected, connect to Photon
+                // If not connected, connect to Photon as a master client
                 ConnectToMaster();
             }
+            else
+            {
+                // If connected, join or create the room
+                PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions { MaxPlayers = 4 }, TypedLobby.Default);
 
-            // If connected, join or create the room
-            PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions { MaxPlayers = 4 }, TypedLobby.Default);
-
-            Logger.Log(Logger.Category.Info, $"Connecting to {roomName}...");
+                Logger.Log(Logger.Category.Info, $"Connecting to {roomName}...");
+            }
 
             isBusy = true;
         }

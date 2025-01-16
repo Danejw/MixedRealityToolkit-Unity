@@ -46,6 +46,8 @@ namespace ClearView.Network
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
+            if (layerStates == null) return;
+
             if (stream.IsWriting)
             {
                 // Send the current layer states to other players

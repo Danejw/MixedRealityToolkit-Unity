@@ -355,7 +355,7 @@ namespace ClearView
 
 
         [PunRPC]
-        private void ActivateClippingToolRPC(string name, bool isActive)
+        private void ActivateClippingToolRPC(bool isActive)
         {
             if (isActive)
             {
@@ -368,7 +368,7 @@ namespace ClearView
                     clippingTool = clip;
 
                     clippingToolInstance.transform.parent = transform;
-
+                    clippingToolInstance.name = "Host Clip (Online)";
 
                     if (currentModel) UpdateClippingToolRenderers(currentModel);
 
@@ -378,12 +378,13 @@ namespace ClearView
                 }
                 else
                 {
-                    Logger.Log(Logger.Category.Error, $"Gameobject {name} was not found.");
+                    Logger.Log(Logger.Category.Error, $"Gameobject of type ClippingPrimitive was not found.");
                 }
             }
             else
             {
-                clippingToolInstance?.gameObject.SetActive(false);
+                if (clippingToolInstance) Destroy(clippingToolInstance);
+                if (clippingTool) clippingTool = null;
 
                 Logger.Log(Logger.Category.Info, "Clipping tool deactivated.");
             }
@@ -411,15 +412,20 @@ namespace ClearView
                 clippingTool.transform.rotation = toolSnap.rotation;
 
                 // Activate or deactivate the clipping tool based on the isActive parameter
-                clippingTool?.gameObject.SetActive(true);
+                clippingToolInstance?.gameObject.SetActive(true);
+
+                if (currentModel) UpdateClippingToolRenderers(currentModel);
+
             }
             else
             {
-                clippingTool?.gameObject.SetActive(false);
+                Destroy(clippingToolInstance);
+                clippingToolInstance = null;
+                clippingTool = null;
             }
 
             // Notify clients about the new model
-            if (inRoom) photonView.RPC("ActivateClippingToolRPC", RpcTarget.Others, clippingToolPrefab.name + "(Clone)", isActive);
+            if (inRoom) photonView.RPC("ActivateClippingToolRPC", RpcTarget.Others, isActive);
         }
 
         private void SetUpClippingTool()
@@ -439,22 +445,31 @@ namespace ClearView
             }
             */
 
-            // Instantiate the clipping tool prefab
+            // We we are in a room and is the master client, we will instantiate the clipping tool using Photon
             if (inRoom && PhotonNetwork.IsMasterClient)
             {
+                // Destroy the existing clipping tool instance if it exists
                 if (clippingToolInstance != null) Destroy(clippingToolInstance);
+
+                // Instantiate the clipping tool using Photon
                 clippingToolInstance = PhotonNetwork.Instantiate(clippingToolPrefab.name, toolSnap.transform.position, toolSnap.transform.rotation);
+
+                // Assign the name consistently across all instances
+                clippingToolInstance.name = clippingToolPrefab.name + "(Online)";
+
+                if (currentModel) UpdateClippingToolRenderers(currentModel);
             }
+            // If we are offline, we will instantiate the clipping tool locally
             else if (!inRoom)
             {
                 clippingToolInstance = Instantiate(clippingToolPrefab, toolSnap.transform.position, toolSnap.transform.rotation, transform);
+
+                // Assign the name consistently across all instances
+                clippingToolInstance.name = clippingToolPrefab.name + "(Offline)";
             }
 
             if (clippingToolInstance != null)
             {
-                // Assign the name consistently across all instances
-                clippingToolInstance.name = clippingToolPrefab.name + "(Clone)";
-
                 // Try to get and set up the ClippingPlane component
                 clippingToolInstance.TryGetComponent(out clippingTool);
                 clippingToolInstance.transform.parent = transform;
@@ -468,6 +483,8 @@ namespace ClearView
 
         public void UpdateClippingToolRenderers(GameObject model)
         {
+            if (!clippingTool) clippingTool = clippingToolInstance?.GetComponent<ClippingPrimitive>();
+
             // set child renderers into the clipping tool
             clippingTool?.ClearRenderers();
 
