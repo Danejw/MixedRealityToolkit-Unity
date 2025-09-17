@@ -94,8 +94,8 @@ namespace Photon.Voice.Unity
 
         private Func<IAudioDesc> inputFactory;
 
-        [SerializeField]
-        private IOS.AudioSessionParameters audioSessionParameters = IOS.AudioSessionParametersPresets.Game;
+        //[SerializeField]
+        //private IOS.AudioSessionParameters audioSessionParameters = IOS.AudioSessionParametersPresets.Game;
 
         // stores the preset for editor, the microphone initialization used only the field above
 #if UNITY_EDITOR
@@ -731,10 +731,10 @@ namespace Photon.Voice.Unity
         /// </summary>
         /// <param name="asp">You can use custom value or one from presets, <see cref="IOS.AudioSessionParametersPresets"/></param>
         /// <returns>If a change has been made.</returns>
-        public bool SetIosAudioSessionParameters(IOS.AudioSessionParameters asp)
-        {
-            return this.SetIosAudioSessionParameters(asp.Category, asp.Mode, asp.CategoryOptions);
-        }
+        //public bool SetIosAudioSessionParameters(IOS.AudioSessionParameters asp)
+        //{
+        //    return this.SetIosAudioSessionParameters(asp.Category, asp.Mode, asp.CategoryOptions);
+        //}
         /// <summary>
         /// Sets the AudioSessionParameters for iOS audio initialization when Photon MicrophoneType is used.
         /// </summary>
@@ -742,32 +742,32 @@ namespace Photon.Voice.Unity
         /// <param name="mode">Audio session mode to be used.</param>
         /// <param name="options">Audio session category options to be used</param>
         /// <returns>If a change has been made.</returns>
-        public bool SetIosAudioSessionParameters(IOS.AudioSessionCategory category, IOS.AudioSessionMode mode, IOS.AudioSessionCategoryOption[] options)
-        {
-            int opt = 0;
-            if (options != null)
-            {
-                for (int i = 0; i < options.Length; i++)
-                {
-                    opt |= (int)options[i];
-                }
-            }
-            if (this.audioSessionParameters.Category != category ||
-                this.audioSessionParameters.Mode != mode ||
-                this.audioSessionParameters.CategoryOptionsToInt() != opt)
-            {
-                this.audioSessionParameters.Category = category;
-                this.audioSessionParameters.Mode = mode;
-                this.audioSessionParameters.CategoryOptions = options;
-                this.Logger.Log(LogLevel.Info, "Recorder.iOSAudioSessionParameters changed to {0}", this.audioSessionParameters);
-                if (this.SourceType == InputSourceType.Microphone && this.MicrophoneType == MicType.Photon)
-                {
-                    this.RestartRecording();
-                }
-                return true;
-            }
-            return false;
-        }
+        //public bool SetIosAudioSessionParameters(IOS.AudioSessionCategory category, IOS.AudioSessionMode mode, IOS.AudioSessionCategoryOption[] options)
+        //{
+        //    int opt = 0;
+        //    if (options != null)
+        //    {
+        //        for (int i = 0; i < options.Length; i++)
+        //        {
+        //            opt |= (int)options[i];
+        //        }
+        //    }
+        //    if (this.audioSessionParameters.Category != category ||
+        //        this.audioSessionParameters.Mode != mode ||
+        //        this.audioSessionParameters.CategoryOptionsToInt() != opt)
+        //    {
+        //        this.audioSessionParameters.Category = category;
+        //        this.audioSessionParameters.Mode = mode;
+        //        this.audioSessionParameters.CategoryOptions = options;
+        //        this.Logger.Log(LogLevel.Info, "Recorder.iOSAudioSessionParameters changed to {0}", this.audioSessionParameters);
+        //        if (this.SourceType == InputSourceType.Microphone && this.MicrophoneType == MicType.Photon)
+        //        {
+        //            this.RestartRecording();
+        //        }
+        //        return true;
+        //    }
+        //    return false;
+        //}
         //#endif
 
         //#if UNITY_EDITOR || UNITY_ANDROID
@@ -896,8 +896,8 @@ namespace Photon.Voice.Unity
 #if UNITY_VISIONOS
                                 case RuntimePlatform.VisionOS:
 #endif
-                                    otherParams = audioSessionParameters;
-                                    this.Logger.Log(LogLevel.Info, "Setting recorder's source to IOS.AudioInPusher with session {0}", audioSessionParameters);
+                                    //otherParams = audioSessionParameters;
+                                    //this.Logger.Log(LogLevel.Info, "Setting recorder's source to IOS.AudioInPusher with session {0}", audioSessionParameters);
                                     break;
                                 case RuntimePlatform.OSXPlayer:
                                 case RuntimePlatform.OSXEditor:
