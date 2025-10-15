@@ -12,12 +12,19 @@ namespace ClearView.Network
 
         private void Start()
         {
+            // If layers is null or empty, try to populate it with child GameObjects
+            if (layers == null || layers.Length == 0)
+            {
+                int childCount = transform.childCount;
+                layers = new GameObject[childCount];
+                for (int i = 0; i < childCount; i++)
+                    layers[i] = transform.GetChild(i).gameObject;
+            }
+
             // Initialize the layer states
             layerStates = new bool[layers.Length];
             for (int i = 0; i < layers.Length; i++)
-            {
                 layerStates[i] = layers[i].activeSelf;
-            }
         }
 
         public void ToggleLayer(int index, bool isVisible)

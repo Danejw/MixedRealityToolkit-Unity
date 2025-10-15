@@ -27,7 +27,11 @@ Material:
   - _DISABLE_ALBEDO_MAP
   - _SPECULAR_HIGHLIGHTS
   - _USE_WORLD_SCALE
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _CAPENABLED_ON
+  - _RELATIVE_TO_HEIGHT__ON
+  - _USE_GLOBAL_LEFT_INDEX__ON
+  - _USE_GLOBAL_RIGHT_INDEX__ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -40,6 +44,10 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Blob_Texture_:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -119,6 +127,22 @@ Material:
     - _Blend: 0
     - _BlendOp: 0
     - _BlendedClippingWidth: 0
+    - _Blob_Enable_: 0
+    - _Blob_Enable_2_: 0
+    - _Blob_Fade_: 1
+    - _Blob_Fade_2_: 1
+    - _Blob_Fade_Length_: 0.08
+    - _Blob_Far_Distance_: 0.08
+    - _Blob_Far_Size_: 0.05
+    - _Blob_Inner_Fade_: 0.01
+    - _Blob_Inner_Fade_2_: 0.1
+    - _Blob_Intensity_: 0.34
+    - _Blob_Near_Distance_: 0
+    - _Blob_Near_Size_: 0.025
+    - _Blob_Near_Size_2_: 0.025
+    - _Blob_Pulse_: 0
+    - _Blob_Pulse_2_: 0
+    - _Blob_Pulse_Max_Size_: 0.05
     - _BlurBorderIntensity: 0
     - _BlurMode: 0
     - _BlurTextureIntensity: 1
@@ -130,13 +154,15 @@ Material:
     - _BorderMinValue: 0.1
     - _BorderWidth: 0.1
     - _BumpScale: 1
+    - _CapEnabled: 1
+    - _CapStencilRef: 97
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _ClippingBorder: 0
     - _ClippingBorderWidth: 0.025
     - _ColorWriteMask: 15
     - _Cull: 2
-    - _CullMode: 2
+    - _CullMode: 0
     - _CustomMode: 0
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
@@ -163,7 +189,12 @@ Material:
     - _FadeBeginDistance: 0.85
     - _FadeCompleteDistance: 0.5
     - _FadeMinValue: 0
+    - _Fade_Out_: 1
+    - _Filter_Width_: 1.5
+    - _Fixed_Unit_Multiplier_: 1000
     - _FluentLightIntensity: 1
+    - _Gaze_Focus_: 0
+    - _Gaze_Intensity_: 0.7
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -176,6 +207,7 @@ Material:
     - _IridescenceAngle: -0.78
     - _IridescenceIntensity: 0.5
     - _IridescenceThreshold: 0.05
+    - _Line_Width_: 0.031
     - _Metallic: 0
     - _MipmapBias: -2
     - _Mode: 0
@@ -185,12 +217,19 @@ Material:
     - _NormalMapScale: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.005
+    - _Pinched_: 0
     - _ProximityLight: 0
     - _ProximityLightSubtractive: 0
     - _ProximityLightTwoSided: 0
+    - _Proximity_Anisotropy_: 1
+    - _Proximity_Far_Distance_: 0.16
+    - _Proximity_Max_Intensity_: 0.45
+    - _Proximity_Near_Radius_: 0.03
     - _QueueOffset: 0
+    - _Radius_: 0.3125
     - _ReceiveShadows: 1
     - _Reflections: 0
+    - _Relative_To_Height_: 1
     - _RenderQueueOverride: -1
     - _RimLight: 0
     - _RimPower: 0.25
@@ -198,6 +237,12 @@ Material:
     - _RoundCornerRadius: 0.25
     - _RoundCorners: 0
     - _RoundCornersHideInterior: 0
+    - _Selected_: 0
+    - _Selected_Distance_: 0.08
+    - _Selected_Fade_Length_: 0.08
+    - _Selection_Fade_: 0
+    - _Selection_Fade_Size_: 0.3
+    - _Selection_Fuzz_: 0.5
     - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -211,7 +256,10 @@ Material:
     - _StencilWriteMask: 255
     - _Surface: 0
     - _TriplanarMappingBlendSharpness: 4
+    - _UseAsCapPlane: 0
     - _UseWorldScale: 1
+    - _Use_Global_Left_Index_: 1
+    - _Use_Global_Right_Index_: 1
     - _VertexColors: 0
     - _VertexExtrusion: 0
     - _VertexExtrusionConstantWidth: 0
@@ -224,10 +272,17 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Blob_Position_: {r: 0.5, g: 0, b: 0.2, a: 1}
+    - _Blob_Position_2_: {r: 0, g: 0, b: 0, a: 1}
     - _BlurBackgroundRect: {r: 0, g: 0, b: 1, a: 1}
     - _BorderColor: {r: 1, g: 1, b: 1, a: 0}
+    - _CapColor: {r: 0.85, g: 0.85, b: 0.9, a: 1}
+    - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
+    - _ClipRectRadii: {r: 10, g: 10, b: 10, a: 10}
     - _ClippingBorderColor: {r: 1, g: 0.19999996, b: 0, a: 1}
+    - _ClippingPlane: {r: 0, g: 1, b: 0, a: 0}
     - _Color: {r: 1, g: 0.6179246, b: 0.6179246, a: 1}
+    - _Edge_Color_: {r: 0.53, g: 0.53, b: 0.53, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EnvironmentColorX: {r: 1, g: 0, b: 0, a: 1}
