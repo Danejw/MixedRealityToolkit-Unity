@@ -10,7 +10,7 @@ Material:
   m_Name: ClippingPlane
   m_Shader: {fileID: 4800000, guid: c331f6c43a2ef0945864cb668f2653c9, type: 3}
   m_ValidKeywords:
-  - _ADDITIVE_ON
+  - _ALPHABLEND_ON
   - _DISABLE_ALBEDO_MAP
   - _INNER_GLOW
   - _RIM_LIGHT
@@ -24,6 +24,7 @@ Material:
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 3000
   stringTagMap:
+    DisableBatching: False
     RenderType: Fade
   disabledShaderPasses: []
   m_SavedProperties:
@@ -147,7 +148,7 @@ Material:
     - _IridescenceThreshold: 0.05
     - _Metallic: 0
     - _MipmapBias: -2
-    - _Mode: 4
+    - _Mode: 5
     - _NPR: 0
     - _NearLightFade: 0
     - _NearPlaneFade: 0
@@ -191,7 +192,7 @@ Material:
     - _ZOffsetFactor: 0
     - _ZOffsetUnits: 0
     - _ZTest: 4
-    - _ZWrite: 0
+    - _ZWrite: 1
     m_Colors:
     - _BlurBackgroundRect: {r: 0, g: 0, b: 1, a: 1}
     - _BorderColor: {r: 1, g: 1, b: 1, a: 0}
