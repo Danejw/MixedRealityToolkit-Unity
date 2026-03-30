@@ -96,8 +96,7 @@ public class PrefabAnatomyProcessor : MonoBehaviour
     public bool unpackSceneInstance = true;
 
     [Header("Category defaults (fallbacks)")]
-    public Material arteriesDefault, veinsDefault, organsDefault, hollowGiDefault, glandsDefault, boneDefault,
-                    muscleDefault, fatDefault, skinDefault, nerveDefault, otherDefault;
+    public Material arteriesDefault, veinsDefault, organsDefault, hollowGiDefault, glandsDefault, boneDefault, muscleDefault, fatDefault, skinDefault, nerveDefault, otherDefault;
 
     [Header("Per-structure overrides (first match wins; uses case-insensitive CONTAINS)")]
     public List<StructureOverride> overrides = new();
@@ -457,10 +456,4 @@ public class PrefabAnatomyProcessor : MonoBehaviour
         return AnatomyCategory.Other;
     }
 #endif
-}
-
-// Tiny annotation component used instead of creating child marker GameObjects
-public class CategoryTag : MonoBehaviour
-{
-    public AnatomyCategory category = AnatomyCategory.Other;
 }
