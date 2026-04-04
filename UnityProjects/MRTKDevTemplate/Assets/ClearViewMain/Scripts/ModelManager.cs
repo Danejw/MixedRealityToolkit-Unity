@@ -25,6 +25,13 @@ namespace ClearView
         [SerializeField] private GameObject clippingToolInstance;
         public ClippingPrimitive clippingTool;
 
+        // Model Spawn Position
+        [SerializeField] private Transform playerHeadReference;
+        [SerializeField] private Transform playerBodyReference;
+        [SerializeField] private float spawnDistance = 2f;
+        [SerializeField] private float heightOffset = -0.25f;
+        [SerializeField] private float yawOffset = 0f;
+
         // Models Storage
         public GameObject currentModel;
         [SerializeField] private List<GameObject> availableModels = new List<GameObject>();
@@ -93,64 +100,58 @@ namespace ClearView
         // Check the available models if a model with said name exists, if it does, set it to active and set the current model to it
         public void SwitchTo(string name) // None, Brain, Heart, Aorta, etc.
         {
-                if (name == "None")
+            if (name == "None")
+            {
+                if (inRoom && PhotonNetwork.IsMasterClient)
                 {
-                    if (inRoom && PhotonNetwork.IsMasterClient)
-                    {
-                    // Set every other model to false
                     foreach (var model in instantiatedModels)
-                        {
-                            model.SetActive(false);
-                        }
-
-                        modelDetailsPanel?.Close();
-                        ToggleClippingTool(false);
-                    }
-                    else if (!inRoom)
                     {
-                        // Set every other model to false
-                        foreach (var model in instantiatedModels)
-                        {
-                            model.SetActive(false);
-                        }
-
-                        modelDetailsPanel?.Close();
-                        ToggleClippingTool(false);
+                        model.SetActive(false);
                     }
 
+                    modelDetailsPanel?.Close();
+                    ToggleClippingTool(false);
+                }
+                else if (!inRoom)
+                {
+                    foreach (var model in instantiatedModels)
+                    {
+                        model.SetActive(false);
+                    }
+
+                    modelDetailsPanel?.Close();
+                    ToggleClippingTool(false);
+                }
+
+                return;
+            }
+
+            MoveInFrontOfPlayer();
+
+            if (inRoom)
+            {
+                GameObject modelPrefab = Resources.Load<GameObject>(name);
+
+                if (modelPrefab == null)
+                {
+                    Logger.Log(Logger.Category.Error, $"Model with name '{name}' not found in our resources folder.");
                     return;
                 }
 
+                InstantiateModelOnline(modelPrefab);
+            }
+            else
+            {
+                GameObject modelPrefab = availableModels.Find(m => m.name == name);
 
-                if (inRoom)
+                if (modelPrefab == null)
                 {
-                    // Find the model with the specified name
-                    GameObject modelPrefab = Resources.Load<GameObject>(name);
-
-                    if (modelPrefab == null)
-                    {
-                        Logger.Log(Logger.Category.Error, $"Model with name '{name}' not found in our resources folder.");
-                        return;
-                    }
-
-                    // If online, instantiate the model using Photon
-                    InstantiateModelOnline(modelPrefab);
+                    Logger.Log(Logger.Category.Error, $"Model with name '{name}' not found in our available models.");
+                    return;
                 }
-                else
-                {
-                    // Find the model with the specified name
-                    GameObject modelPrefab = availableModels.Find(m => m.name == name);
 
-                    if (modelPrefab == null)
-                    {
-                        Logger.Log(Logger.Category.Error, $"Model with name '{name}' not found in our available models.");
-                        return;
-                    }
-
-
-                    // If offline, switch to the model
-                    SwitchToOfflineModel(modelPrefab);
-                }
+                SwitchToOfflineModel(modelPrefab);
+            }
         }
 
         // Functionality
@@ -342,6 +343,34 @@ namespace ClearView
             model.localScale = Vector3.one;
         }
 
+        private void MoveInFrontOfPlayer()
+        {
+            Transform head = playerHeadReference != null ? playerHeadReference : Camera.main?.transform;
+            Transform body = playerBodyReference != null ? playerBodyReference : head;
+
+            if (head == null || body == null) return;
+
+            Vector3 forward = body.forward;
+            forward.y = 0f;
+
+            if (forward.sqrMagnitude < 0.0001f)
+                forward = head.forward;
+
+            forward.y = 0f;
+            forward.Normalize();
+
+            Vector3 targetPosition = head.position + forward * spawnDistance;
+            targetPosition.y = head.position.y + heightOffset;
+
+            Vector3 lookDirection = head.position - targetPosition;
+            lookDirection.y = 0f;
+
+            if (lookDirection.sqrMagnitude < 0.0001f)
+                lookDirection = -forward;
+
+            transform.position = targetPosition;
+            transform.rotation = Quaternion.LookRotation(lookDirection.normalized, Vector3.up) * Quaternion.Euler(0f, yawOffset, 0f);
+        }
 
         // Client Side RPCs (What the clients should do)
         [PunRPC]
