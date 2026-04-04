@@ -1,12 +1,8 @@
 using MixedReality.Toolkit;
 using MixedReality.Toolkit.UX;
 using Photon.Pun;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.XR.CoreUtils;
 using UnityEngine;
-
 
 namespace ClearView
 {
@@ -15,13 +11,13 @@ namespace ClearView
         private GameObject _model;
         public GameObject Model
         {
-            get {  return _model; }
+            get { return _model; }
             private set
             {
                 _model = value;
-                SetUp(_model.transform);           
+                SetUp(_model.transform);
             }
-        }   
+        }
 
         public enum DetailsState
         {
@@ -49,8 +45,21 @@ namespace ClearView
         public Slider rotationSlider;
         public Slider transparencySlider;
 
+        [Header("Face Camera")]
+        [SerializeField] private bool faceCameraWhenOpen = true;
+        [SerializeField] private float retargetInterval = 0.15f;
+        [SerializeField] private float minCameraMoveDistance = 0.03f;
+        [SerializeField] private float minCameraRotateAngle = 3f;
+        [SerializeField] private float rotationSmoothSpeed = 8f;
+        [SerializeField] private bool flattenYAxis = true;
+
         private PhotonView photonView;
 
+        private Transform cam;
+        private Quaternion targetRotation;
+        private Vector3 lastCameraPosition;
+        private Quaternion lastCameraRotation;
+        private float nextRetargetTime;
 
         private void Start()
         {
@@ -61,10 +70,8 @@ namespace ClearView
 
             Close();
 
-            // I had to do this wierd delayed toggle to help the details UI layouts to initialize properly. It's a hack, I know.
             StartCoroutine(SetupDetails());
         }
-
 
         private IEnumerator SetupDetails()
         {
@@ -76,23 +83,82 @@ namespace ClearView
         private void OnEnable()
         {
             if (!photonView) photonView = GetComponent<PhotonView>();
-
             Close();
+        }
+
+        private void Update()
+        {
+            if (!faceCameraWhenOpen) return;
+            if (state != DetailsState.Open) return;
+            if (detailsParent == null || !detailsParent.activeInHierarchy) return;
+
+            if (cam == null && Camera.main != null)
+            {
+                cam = Camera.main.transform;
+                lastCameraPosition = cam.position;
+                lastCameraRotation = cam.rotation;
+                ForceRetarget();
+            }
+
+            if (cam == null) return;
+
+            if (Time.time >= nextRetargetTime)
+            {
+                bool movedEnough = Vector3.Distance(cam.position, lastCameraPosition) >= minCameraMoveDistance;
+                bool rotatedEnough = Quaternion.Angle(cam.rotation, lastCameraRotation) >= minCameraRotateAngle;
+
+                if (movedEnough || rotatedEnough)
+                {
+                    UpdateTargetRotation();
+                    lastCameraPosition = cam.position;
+                    lastCameraRotation = cam.rotation;
+                }
+
+                nextRetargetTime = Time.time + retargetInterval;
+            }
+
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                targetRotation,
+                rotationSmoothSpeed * Time.deltaTime
+            );
+        }
+
+        private void ForceRetarget()
+        {
+            if (Camera.main == null) return;
+
+            cam = Camera.main.transform;
+            lastCameraPosition = cam.position;
+            lastCameraRotation = cam.rotation;
+            UpdateTargetRotation();
+            nextRetargetTime = Time.time + retargetInterval;
+        }
+
+        private void UpdateTargetRotation()
+        {
+            if (cam == null) return;
+
+            Vector3 toCamera = cam.position - transform.position;
+
+            if (flattenYAxis)
+            {
+                toCamera.y = 0f;
+            }
+
+            if (toCamera.sqrMagnitude < 0.0001f) return;
+
+            // Remove the minus if the panel faces backwards
+            targetRotation = Quaternion.LookRotation(-toCamera.normalized, Vector3.up);
         }
 
         private void OnTransparencySliderChanged(SliderEventData value)
         {
-            //if (!photonView.IsMine) return;
-
             if (transparencyEditor) transparencyEditor.transparencyLevel = value.NewValue;
-
-            Debug.Log("Transparency Slider Changed");
         }
 
         private void OnRotationSliderChanged(SliderEventData value)
         {
-            //if (!photonView.IsMine) return;
-
             if (rotator) rotator.SetRotationSpeed((int)value.NewValue);
         }
 
@@ -114,7 +180,6 @@ namespace ClearView
             }
         }
 
-
         public void Open()
         {
             if (!photonView.IsMine) return;
@@ -124,12 +189,11 @@ namespace ClearView
             detailsParent.SetActive(true);
 
             state = DetailsState.Open;
+            ForceRetarget();
         }
 
         public void Close()
         {
-            //if (!photonView.IsMine) return;
-
             openButton.SetActive(true);
             closeButton.SetActive(false);
             detailsParent.SetActive(false);
@@ -147,11 +211,8 @@ namespace ClearView
             state = DetailsState.Hidden;
         }
 
-
         public void SetUp(Transform model)
         {
-            //if (!photonView.IsMine) return;
-
             layerToggles.SetToggleCollection(Model.transform);
             rotator.Setup(model);
             transparencyEditor.Setup(model);
@@ -162,7 +223,6 @@ namespace ClearView
             Model = model;
         }
 
-        // Inspector Button Helper
         public void ToggleDetailsMenu()
         {
             if (!photonView.IsMine) return;

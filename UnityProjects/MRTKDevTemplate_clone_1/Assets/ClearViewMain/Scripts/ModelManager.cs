@@ -224,7 +224,18 @@ namespace ClearView
 
             // Instantiate the model using Photon
             GameObject instantiatedModel = PhotonNetwork.Instantiate(modelPrefab.name, center.position, center.rotation);
-            instantiatedModel.transform.parent = transform; // Set the parent to keep the hierarchy organized
+
+
+            Debug.Log($"Before Parent | local: {instantiatedModel.transform.localScale} | world: {instantiatedModel.transform.lossyScale}");
+            Debug.Log($"Parent world scale: {transform.lossyScale}");
+
+
+            //instantiatedModel.transform.parent = transform; // Set the parent to keep the hierarchy organized
+            PlaceModel(instantiatedModel.transform);
+            //instantiatedModel.transform.SetParent(transform, true);
+
+            Debug.Log($"After Parent | local: {instantiatedModel.transform.localScale} | world: {instantiatedModel.transform.lossyScale}");
+
             instantiatedModels.Add(instantiatedModel);
 
             // Update the UI panel with model details
@@ -323,7 +334,13 @@ namespace ClearView
             availableModels.Add(go);
         }
 
-
+        private void PlaceModel(Transform model)
+        {
+            model.SetParent(center, false);
+            model.localPosition = Vector3.zero;
+            model.localRotation = Quaternion.identity;
+            model.localScale = Vector3.one;
+        }
 
 
         // Client Side RPCs (What the clients should do)
@@ -503,21 +520,48 @@ namespace ClearView
         // Details Menu Control
         public void ToggleDetailsMenu(bool isActive)
         {
+            if (!modelDetailsPanel) return;
+
             if (isActive)
             {
-                if (detailSnap)
+                if (!detailSnap)
                 {
-                    modelDetailsPanel.transform.position = detailSnap.position;
-                    modelDetailsPanel.transform.LookAt(2 * modelDetailsPanel.transform.position - Camera.main.transform.position);
+                    Logger.Log(Logger.Category.Error, "Detail snap is missing.");
+                    return;
                 }
 
-                // only open the details panel if the player is in a room and is the master client
-                if (inRoom && PhotonNetwork.IsMasterClient) modelDetailsPanel?.Open();
-                else if (!inRoom) modelDetailsPanel?.Open();
+                Transform panel = modelDetailsPanel.transform;
+
+                // Make sure the panel is NOT parented under something that will drag it around
+                //panel.SetParent(null, true);
+
+                // Sample the snap point in world space
+                Vector3 worldPos = detailSnap.position;
+                Quaternion worldRot = detailSnap.rotation;
+
+                panel.position = worldPos;
+
+                // Optional: if you want the panel to inherit the snap rotation first
+                //panel.rotation = worldRot;
+
+                // Then face the user
+                if (Camera.main != null)
+                {
+                    Vector3 toCamera = Camera.main.transform.position - panel.position;
+                    toCamera.y = 0f;
+
+                    if (toCamera.sqrMagnitude > 0.0001f)
+                    {
+                        panel.rotation = Quaternion.LookRotation(-toCamera.normalized, Vector3.up);
+                    }
+                }
+
+                if (inRoom && PhotonNetwork.IsMasterClient) modelDetailsPanel.Open();
+                else if (!inRoom) modelDetailsPanel.Open();
             }
             else
             {
-                modelDetailsPanel?.Close();
+                modelDetailsPanel.Close();
             }
         }
 
@@ -574,10 +618,11 @@ namespace ClearView
 
             import.InstantiateMainScene(go.transform);
 
-            go.transform.parent = transform; // Set the parent to keep the hierarchy organized
-            Vector3.Lerp(transform.position, center.position, 1 * Time.deltaTime); // Set the position to the center of the room
-            go.transform.position = transform.position; // Set the position to the center of the room
-            go.transform.rotation = Quaternion.identity;
+            //go.transform.parent = transform; // Set the parent to keep the hierarchy organized
+            PlaceModel(go.transform);
+            //Vector3.Lerp(transform.position, center.position, 1 * Time.deltaTime); // Set the position to the center of the room
+            //go.transform.position = transform.position; // Set the position to the center of the room
+            //go.transform.rotation = Quaternion.identity;
 
             // Check for network components or add
             if (inRoom)
