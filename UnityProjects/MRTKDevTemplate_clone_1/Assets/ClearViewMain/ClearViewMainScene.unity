@@ -798,7 +798,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 232.97, y: 17.96}
+  m_SizeDelta: {x: 232.97, y: 45.21}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &29254636
 MonoBehaviour:
@@ -825,7 +825,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 29254634}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b66c9036302c05f408dd81173eaf7200, type: 3}
   m_Name: 
@@ -1254,7 +1254,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 242.97, y: 27.96, z: 10}
+  m_Size: {x: 242.97, y: 55.21, z: 10}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!222 &29254645
 CanvasRenderer:
@@ -18029,7 +18029,8 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 21
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 870879688, guid: 38b824edb69b9b94d8f2180ded789895, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 38b824edb69b9b94d8f2180ded789895, type: 3}
 --- !u!1 &870879682 stripped
 GameObject:
@@ -39927,6 +39928,7 @@ MonoBehaviour:
   minCameraRotateAngle: 3
   rotationSmoothSpeed: 8
   flattenYAxis: 1
+  stopFacingWhileGrabbed: 1
 --- !u!114 &8332325029665383199
 MonoBehaviour:
   m_ObjectHideFlags: 0

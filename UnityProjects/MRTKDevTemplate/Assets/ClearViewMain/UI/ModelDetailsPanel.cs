@@ -53,6 +53,9 @@ namespace ClearView
         [SerializeField] private float rotationSmoothSpeed = 8f;
         [SerializeField] private bool flattenYAxis = true;
 
+        [Header("Grab Lock")]
+        [SerializeField] private bool stopFacingWhileGrabbed = true;
+
         private PhotonView photonView;
 
         private Transform cam;
@@ -60,13 +63,17 @@ namespace ClearView
         private Vector3 lastCameraPosition;
         private Quaternion lastCameraRotation;
         private float nextRetargetTime;
+        private bool isGrabbed;
 
         private void Start()
         {
             if (!photonView) photonView = GetComponent<PhotonView>();
 
-            rotationSlider.OnValueUpdated.AddListener(OnRotationSliderChanged);
-            transparencySlider.OnValueUpdated.AddListener(OnTransparencySliderChanged);
+            if (rotationSlider != null)
+                rotationSlider.OnValueUpdated.AddListener(OnRotationSliderChanged);
+
+            if (transparencySlider != null)
+                transparencySlider.OnValueUpdated.AddListener(OnTransparencySliderChanged);
 
             Close();
 
@@ -91,6 +98,7 @@ namespace ClearView
             if (!faceCameraWhenOpen) return;
             if (state != DetailsState.Open) return;
             if (detailsParent == null || !detailsParent.activeInHierarchy) return;
+            if (stopFacingWhileGrabbed && isGrabbed) return;
 
             if (cam == null && Camera.main != null)
             {
@@ -162,9 +170,30 @@ namespace ClearView
             if (rotator) rotator.SetRotationSpeed((int)value.NewValue);
         }
 
+        public void BeginGrab()
+        {
+            isGrabbed = true;
+        }
+
+        public void EndGrab()
+        {
+            isGrabbed = false;
+            ForceRetarget();
+        }
+
+        public void SetGrabbed(bool grabbed)
+        {
+            isGrabbed = grabbed;
+
+            if (!isGrabbed)
+            {
+                ForceRetarget();
+            }
+        }
+
         public void Toggle(DetailsState state)
         {
-            if (!photonView.IsMine) return;
+            if (photonView != null && !photonView.IsMine) return;
 
             switch (state)
             {
@@ -182,11 +211,11 @@ namespace ClearView
 
         public void Open()
         {
-            if (!photonView.IsMine) return;
+            if (photonView != null && !photonView.IsMine) return;
 
-            openButton.SetActive(false);
-            closeButton.SetActive(true);
-            detailsParent.SetActive(true);
+            if (openButton != null) openButton.SetActive(false);
+            if (closeButton != null) closeButton.SetActive(true);
+            if (detailsParent != null) detailsParent.SetActive(true);
 
             state = DetailsState.Open;
             ForceRetarget();
@@ -194,28 +223,30 @@ namespace ClearView
 
         public void Close()
         {
-            openButton.SetActive(true);
-            closeButton.SetActive(false);
-            detailsParent.SetActive(false);
+            if (openButton != null) openButton.SetActive(true);
+            if (closeButton != null) closeButton.SetActive(false);
+            if (detailsParent != null) detailsParent.SetActive(false);
 
             state = DetailsState.Close;
         }
 
         public void Hide()
         {
-            if (!photonView.IsMine) return;
+            if (photonView != null && !photonView.IsMine) return;
 
-            openButton.SetActive(false);
-            detailsParent.SetActive(false);
+            if (openButton != null) openButton.SetActive(false);
+            if (detailsParent != null) detailsParent.SetActive(false);
 
             state = DetailsState.Hidden;
         }
 
         public void SetUp(Transform model)
         {
-            layerToggles.SetToggleCollection(Model.transform);
-            rotator.Setup(model);
-            transparencyEditor.Setup(model);
+            if (Model == null) return;
+
+            layerToggles?.SetToggleCollection(Model.transform);
+            rotator?.Setup(model);
+            transparencyEditor?.Setup(model);
         }
 
         public void SetModel(GameObject model)
@@ -225,7 +256,7 @@ namespace ClearView
 
         public void ToggleDetailsMenu()
         {
-            if (!photonView.IsMine) return;
+            if (photonView != null && !photonView.IsMine) return;
 
             switch (state)
             {
